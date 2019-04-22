@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <!-- Unidade de persistencia -->
+    <persistence-unit name="cadastro" transaction-type="RESOURCE_LOCAL">
+        <!-- Implementação do JPA -->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!-- Lista de entidades -->
+        <class>br.com.SGP.bean.entities.Cadastro</class>
+        <class>br.com.SGP.bean.entities.Produto</class>
+        <class>br.com.SGP.bean.entities.Balanco</class>
+        <class>br.com.SGP.bean.entities.ItemBalanco</class>
+        <class>br.com.SGP.bean.entities.Usuario</class>
+        <class>br.com.SGP.entities.TipoEvento</class>
+        <class>br.com.SGP.entities.Evento</class>
+        <properties>
+            <!-- Propriedades JDBC -->
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <!-- DB Driver -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/dbSGP"/>
+            <!-- BD Mane -->
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <!-- DB User -->
+            <property name="javax.persistence.jdbc.password" value="123456"/>
+            <!-- DB Password -->
+            <!-- Configurações específicas do Hibernate -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <!-- DB Dialect -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <!--<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->
+        </properties>
+    </persistence-unit>
+</persistence>

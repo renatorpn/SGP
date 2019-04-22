@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <head jsf:id="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>SGP</title>
+
+        <link rel="stylesheet" type="text/css"
+              href="#{request.contextPath}/resources/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/stylesheet.css"/>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body jsf:id="body">
+
+      <ui:include src="/app/header.xhtml"/>
+
+      <h:form>
+            <p:growl id="growl" showDetail="false" sticky="false" life="3000"  />
+        </h:form>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                     <script type="text/javascript">
+                            PrimeFaces.locales['pt'] = {
+                                closeText: 'Fechar',
+                                prevText: 'Anterior',
+                                nextText: 'Próximo',
+                                currentText: 'Começo',
+                                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                                             'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                              monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+                                                'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                              dayNames: ['Domingo', 'Segunda', 'Terça',
+                                         'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                              dayNamesShort: ['Dom', 'Seg', 'Ter',
+                                              'Qua', 'Qui', 'Sex', 'Sáb'],
+                              dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                              weekHeader: 'Semana',
+                              firstDay: 0,
+                              isRTL: false,
+                              showMonthAfterYear: false,
+                              yearSuffix: '',
+                              timeOnlyTitle: 'Apenas Horas',
+                              timeText: 'Tempo',
+                              hourText: 'Hora',
+                              minuteText: 'Minuto',
+                              secondText: 'Segundo',
+                              ampm: false,
+                              month: 'Mês',
+                              week: 'Semana',
+                              day: 'Dia',
+                              allDayText: 'O Dia Todo'};
+                        </script>
+                        <style type="text/css">
+                            .value {
+                                width: 1000px;
+                            }
+                        </style>
+                    <h:form>
+                        <p:growl id="messages" showDetail="true" />
+
+                            <h:panelGrid columnClasses="value">
+                                <h3 style="margin-top: 0">Eventos</h3>
+                                <p:schedule id="schedule" value="#{EventoMB.eventModel}" widgetVar="myschedule" timeZone="America/Sao_Paulo" locale="PT">
+                                    <p:ajax event="eventSelect" listener="#{EventoMB.onSelect}" update="eventDetails" oncomplete="PF('dialogBox').show();"/>
+                                    <p:ajax event="dateSelect" listener="#{EventoMB.onCreate}" update="eventDetails" oncomplete="PF('dialogBox').show();"/>
+                                    <p:ajax event="eventMove" listener="#{EventoMB.onMove}" update="schedule"/>
+                                    <p:ajax event="eventResize" listener="#{EventoMB.onResize}" update="schedule"/>
+                                </p:schedule>
+
+                            </h:panelGrid>
+
+                        <p:dialog widgetVar="dialogBox" header="Evento" id="scheduleEvento" resizable="true" modal="true" showEffect="clip" closable="false" >
+                                <p:outputPanel id="eventDetails">
+                                    <h:panelGrid columns="2" >
+
+                                        <p:outputLabel value="Título"/>
+                                        <p:inputText value="#{EventoMB.event.nomeevento}"/>
+
+
+                                        <p:outputLabel value="Início"/>
+                                        <p:calendar value="#{EventoMB.event.dataInicio}"  pattern="dd/MM/yyyy"/>
+
+
+
+                                        <p:outputLabel value="Fim"/>
+                                        <p:calendar value="#{EventoMB.event.dataFim}"  pattern="dd/MM/yyyy"/>
+
+
+                                        <p:outputLabel value="Descrição"/>
+                                        <p:inputText value="#{EventoMB.event.descricao}"/>
+
+                                        <p:outputLabel value="Tipo Evento"/>
+                                        <h:selectOneMenu id="tipoevento" class="form-control" value="#{EventoMB.event.tipoevento}" required="true" converter="tipoEventoConverter">
+                                            <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
+                                            <f:selectItems value="#{EventoMB.listaTipoEvento}" var ="tipoevento"
+                                                           itemValue="#{tipoevento}"
+                                                           itemLabel="#{tipoevento.descricao}"/>
+
+                                        </h:selectOneMenu>
+
+
+                                        <p:outputLabel value="Investimento"/>
+                                        <p:inputText value="#{EventoMB.event.investimento}"/>
+
+
+                                        <label jsf:for="vendaRealizada">Venda Realizada</label>
+                                        <select jsf:id="vendaRealizada"
+                                                size="1"
+                                                class="form-control"
+                                                jsf:value="#{EventoMB.event.vendarealizada}"
+                                                required="required">
+                                            <ui:repeat value="#{EventoMB.vendaRealizada}"
+                                                       var="vendarealizada"
+                                                       itemLabel="#{vendarealizada.descricao}"
+                                                       itemValue="#{vendarealizada}"
+                                                       jsfc="f:selectItems">
+                                            </ui:repeat>
+                                        </select>
+
+                                        <p:outputLabel value="Hora Inicio:" />
+                                        <p:calendar id="horaI" value="#{EventoMB.event.horaInicio}" pattern="HH:mm" timeOnly="true"  />
+
+                                        <p:outputLabel value="Hora Fim:" />
+                                        <p:calendar id="horaF" value="#{EventoMB.event.horaFim}" pattern="HH:mm" timeOnly="true"  />
+
+
+
+                                        <p:outputLabel value="Representante"/>
+                                        <h:selectOneMenu id="representante" class="form-control" value="#{EventoMB.event.representante}" required="true" converter="usuarioConverter">
+                                            <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
+                                            <f:selectItems value="#{LoginMB.usuarios}" var ="usuario"
+                                                           itemValue="#{usuario}"
+                                                           itemLabel="#{usuario.nomeUsuario}"/>
+
+                                        </h:selectOneMenu>
+
+                                        <p:outputLabel value="Cliente"/>
+                                        <h:selectOneMenu id="cliente" class="form-control" value="#{EventoMB.event.cliente}" required="true" converter="clienteConverter">
+                                            <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
+                                            <f:selectItems value="#{cadastroBean.cadastros}" var ="cadastro"
+                                                           itemValue="#{cadastro}"
+                                                           itemLabel="#{cadastro.nome}"/>
+
+                                        </h:selectOneMenu>
+
+
+
+                                    </h:panelGrid>
+                                    <p:separator/>
+
+                                    <p:commandButton value="Salvar" actionListener="#{EventoMB.salvar()}" update="messages schedule" oncomplete="PF('dialogBox').hide();"/>
+                                    <p:commandButton value="Deletar" actionListener="#{EventoMB.deletar()}" update="messages schedule" oncomplete="PF('dialogBox').hide();"/>
+                                    <p:commandButton value="Fechar" actionListener="#{EventoMB.limpar()}" oncomplete="PF('dialogBox').hide();"/>
+                                </p:outputPanel>
+                            </p:dialog>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <!--<h:outputScript name="js/jquery-3.2.1.min.js"/>-->
+        <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
+        <h:outputScript name="js/jquery.mask.min.js"/>
+        <h:outputScript name="js/jquery.maskMoney.min.js"/>
+        <h:outputScript name="js/jquery.validate.min.js"/>
+        <h:outputScript name="js/additional-methods.min.js"/>
+        <h:outputScript name="js/localization/messages_pt_BR.min.js"/>
+        <h:outputScript name="js/script.js"/>
+    </body>
+
+
+
+</html>

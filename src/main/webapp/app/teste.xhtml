@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <head jsf:id="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>SGP</title>
+
+        <link rel="stylesheet" type="text/css"
+              href="#{request.contextPath}/resources/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/stylesheet.css"/>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+
+    <body jsf:id="body">
+        <p:growl autoUpdate="true"/>
+       <ui:include src="/app/header.xhtml"/>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 ">
+                    <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
+                        <fieldset>
+                            <legend>Balanços do Cliente</legend>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <label jsf:for="nome">Nome</label>
+                                    <h:outputText
+                                        id="nome"
+                                        binding="#{nome}"
+                                        class="form-control"
+
+                                        value="#{cadastroBean.cadastro.id}, #{cadastroBean.cadastro.nome} - CPNJ: #{cadastroBean.cadastro.cpf} "
+                                        />
+
+                                    <h:message for="nome" styleClass="text-danger"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2">
+                                <div class="form-group">
+                                    <label jsf:for="nome">Balanço</label>
+                                    <h:outputText
+                                        id="balanco"
+                                        binding="#{balanco}"
+                                        class="form-control"
+                                        value="#{cadastroBean.balanco.periodo}"
+                                        />
+                                    <h:message for="balanco" styleClass="text-danger"/>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                        <fieldset >
+                            <legend>Itens do Balanço</legend>
+                            
+                                <p:dataTable emptyMessage="Nenhum item Resgitrado." 
+                                             var="itemBalanco" 
+                                             value="#{cadastroBean.balanco.itemBalanco}" 
+                                             
+                                             rows="5" 
+                                             paginator="true"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             >
+                                    <f:facet name="header">Relação de Produtos</f:facet>
+                                    <p:column style="width: 5%" headerText="Id" sortBy="#{itemBalanco.idItemBalanco}">
+                                        <h:outputText value="#{itemBalanco.idItemBalanco}" />
+                                    </p:column>
+                                    <p:column style="width: 10%" headerText="Código" sortBy="#{itemBalanco.produto.codigo}">
+                                        <h:outputText value="#{itemBalanco.produto.codigo}" />
+                                    </p:column>
+                                    <p:column style="width: 10%" headerText="Produto" sortBy="#{itemBalanco.produto.nome}">
+                                        <h:outputText value="#{itemBalanco.produto.nome}" />
+                                    </p:column>
+                                    <p:column style="width: 15%" headerText="Cor" sortBy="#{itemBalanco.produto.cor}">
+                                        <h:outputText value="#{itemBalanco.produto.cor}" />
+                                    </p:column>
+                                    <p:column style="width: 10%" headerText="Venda" sortBy="#{itemBalanco.qtdVenda}">
+                                        <h:outputText value="#{itemBalanco.qtdVenda}" />
+                                    </p:column>
+                                    <p:column style="width: 10%" headerText="Estoque" sortBy="#{itemBalanco.qtdEstoque}">
+                                        <h:outputText value="#{itemBalanco.qtdEstoque}" />
+                                    </p:column>
+                                    <p:column style="width: 10%" headerText="Giro" sortBy="#{itemBalanco.giro}%">
+                                        <h:outputText value="#{itemBalanco.giro}%" />
+                                    </p:column>
+                                    
+                                    <p:column style="width: 10%" headerText="Cobertura" sortBy="#{itemBalanco.cobertura}">
+                                        <h:outputText value="#{itemBalanco.cobertura}" />
+                                    </p:column>
+                                    <p:column style="width: 15%" headerText="Status do item" >
+                                        <h:outputText value="#{itemBalanco.statusItem}" />
+                                    </p:column>
+
+                                </p:dataTable>
+                            
+                        </fieldset>
+
+                        <input type="submit"
+                               class="btn btn-primary"
+                               jsf:action="#{cadastroBean.cadastrarBalanco(produto)}"
+                               value="Enviar" 
+                               style="margin: 10px"
+                               />
+
+                        <p:commandButton value="Novo Item" onclick="PF('dlg').show();" type="button" class="btn btn-primary"/>
+                        <p:dialog header="Incluir Item" widgetVar="dlg" minimizable="true" maximizable="true">
+                            
+                            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                <p:outputLabel for="produto" value="Produto: " />
+                                <p:selectOneMenu id="produto" value="#{produtoMB.produto}" style="width:125px">
+                                    <f:selectItem itemLabel="Select One" itemValue="" />
+                                    <f:selectItem value="#{produtoMB.listaPordutos}" />
+
+                                </p:selectOneMenu>
+                            
+                            
+                        </p:dialog>
+
+
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+
+        <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
+        <h:outputScript name="js/jquery.mask.min.js"/>
+        <h:outputScript name="js/jquery.maskMoney.min.js"/>
+        <h:outputScript name="js/jquery.validate.min.js"/>
+        <h:outputScript name="js/additional-methods.min.js"/>
+        <h:outputScript name="js/localization/messages_pt_BR.min.js"/>
+        <h:outputScript name="js/script.js"/>
+    </body>
+</html>

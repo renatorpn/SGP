@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <head jsf:id="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>SGP</title>
+
+        <link rel="stylesheet" type="text/css"
+              href="#{request.contextPath}/resources/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/stylesheet.css"/>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body jsf:id="body">
+        <ui:include src="/app/header.xhtml"/>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                    <form jsf:id="form" jsf:prependId="false">
+                        <fieldset>
+                            <legend>Quadro SWOT</legend>
+                                 
+                                    <div class="row">
+                                     <div class="col-lg-6 col-md-6">
+                                        <label jsf:for="pontosFortes">Pontos Fortes</label>
+                                        <textarea class="form-control" jsf:binding="#{pontosFortes}" jsf:value="#{quadroBean.quadro.pontosFortes}" id="pontosFortes" rows="7"></textarea>
+                                    </div>
+                                     
+                                      <div class="col-lg-6 col-md-6">
+                                        <label jsf:for="pontosFracos">Pontos Fracos</label>
+                                        <textarea class="form-control" jsf:binding="#{pontosFracos}" jsf:value="#{quadroBean.quadro.pontosFracos}" id="pontosFracos" rows="7"></textarea>
+                                    </div>
+                                 </div>
+                            
+                            
+                            
+                                 <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <label jsf:for="Oportunidades">Oportunidades</label>
+                                        <textarea class="form-control" jsf:binding="#{oportunidades}" jsf:value="#{quadroBean.quadro.oportunidades}" id="Oportunidades" rows="7"></textarea>
+                                    </div>
+                                     
+                                      <div class="col-lg-6 col-md-6">
+                                        <label jsf:for="ameacas">Ameaças</label>
+                                        <textarea class="form-control" jsf:binding="#{pontosFortes}" jsf:value="#{quadroBean.quadro.ameacas}" id="ameacas" rows="7"></textarea>
+                                    </div>
+                                 </div>
+                            
+                            
+                        </fieldset>
+
+                        <input type="submit"
+                               class="btn btn-primary"
+                               jsf:action="#{quadroBean.alterar}"
+                               value="Enviar"/>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <h:outputScript name="js/jquery-3.2.1.min.js"/>
+        <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
+        <h:outputScript name="js/jquery.mask.min.js"/>
+        <h:outputScript name="js/jquery.maskMoney.min.js"/>
+        <h:outputScript name="js/jquery.validate.min.js"/>
+        <h:outputScript name="js/additional-methods.min.js"/>
+        <h:outputScript name="js/localization/messages_pt_BR.min.js"/>
+        <h:outputScript name="js/script.js"/>
+    </body>
+    
+    
+    
+</html>

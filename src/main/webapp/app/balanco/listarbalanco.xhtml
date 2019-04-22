@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <head jsf:id="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>SGP</title>
+        
+        <link rel="stylesheet" type="text/css"
+              href="#{request.contextPath}/resources/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/stylesheet.css"/>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    <body jsf:id="body">
+        <p:growl autoUpdate="true"/>
+        <ui:include src="/app/header.xhtml"/>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                    <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
+                        <fieldset>
+                            <legend>Balanços do Cliente</legend>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label jsf:for="nome">Nome</label>
+                                    <h:outputText
+                                        id="nome"
+                                        binding="#{nome}"
+                                        class="form-control"
+
+                                        value="#{cadastroBean.cadastro.id}, #{cadastroBean.cadastro.nome} - CPNJ: #{cadastroBean.cadastro.cpf} "
+                                        />
+
+                                    <h:message for="nome" styleClass="text-danger"/>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                        <fieldset>
+                            <legend>Balanços Cadastrados</legend>
+                            <div class="col-lg-12 col-md-12">
+                                <p:dataTable emptyMessage="Nenhum item Resgitrado." 
+                                             var="balanco" 
+                                             value="#{cadastroBean.balancos}" 
+
+                                             rows="5" 
+                                             paginator="true"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             >
+                                    <f:facet name="header">Balanço</f:facet>
+                                    <p:column headerText="Id" sortBy="#{balanco.id}">
+                                        <h:outputText value="#{balanco.id}" />
+                                    </p:column>
+                                    <p:column headerText="Cliente" sortBy="#{balanco.cliente.nome}}">
+                                        <h:outputText value="#{balanco.cliente.nome}" />
+                                    </p:column>
+                                    <p:column headerText="Qauntidade de itens" sortBy="#{balanco.itemBalanco.size()}">
+                                        <h:outputText value="#{balanco.itemBalanco.size()}" />
+                                    </p:column>
+                                    <p:column headerText="Período" sortBy="#{balanco.periodo}}">
+                                        <h:outputText value="#{balanco.periodo}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Opção">
+                                        <p:commandButton class="btn-warning" 
+                                                         icon="ui-icon-search" 
+                                                         value="Info" 
+                                                         action="#{cadastroBean.editarBalanco(balanco)}">
+                                        </p:commandButton>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                        </fieldset>
+
+                        <input type="submit"
+                               class="btn btn-primary"
+                               jsf:action="#{cadastroBean.cadastrarBalanco}"
+                               value="Novo Balanço" 
+                               style="margin: 10px"
+                               />
+                        
+
+
+
+                    </form>
+                    
+                    
+                    
+                </div>
+            </div>
+
+        </div>
+
+
+        <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
+        <h:outputScript name="js/jquery.mask.min.js"/>
+        <h:outputScript name="js/jquery.maskMoney.min.js"/>
+        <h:outputScript name="js/jquery.validate.min.js"/>
+        <h:outputScript name="js/additional-methods.min.js"/>
+        <h:outputScript name="js/localization/messages_pt_BR.min.js"/>
+        <h:outputScript name="js/script.js"/>
+    </body>
+</html>

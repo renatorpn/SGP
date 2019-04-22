@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <head jsf:id="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>SGP</title>
+
+        <link rel="stylesheet" type="text/css"
+              href="#{request.contextPath}/resources/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/stylesheet.css"/>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body jsf:id="body">
+        <ui:include src="/app/header.xhtml"/>
+        <p:growl id="growl" showDetail="false" sticky="false" life="3000"  />
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                    <form jsf:id="form" enctype="multipart/form-data" >
+                        <fieldset>
+                            <legend>Dados do Cadastro</legend>
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="form-group ">
+                                        <label jsf:for="nomeUsuario">Nome de Usuário</label>
+                                        <input type="text"
+                                               jsf:id="nomeUsuario"
+                                               jsf:binding="#{nomeUsuario}"
+                                               class="form-control"
+                                               placeholder="Usuário"
+                                               jsf:value="#{Usuario.usuarioCadastro.nomeUsuario}"
+                                               required="required"/>
+
+                                        <h:message for="nomeUsuario" styleClass="text-danger"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="form-group">
+                                        <label jsf:for="senha">Senha</label>
+                                        <input type="password"
+                                               jsf:id="senha"
+                                               jsf:binding="#{senha}"
+                                               class="form-control"
+                                               
+                                               maxlength="8"
+                                               jsf:value="#{Usuario.usuarioCadastro.senha}"
+                                               required="required"/>
+
+                                        <h:message for="senha" styleClass="text-danger"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                             <div class="col-lg-4 col-md-4">
+                                    <div class="form-group ">
+                                        <label jsf:for="email">E-mail do Usuário</label>
+                                        <input type="email"
+                                               jsf:id="email"
+                                               jsf:binding="#{email}"
+                                               class="form-control"
+                                               placeholder="exemplo@exemplo.com.br"
+                                               jsf:value="#{Usuario.usuarioCadastro.email}"
+                                               required="required"/>
+
+                                        <h:message for="email" styleClass="text-danger"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="form-group ">
+                                        <label jsf:for="nome">Nome Completo</label>
+                                        <input type="text"
+                                               jsf:id="nome"
+                                               jsf:binding="#{nome}"
+                                               class="form-control"
+                                               placeholder="Nome Completo"
+                                               jsf:value="#{Usuario.usuarioCadastro.nome}"
+                                               required="required"/>
+
+                                        <h:message for="nome" styleClass="text-danger"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="form-group">
+                                        <label jsf:for="cargo">Cargo</label>
+                                        <h:selectOneMenu id="cargo" class="form-control" value="#{Usuario.usuarioCadastro.cargo}" required="true">
+                                            <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
+                                            <f:selectItems value="#{Usuario.cargo}" var ="cargo"
+                                                           itemValue="#{cargo}" 
+                                                           itemLabel="#{cargo.descricao}"/>
+                                            </h:selectOneMenu>
+                                        <p:message for="cargo" />
+                                    </div>
+                                </div>
+                                
+
+                                
+                               
+                            </div>
+                            
+                            <input type="submit"
+                               class="btn btn-primary"
+                               jsf:action="#{Usuario.cadastrar()}"
+                               value="Salvar usuário"
+                               update=":form:tbusuarios"
+                               oncomplete="PF('tbusuarios').addRow();"
+                               />
+                            
+                           <legend>Clientes Cadastros</legend>
+                           <div class="row">
+                            <p:dataTable id="tbusuarios" emptyMessage="Nenhum Usuário Resgitrado." var="usuario" value="#{Usuario.usuarios}" style="margin: 100px" rows="5" paginator="true">
+                                <p:column headerText="Id de Usuário">
+                                    <h:outputText value="#{usuario.id}" />
+                                </p:column>                                
+                                <p:column headerText="Nome de Usuário">
+                                    <h:outputText value="#{usuario.nomeUsuario}" />
+                                </p:column>
+                                <p:column headerText="Cargo">
+                                    <h:outputText value="#{usuario.cargo.descricao}" />
+                                </p:column>
+                            </p:dataTable>
+                               </div>
+                            </fieldset>
+
+
+                        
+
+                        
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        
+        <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
+        <h:outputScript name="js/jquery.mask.min.js"/>
+        <h:outputScript name="js/jquery.maskMoney.min.js"/>
+        <h:outputScript name="js/jquery.validate.min.js"/>
+        <h:outputScript name="js/additional-methods.min.js"/>
+        <h:outputScript name="js/localization/messages_pt_BR.min.js"/>
+        <h:outputScript name="js/script.js"/>
+    </body>
+</html>

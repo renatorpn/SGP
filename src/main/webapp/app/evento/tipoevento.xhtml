@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <head jsf:id="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>SGP</title>
+
+        <link rel="stylesheet" type="text/css"
+              href="#{request.contextPath}/resources/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/stylesheet.css"/>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+
+    <body jsf:id="body">
+        <p:messages autoUpdate="true"/>
+
+        <ui:include  src="/app/header.xhtml"/>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 ">
+                    <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
+                        <fieldset >
+
+                            <p:dataTable emptyMessage="Nenhum tipo registrado." 
+                                         var="tipoEvento" 
+                                         value="#{EventoMB.listaTipoEvento}" 
+                                         id="tabelaitens"
+                                         widgetVar="tabelaitens"
+                                         rows="20" 
+                                         rowsPerPageTemplate="20"
+                                         >
+                                <f:facet name="header">Tipos de Evento</f:facet>
+                                <p:column style="width: 5%" headerText="Id" sortBy="#{tipoEvento.idTipoEvento}">
+                                    <h:outputText value="#{tipoEvento.idTipoEvento}" />
+                                </p:column>
+                                <p:column style="width: 10%" headerText="Nome" sortBy="#{tipoEvento.descricao}">
+                                    <h:outputText value="#{tipoEvento.descricao}" />
+                                </p:column>
+                                <p:column headerText="Opção">
+                                    <p:commandButton  oncomplete="PF('dlg2').show()" icon="pi pi-search" title="View">
+                                        <f:setPropertyActionListener value="#{EventoMB.editarTipoEvento(tipoEvento)}" target="#{EventoMB.tipoEvento}" />
+            </p:commandButton>
+                                </p:column>
+                                
+                              
+                            </p:dataTable>
+
+                        </fieldset>
+
+
+
+
+
+
+
+                        <fieldset >
+                            <legend>Add Novo Tipo de Evento</legend>
+                            <h:form id="formgrid">
+                            <p:growl id="msgs" showDetail="true"/>
+
+                                <p:panelGrid  class="ui-grid ui-grid-responsive" columns="7">
+
+                                    <h:outputLabel value="Tipo de Evento:" for="tipoEvento"/>
+
+                                    <input type="text" class="form-control" placeholder="Exemplo" required="required" jsf:value="#{EventoMB.tipoEvento.descricao}"/>
+
+                                    <input type="submit"
+                                           class="btn btn-primary"
+                                           jsf:action="#{EventoMB.cadastrarTipoEvento()}"
+                                           value="+"
+                                           icon="ui-icon-disk"
+                                           update=":formgrid:msgs"
+                                           oncomplete="PF('tabelaitens').addRow();"
+                                           />
+                                    
+                                </p:panelGrid>
+
+                            </h:form>
+                        </fieldset>
+
+
+                    </form>
+                    
+
+                </div>
+            </div>
+
+        </div>
+        
+        <p:dialog header="Informações de Tipo Evento" widgetVar="dlg2" modal="true" closable="true" >
+            <p:outputPanel id="eventDetails">
+                <h:panelGrid columns="2" >
+
+                    <p:outputLabel value="Nome"/>
+                    <p:inputText value="#{tipoEvento.descricao}"/>
+
+
+                </h:panelGrid>
+                <p:separator/>
+
+                
+                <p:commandButton value="Salvar" actionListener="#{EventoMB.editarTipoEvento(tipoEvento.descricao)}" oncomplete="PF('dlg2').hide();"/>
+                <p:commandButton value="Deletar" actionListener="#{EventoMB.removerTipoEvento()}" oncomplete="PF('dlg2').hide();"/>
+                <p:commandButton value="Fechar" actionListener="#{EventoMB.limpar()}" oncomplete="PF('dlg2').hide();"/>
+            </p:outputPanel>
+        </p:dialog>   
+
+        <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
+        <h:outputScript name="js/jquery.mask.min.js"/>
+        <h:outputScript name="js/jquery.maskMoney.min.js"/>
+        <h:outputScript name="js/jquery.validate.min.js"/>
+        <h:outputScript name="js/additional-methods.min.js"/>
+        <h:outputScript name="js/localization/messages_pt_BR.min.js"/>
+        <h:outputScript name="js/script.js"/>
+    </body>
+</html>

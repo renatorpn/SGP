@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      >
+
+    <head jsf:id="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>Login</title>
+
+        <link rel="stylesheet" type="text/css"
+              href="#{request.contextPath}/resources/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/stylesheet.css"/>
+    </head>
+    <h:body>
+        <h:messages id="messages" /> 
+
+        <h:form>
+            <div id="main" class="container">
+                <h3 class="page-header">Bem Vindo ao Sistema</h3>
+                <!-- Area de campos do form -->
+                <div class="container">
+                    <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <h:outputLabel value="Nome de Usuário" for="nomeUsuario" />
+                        <h:inputText id="nomeUsuario" class="form-control" value="#{LoginMB.usuario.nomeUsuario}" title="Nome de Usuário"/>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                        <h:outputLabel value="Senha" for="senha" />
+                        <h:inputSecret id="dataNascimento" class="form-control" value="#{LoginMB.usuario.senha}" title="Senha" required="required"/>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <h:commandButton id="botao" value="Entrar" class="btn btn-primary btn-space" action="#{LoginMB.logar}" />
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </h:form>
+
+    </h:body>
+
+</html>
