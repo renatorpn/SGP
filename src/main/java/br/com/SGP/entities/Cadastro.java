@@ -74,7 +74,7 @@ public class Cadastro implements Serializable{
     @NotNull
     @Enumerated(EnumType.STRING)
     private Estado estado;
-    @NotBlank
+    
     private String cep;
     
     @NotNull
