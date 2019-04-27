@@ -25,7 +25,7 @@
     </head>
     <body jsf:id="body">
         <ui:include src="/app/header.xhtml"/>
-        
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
@@ -39,7 +39,7 @@
                                         <p:outputLabel for="nome" value="Nome Fantasia"/>
                                         <p:inputText 
                                             id="nome"
-                                            class="form-control"
+                                               class="form-control"
                                             placeholder="Nome Fantasia do Cliente"
                                             value="#{cadastroBean.cadastro.nome}"
                                             required="required"
@@ -56,8 +56,8 @@
                                         <p:outputLabel for="cnpj" value="CNPJ"/>
                                         <p:inputMask 
                                             id="cnpj"
-                                            class="form-control"
-                                            placeholder="00.000.000/0000-00"
+                                               class="form-control"
+                                               placeholder="00.000.000/0000-00"
                                             value="#{cadastroBean.cadastro.cnpj}"
                                             mask="99.999.999/9999-99"/>
 
@@ -70,10 +70,10 @@
                                         <p:outputLabel for="razao" value="Razão Social"/>
                                         <p:inputText 
                                             id="razao"
-                                            class="form-control"
+                                               class="form-control"
                                             placeholder="Razão Social Cliente"
                                             value="#{cadastroBean.cadastro.razaoSocial}"
-                                            required="required"/>
+                                               required="required"/>
 
                                         <h:message for="razao" styleClass="text-danger"/>
                                     </div>
@@ -91,7 +91,7 @@
                                                placeholder="123"
                                                jsf:value="#{cadastroBean.cadastro.quantidadelojas}"
                                                required="required"/>
-                                        
+
                                         <p:message for="qtdlojas" styleClass="text-danger"/>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
                                     <div class="form-group ">
                                         <p:outputLabel for="logradouro" value="Logradouro"/>
                                         <p:inputText
-                                            class="form-control"
+                                               class="form-control"
                                             id="logradouro"
                                                placeholder="Av. Presidente Vargas"
                                                value="#{cadastroBean.cadastro.logradouro}"
@@ -188,7 +188,7 @@
                                     <div class="form-group">
                                         <p:outputLabel for="complemento" value="Complemento"/>
                                         <p:inputText
-                                            class="form-control"
+                                               class="form-control"
                                                id="complemento"
                                                placeholder="Casa, Apto, Loja"
                                                value="#{cadastroBean.cadastro.complemento}"/>
@@ -200,7 +200,7 @@
                                     <div class="form-group ">
                                         <p:outputLabel for="bairro" value="Bairro"/>
                                         <p:inputText
-                                            class="form-control"
+                                               class="form-control"
                                                id="bairro"
                                                placeholder="Informe o bairro"
                                                value="#{cadastroBean.cadastro.bairro}"
@@ -233,7 +233,7 @@
                                 </div>
 
                                 <div class="col-lg-3 col-md-3">
-
+                                    
                                     <div class="form-group">
                                         <label jsf:for="estado">Estado</label>
                                         <h:selectOneMenu id="estado" class="form-control" value="#{cadastroBean.cadastro.estado}" required="true">
@@ -244,9 +244,9 @@
                                         </h:selectOneMenu>
                                         <p:message for="ambientevendascliente" />
                                     </div>
-
-
-
+                                    
+                                    
+                                    
                                 </div>
 
                             </div>
