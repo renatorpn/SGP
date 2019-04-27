@@ -166,9 +166,11 @@ public class CadastroBean implements Serializable {
 
     public String cadastrar() {
         cadastroDao.save(cadastro);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("Cadastrado com successo: ",  "Cliente " + cadastro.getNome()) );
         cadastro = new Cadastro();
         findAll = cadastroDao.findAll();
-        return "/app/sucesso?faces-redirect=true";
+        return "/app/cliente/listacliente?faces-redirect=true";
     }
 
     public String remover() {
