@@ -14,9 +14,15 @@ import br.com.SGP.utils.CategoriaCliente;
 import br.com.SGP.utils.ClassificacaoClienteABC;
 import br.com.SGP.utils.Estado;
 import br.com.SGP.utils.ProdutoSuporte;
+import static com.sun.faces.facelets.util.Path.context;
+import java.io.IOException;
 
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -24,6 +30,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.RollbackException;
+import javax.servlet.ServletContext;
 
 import javax.servlet.http.Part;
 import org.primefaces.event.FileUploadEvent;
@@ -40,7 +48,8 @@ public class CadastroBean implements Serializable {
     private CadastroDao cadastroDao = new CadastroDao();
     private List<Cadastro> cadastros = new ArrayList<Cadastro>();
     private List<Cadastro> findAll;
-
+    private String pathImg;
+    private Part img;
     //Balanço
     private Balanco balanco = new Balanco();
     private BalancoDAO balancoDAO = new BalancoDAO();
@@ -53,6 +62,24 @@ public class CadastroBean implements Serializable {
     private List<Boolean> list = new ArrayList<Boolean>();
 
     //---------------Cliente------------------------
+
+    public String getPathImg() {
+        return pathImg;
+    }
+
+    public void setPathImg(String pathImg) {
+        this.pathImg = pathImg;
+    }
+
+    public Part getImg() {
+        return img;
+    }
+
+    public void setImg(Part img) {
+        this.img = img;
+    }
+    
+    
     public List<Cadastro> getCadastros() {
         cadastros = cadastroDao.findAll();
         return cadastros;
@@ -163,15 +190,52 @@ public class CadastroBean implements Serializable {
         cadastro = new Cadastro();
         return "/app/cliente/cliente?faces-redirect=true";
     }
+    
+    private static String getFilename(Part part) {
+        for (String cd : part.getHeader("content-disposition").split(";")) {
+            if (cd.trim().startsWith("filename")) {
+                String filename = cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
+                return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1);
+            }
+        }
+        return null;
+    }
 
-    public String cadastrar() {
+    private String getDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+    
+       public String cadastrar() throws IOException {
+           FacesContext context = FacesContext.getCurrentInstance();
+           if (img != null) {
+            FacesContext facesContext = FacesContext.getCurrentInstance(); 
+            ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
+            String path = scontext.getRealPath("/img/");
+            
+            img.write(path + getDateTime() + getFilename(img));
+            pathImg = (getDateTime() + getFilename(img));
+            cadastro.setLogomarca(pathImg);
+        }
+     try{
         cadastroDao.save(cadastro);
-        FacesContext context = FacesContext.getCurrentInstance();
+        
         context.addMessage(null, new FacesMessage("Cadastrado com successo: ",  "Cliente " + cadastro.getNome()) );
         context.getExternalContext().getFlash().setKeepMessages(true);// faz o flash para a growl aparecer com o redirect
         cadastro = new Cadastro();
         findAll = cadastroDao.findAll();
-        return "/app/cliente/listacliente?faces-redirect=true";
+        return "/app/cliente/listacliente?faces-redirect=true"; 
+        
+     }
+     catch(Exception e){
+        
+        FacesContext.getCurrentInstance().addMessage(null, new 
+        FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao cadastrar! ", "CNPJ Já Cadastrado."));
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        return "/app/cliente/cliente?faces-redirect=true";        
+     }       
+        
     }
 
     public String remover() {
@@ -302,5 +366,9 @@ public class CadastroBean implements Serializable {
     public void onToggle(ToggleEvent e) {
         list.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
+    
+    
+
+    
 
 }

@@ -8,15 +8,12 @@ package br.com.SGP.bean;
 import br.com.SGP.dao.UsuarioDAO;
 import br.com.SGP.entities.Usuario;
 import br.com.SGP.utils.Cargo;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.facelets.FaceletContext;
 import javax.servlet.http.HttpSession;
 
 

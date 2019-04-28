@@ -32,6 +32,7 @@ public class Cadastro implements Serializable{
     private String razaoSocial;
 
     @CNPJ
+    @Column(unique = true)
     private String cnpj;
     
     /*
@@ -63,8 +64,7 @@ public class Cadastro implements Serializable{
     @NotBlank
     private String logradouro;
     @NotNull
-    @Min(1)
-    private Integer numero;
+    private String numero;
     @NotBlank
     private String complemento;
     @NotBlank
@@ -82,9 +82,8 @@ public class Cadastro implements Serializable{
     private Integer quantidadelojas;
     private String outrasInformacoes;
     
-    @Lob
     @Column(name="logo")
-    private byte[] foto;
+    private String logomarca;
     
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     @Valid
@@ -121,16 +120,15 @@ public class Cadastro implements Serializable{
     public void setOutrasInformacoes(String outrasInformacoes) {
         this.outrasInformacoes = outrasInformacoes;
     }
-    
-    
 
-    public byte[] getFoto() {
-        return foto;
+    public String getLogomarca() {
+        return logomarca;
     }
 
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
+    public void setLogomarca(String logomarca) {
+        this.logomarca = logomarca;
     }
+    
    
     public Long getId() {
         return id;
@@ -220,17 +218,16 @@ public class Cadastro implements Serializable{
     public void setCep(String cep) {
         this.cep = cep;
     }
-    
-    
 
-    public Integer getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
-
+    
+    
     public String getComplemento() {
         return complemento;
     }
@@ -282,10 +279,10 @@ public class Cadastro implements Serializable{
 
     @Override
     public String toString() {
-        return "Cadastro{" + "id=" + id + ", nome=" + nome + ", razaoSocial=" + razaoSocial + ", cnpj=" + cnpj + ", classificacaoabc=" + classificacaoabc + ", ambienteVendasCliente=" + ambienteVendasCliente + ", categoriaCliente=" + categoriaCliente + ", canalVendasCliente=" + canalVendasCliente + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento=" + complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", quantidadelojas=" + quantidadelojas + ", outrasInformacoes=" + outrasInformacoes + ", foto=" + foto + ", balanco=" + balanco + '}';
+        return "Cadastro{" + "id=" + id + ", nome=" + nome + ", razaoSocial=" + razaoSocial + ", cnpj=" + cnpj + ", classificacaoabc=" + classificacaoabc + ", ambienteVendasCliente=" + ambienteVendasCliente + ", categoriaCliente=" + categoriaCliente + ", canalVendasCliente=" + canalVendasCliente + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento=" + complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep + ", quantidadelojas=" + quantidadelojas + ", outrasInformacoes=" + outrasInformacoes + ", logomarca=" + logomarca + ", balanco=" + balanco + '}';
     }
 
-    
+       
 
    
 }
