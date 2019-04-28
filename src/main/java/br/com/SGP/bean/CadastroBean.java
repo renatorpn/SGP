@@ -168,7 +168,7 @@ public class CadastroBean implements Serializable {
         cadastroDao.save(cadastro);
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage("Cadastrado com successo: ",  "Cliente " + cadastro.getNome()) );
-        context.getExternalContext().getFlash().setKeepMessages(true);
+        context.getExternalContext().getFlash().setKeepMessages(true);// faz o flash para a growl aparecer com o redirect
         cadastro = new Cadastro();
         findAll = cadastroDao.findAll();
         return "/app/cliente/listacliente?faces-redirect=true";
