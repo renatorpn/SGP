@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 @Entity
@@ -86,8 +87,14 @@ public class Cadastro implements Serializable{
     private String logomarca;
     
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
     @Valid
     private List<Balanco> balanco;
+    
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
+    @Valid
+    private List<ContatoCliente> contatos;
 
     public List<Balanco> getBalanco() {
         return balanco;
@@ -96,6 +103,16 @@ public class Cadastro implements Serializable{
     public void setBalanco(List<Balanco> balanco) {
         this.balanco = balanco;
     }
+
+    public List<ContatoCliente> getContatos() {
+        return contatos;
+    }
+
+    public void setContatos(List<ContatoCliente> contatos) {
+        this.contatos = contatos;
+    }
+    
+    
 
     public String getRazaoSocial() {
         return razaoSocial;

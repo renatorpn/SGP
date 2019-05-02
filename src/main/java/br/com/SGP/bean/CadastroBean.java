@@ -2,14 +2,17 @@ package br.com.SGP.bean;
 
 import br.com.SGP.dao.BalancoDAO;
 import br.com.SGP.dao.CadastroDao;
+import br.com.SGP.dao.ContatoClienteDAO;
 import br.com.SGP.dao.ItemBalancoDAO;
 import br.com.SGP.entities.Balanco;
 
 import br.com.SGP.entities.Cadastro;
+import br.com.SGP.entities.ContatoCliente;
 import br.com.SGP.entities.ItemBalanco;
 import br.com.SGP.entities.Produto;
 import br.com.SGP.utils.AmbienteVendasCliente;
 import br.com.SGP.utils.CanalVendasCliente;
+import br.com.SGP.utils.CargoContatoCliente;
 import br.com.SGP.utils.CategoriaCliente;
 import br.com.SGP.utils.ClassificacaoClienteABC;
 import br.com.SGP.utils.Estado;
@@ -50,6 +53,10 @@ public class CadastroBean implements Serializable {
     private List<Cadastro> findAll;
     private String pathImg;
     private Part img;
+    //ContatoCliente
+    private ContatoCliente contato = new ContatoCliente();
+    private ContatoClienteDAO contatoDAO = new ContatoClienteDAO();
+    private List<ContatoCliente> contatos = new ArrayList<ContatoCliente>();
     //Balanço
     private Balanco balanco = new Balanco();
     private BalancoDAO balancoDAO = new BalancoDAO();
@@ -293,6 +300,29 @@ public class CadastroBean implements Serializable {
         itemBalanco = new ItemBalanco();
     }
 
+    
+    public void onAddNewContato() {
+        // Add one new item to the table:
+        
+        ContatoCliente i = new ContatoCliente();
+        i = contato;
+        i.setCliente(cadastro);
+        contatos = cadastro.getContatos();
+        contatos.add(i);
+        cadastro.setContatos(contatos);
+        cadastroDao.save(cadastro);
+        
+        FacesMessage msg = new FacesMessage("Novo item adicionado");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        contato = new ContatoCliente();
+    }
+    
+        public void removeContato(ContatoCliente c) {
+        contatoDAO.remove(c.getId());
+        contatos = contatoDAO.findAll(cadastro);
+        
+        }
+    
     public String cadastrarBalanco() {
         balanco.setCliente(cadastro);
         balanco.setItemBalanco(null);
@@ -366,9 +396,28 @@ public class CadastroBean implements Serializable {
     public void onToggle(ToggleEvent e) {
         list.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
-    
-    
 
+    public ContatoCliente getContato() {
+        return contato;
+    }
+
+    public void setContato(ContatoCliente contato) {
+        this.contato = contato;
+    }
+
+    public List<ContatoCliente> getContatos() {
+        contatos = contatoDAO.findAll(cadastro);
+        return contatos;
+    }
+
+    public void setContatos(List<ContatoCliente> contatos) {
+        this.contatos = contatos;
+    }
+    
+    public CargoContatoCliente[] getCargoContatoCliente() {
+        return CargoContatoCliente.values();
+    }
+   
     
 
 }
