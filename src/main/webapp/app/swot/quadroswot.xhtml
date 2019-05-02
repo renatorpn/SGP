@@ -36,12 +36,12 @@
                                     <div class="row">
                                      <div class="col-lg-6 col-md-6">
                                         <label jsf:for="pontosFortes">Pontos Fortes</label>
-                                        <textarea class="form-control" jsf:binding="#{pontosFortes}" jsf:value="#{quadroBean.quadro.pontosFortes}" id="pontosFortes" rows="7"></textarea>
+                                        <p:inputTextarea  class="form-control" value="#{quadroSWOTMB.quadroSWOT.pontosFortes}" id="pontosFortes" rows="7"/>
                                     </div>
                                      
                                       <div class="col-lg-6 col-md-6">
                                         <label jsf:for="pontosFracos">Pontos Fracos</label>
-                                        <textarea class="form-control" jsf:binding="#{pontosFracos}" jsf:value="#{quadroBean.quadro.pontosFracos}" id="pontosFracos" rows="7"></textarea>
+                                        <p:inputTextarea  class="form-control" value="#{quadroSWOTMB.quadroSWOT.pontosFracos}" id="pontosFracos" rows="7"/>
                                     </div>
                                  </div>
                             
@@ -50,12 +50,12 @@
                                  <div class="row">
                                     <div class="col-lg-6 col-md-6">
                                         <label jsf:for="Oportunidades">Oportunidades</label>
-                                        <textarea class="form-control" jsf:binding="#{oportunidades}" jsf:value="#{quadroBean.quadro.oportunidades}" id="Oportunidades" rows="7"></textarea>
+                                        <p:inputTextarea class="form-control" value="#{quadroSWOTMB.quadroSWOT.oportunidades}" id="Oportunidades" rows="7"/>
                                     </div>
                                      
                                       <div class="col-lg-6 col-md-6">
                                         <label jsf:for="ameacas">Ameaças</label>
-                                        <textarea class="form-control" jsf:binding="#{pontosFortes}" jsf:value="#{quadroBean.quadro.ameacas}" id="ameacas" rows="7"></textarea>
+                                        <p:inputTextarea  class="form-control" value="#{quadroSWOTMB.quadroSWOT.ameacas}" id="ameacas" rows="7"/>
                                     </div>
                                  </div>
                             
@@ -64,7 +64,7 @@
 
                         <input type="submit"
                                class="btn btn-primary"
-                               jsf:action="#{quadroBean.alterar}"
+                               jsf:action="#{quadroSWOTMB.cadastrar()}"
                                value="Enviar"/>
 
                     </form>

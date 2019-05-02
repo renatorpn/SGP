@@ -76,7 +76,7 @@ public class QuadroSWOTDAO {
         try{
             quadroSWOTs = em.createQuery("SELECT b FROM QuadroSWOT b WHERE b.cliente = :idcadastro")
                     .setParameter("idcadastro", cliente)
-                    .getResultList();
+                    .getResultList(); 
         }catch(Exception e){
             System.err.println(e);
         }finally{

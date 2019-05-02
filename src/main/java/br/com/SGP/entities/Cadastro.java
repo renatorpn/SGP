@@ -95,7 +95,7 @@ public class Cadastro implements Serializable{
     @Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
     @Valid
     private List<ContatoCliente> contatos;
-
+    
     public List<Balanco> getBalanco() {
         return balanco;
     }

@@ -67,7 +67,7 @@ public class TesteAddAll {
         cadastro.setLogradouro("Rua dos Tolos");
         cadastro.setBairro("Campo Grande");
         cadastro.setCep("20241060");
-        cadastro.setNumero(123);
+        cadastro.setNumero("123");
         cadastro.setCategoriaCliente(CategoriaCliente.DIAMANTE);
         cadastro.setAmbienteVendasCliente(AmbienteVendasCliente.VIRTUAL);
         cadastro.setComplemento("Apt 110");
