@@ -27,41 +27,40 @@ import org.hibernate.validator.constraints.Email;
  * @author lucas
  */
 @Entity
-public class ContatoCliente implements Serializable{
+public class ContatoCliente implements Serializable {
+
     public static final long serialVersionUID = 1L;
 
-    
     @Id
-    @SequenceGenerator(name="idContatoCliente",
-                       sequenceName="ContatoCliente_id_seq",
-		       allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE,generator="idContatoCliente")
+    @SequenceGenerator(name = "idContatoCliente",
+            sequenceName = "ContatoCliente_id_seq",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idContatoCliente")
     private Long id;
-    
+
     @NotNull
     @Size(min = 2, max = 255)
     @Column(name = "nome")
     private String nome;
-    
+
     @Email
     @Size(min = 2, max = 255)
     @Column(name = "email")
     private String email;
-    
+
     @NotNull
     @Column(name = "cargo")
     @Enumerated(EnumType.STRING)
     private CargoContatoCliente cargo;
-    
+
     @Size(min = 11, max = 11)
     @Column(name = "telefone")
     private String telefone;
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(referencedColumnName = "id", name = "idcliente_fk", nullable = false)
     private Cadastro cliente;
 
-    
     public Long getId() {
         return id;
     }
@@ -147,7 +146,5 @@ public class ContatoCliente implements Serializable{
     public String toString() {
         return "ContatoCliente{" + "id=" + id + ", nome=" + nome + ", email=" + email + ", cargo=" + cargo + ", telefone=" + telefone + ", cliente=" + cliente + '}';
     }
-    
-    
-    
+
 }
