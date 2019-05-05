@@ -5,10 +5,8 @@
  */
 package br.com.SGP.bean;
 
-import br.com.SGP.dao.CadastroDao;
 import br.com.SGP.dao.CategoriaProdutoDAO;
 import br.com.SGP.dao.ProdutoDAO;
-import br.com.SGP.entities.Cadastro;
 import br.com.SGP.entities.CategoriaProduto;
 import br.com.SGP.entities.Produto;
 import br.com.SGP.utils.*;
@@ -17,11 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -37,8 +31,7 @@ import javax.servlet.http.Part;
 @SessionScoped
 public class ProdutoBean {
 
-    private String a;
-    private String imagem;
+    private String pathImg;
     private Part img;
     private Produto produto = new Produto();
     private CategoriaProduto categoria = new CategoriaProduto();
@@ -55,14 +48,15 @@ public class ProdutoBean {
         this.img = img;
     }
 
-    public String getA() {
-        return a;
+    public String getPathImg() {
+        return pathImg;
     }
 
-    public void setA(String a) {
-        this.a = a;
+    public void setPathImg(String pathImg) {
+        this.pathImg = pathImg;
     }
 
+    
     public String cadastroProduto() {
         produto = new Produto();
         return "/app/produto/produto?faces-redirect=true";
@@ -86,15 +80,6 @@ public class ProdutoBean {
 
     public void setProduto(Produto produto) {
         this.produto = produto;
-    }
-
-    public String getImagem() {
-
-        return imagem;
-    }
-
-    public void setImagem(String imagem) {
-        this.imagem = imagem;
     }
 
     public List<Produto> getProdutos() {
@@ -128,10 +113,10 @@ public class ProdutoBean {
             FacesContext facesContext = FacesContext.getCurrentInstance(); 
             ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
             String path = scontext.getRealPath("/img/");
-            //img.write("C:\\Users\\lucas\\Documents\\NetBeansProjects\\SGP-18.04\\SGP\\src\\main\\webapp\\img\\" + getDateTime() + getFilename(img));
+            
             img.write(path + getDateTime() + getFilename(img));
-            a = (getDateTime() + getFilename(img));
-            produto.setImagem(a);
+            pathImg = (getDateTime() + getFilename(img));
+            produto.setImagem(pathImg);
         }
 
         produtoDAO.save(produto);

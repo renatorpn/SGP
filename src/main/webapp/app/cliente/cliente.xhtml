@@ -24,78 +24,79 @@
         <![endif]-->
     </head>
     <body jsf:id="body">
-       <ui:include src="/app/header.xhtml"/>
+        <ui:include src="/app/header.xhtml"/>
 
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
                     <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
+                        <p:growl id="growl" showDetail="true" sticky="true" />
                         <fieldset>
                             <legend>Dados do Cliente</legend>
                             <div class="row">
-                                    <div class="col-lg-12 col-md-12">
-                                    <div class="form-group #{!nome.valid ? 'has-error' : ''}">
-                                        <label jsf:for="nome">Nome Fantasia</label>
-                                        <input type="text"
-                                               jsf:id="nome"
-                                               jsf:binding="#{nome}"
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <p:outputLabel for="nome" value="Nome Fantasia"/>
+                                        <p:inputText 
+                                            id="nome"
                                                class="form-control"
-                                               placeholder="Meu Nome"
-                                               jsf:value="#{cadastroBean.cadastro.nome}"
-                                               required="required"/>
+                                            placeholder="Nome Fantasia do Cliente"
+                                            value="#{cadastroBean.cadastro.nome}"
+                                            required="required"
+                                            maxlength="50"/>
 
                                         <h:message for="nome" styleClass="text-danger"/>
                                     </div>
                                 </div>
+                                 
                             </div>
 
                             <div class="row">
                                 <div class="col-lg-3 col-md-3">
-                                    <div class="form-group #{!cnpj.valid ? 'has-error' : ''}">
-                                        <label jsf:for="cnpj">CNPJ</label>
-                                        <input type="text"
-                                               jsf:id="cnpj"
-                                               jsf:binding="#{cnpj}"
+                                    <div class="form-group">
+                                        <p:outputLabel for="cnpj" value="CNPJ"/>
+                                        <p:inputMask 
+                                            id="cnpj"
                                                class="form-control"
                                                placeholder="00.000.000/0000-00"
-                                               jsf:value="#{cadastroBean.cadastro.cnpj}"
-                                               required="required"/>
+                                            value="#{cadastroBean.cadastro.cnpj}"
+                                            mask="99.999.999/9999-99"/>
 
                                         <h:message for="cnpj" styleClass="text-danger"/>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-6 col-md-6">
-                                    <div class="form-group #{!razao.valid ? 'has-error' : ''}">
-                                        <label jsf:for="razao">Razão Social</label>
-                                        <input type="text"
-                                               jsf:id="razao"
-                                               jsf:binding="#{razao}"
+                                    <div class="form-group">
+                                        <p:outputLabel for="razao" value="Razão Social"/>
+                                        <p:inputText 
+                                            id="razao"
                                                class="form-control"
-                                               placeholder="Meu Nome"
-                                               jsf:value="#{cadastroBean.cadastro.razaoSocial}"
+                                            placeholder="Razão Social Cliente"
+                                            value="#{cadastroBean.cadastro.razaoSocial}"
                                                required="required"/>
 
                                         <h:message for="razao" styleClass="text-danger"/>
                                     </div>
                                 </div>
 
-                               <div class="col-lg-3 col-md-3">
-                                    <div class="form-group #{!qtdlojas.valid ? 'has-error' : ''}">
-                                        <label jsf:for="qtdlojas">Quantidade de Lojas</label>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="form-group">
+                                        <p:outputLabel for="qtdlojas" value="Quantidade de Lojas"/>
                                         <input type="number"
                                                class="form-control"
                                                jsf:id="qtdlojas"
                                                jsf:binding="#{qtdlojas}"
                                                min="1"
-                                               placeholder="Nº"
+                                               maxlength="999"
+                                               placeholder="123"
                                                jsf:value="#{cadastroBean.cadastro.quantidadelojas}"
                                                required="required"/>
 
-                                        <h:message for="qtdlojas" styleClass="text-danger"/>
+                                        <p:message for="qtdlojas" styleClass="text-danger"/>
                                     </div>
                                 </div>
-                               
+
                             </div>
 
                             <div class="row">
@@ -107,11 +108,11 @@
                                             <f:selectItems value="#{cadastroBean.classificacaoClienteabc}" var ="classificacaoabc"
                                                            itemValue="#{classificacaoabc}" 
                                                            itemLabel="#{classificacaoabc.descricao}"/>
-                                            </h:selectOneMenu>
+                                        </h:selectOneMenu>
                                         <p:message for="classificacaoabc" />
                                     </div>
                                 </div>
-                                 <div class="col-lg-3 col-md-3">
+                                <div class="col-lg-3 col-md-3">
                                     <div class="form-group">
                                         <label jsf:for="ambientevendascliente">Ambiente de Vendas</label>
                                         <h:selectOneMenu id="ambientevendascliente" class="form-control" value="#{cadastroBean.cadastro.ambienteVendasCliente}" required="true">
@@ -119,11 +120,11 @@
                                             <f:selectItems value="#{cadastroBean.ambienteVendasCliente}" var ="ambientevendascliente"
                                                            itemValue="#{ambientevendascliente}" 
                                                            itemLabel="#{ambientevendascliente.descricao}"/>
-                                            </h:selectOneMenu>
+                                        </h:selectOneMenu>
                                         <p:message for="ambientevendascliente" />
                                     </div>
                                 </div>
-                                 <div class="col-lg-3 col-md-3">
+                                <div class="col-lg-3 col-md-3">
                                     <div class="form-group">
                                         <label jsf:for="categoriacliente">Categoria do Cliente</label>
                                         <h:selectOneMenu id="categoriacliente" class="form-control" value="#{cadastroBean.cadastro.categoriaCliente}" required="true">
@@ -131,7 +132,7 @@
                                             <f:selectItems value="#{cadastroBean.categoriaCliente}" var ="categoriacliente"
                                                            itemValue="#{categoriacliente}" 
                                                            itemLabel="#{categoriacliente.descricao}"/>
-                                            </h:selectOneMenu>
+                                        </h:selectOneMenu>
                                         <p:message for="ambientevendascliente" />
                                     </div>
                                 </div>
@@ -143,7 +144,7 @@
                                             <f:selectItems value="#{cadastroBean.canalVendasCliente}" var ="canalvendascliente"
                                                            itemValue="#{canalvendascliente}" 
                                                            itemLabel="#{canalvendascliente.descricao}"/>
-                                            </h:selectOneMenu>
+                                        </h:selectOneMenu>
                                         <p:message for="ambientevendascliente" />
                                     </div>
                                 </div>
@@ -152,18 +153,17 @@
 
 
 
-                        <fieldset>
+                        <fieldset >
                             <legend>Endereço</legend>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6">
-                                    <div class="form-group #{!logradouro.valid ? 'has-error' : ''}">
-                                        <label jsf:for="logradouro">Logradouro</label>
-                                        <input type="text"
+                                    <div class="form-group ">
+                                        <p:outputLabel for="logradouro" value="Logradouro"/>
+                                        <p:inputText
                                                class="form-control"
-                                               jsf:id="logradouro"
-                                               jsf:binding="#{logradouro}"
-                                               placeholder="Av. Paulista"
-                                               jsf:value="#{cadastroBean.cadastro.logradouro}"
+                                            id="logradouro"
+                                               placeholder="Av. Presidente Vargas"
+                                               value="#{cadastroBean.cadastro.logradouro}"
                                                required="required"/>
 
                                         <h:message for="logradouro" styleClass="text-danger"/>
@@ -171,126 +171,111 @@
                                 </div>
 
                                 <div class="col-lg-3 col-md-3">
-                                    <div class="form-group #{!numero.valid ? 'has-error' : ''}">
-                                        <label jsf:for="numero">Número</label>
-                                        <input type="number"
+                                    <div class="form-group">
+                                        <p:outputLabel for="numero" value="Número"/>
+                                        <p:inputText
                                                class="form-control"
-                                               jsf:id="numero"
-                                               jsf:binding="#{numero}"
-                                               min="1"
-                                               placeholder="Nº"
-                                               jsf:value="#{cadastroBean.cadastro.numero}"
+                                               id="numero"
+                                               maxlength="6"
+                                               placeholder="123"
+                                               value="#{cadastroBean.cadastro.numero}"
                                                required="required"/>
 
-                                        <h:message for="numero" styleClass="text-danger"/>
+                                        <p:message for="numero" styleClass="text-danger"/>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-3 col-md-3">
-                                    <div class="form-group #{!complemento.valid ? 'has-error' : ''}">
-                                        <label jsf:for="complemento">Complemento</label>
-                                        <input type="text"
+                                    <div class="form-group">
+                                        <p:outputLabel for="complemento" value="Complemento"/>
+                                        <p:inputText
                                                class="form-control"
-                                               jsf:id="complemento"
-                                               jsf:binding="#{complemento}"
+                                               id="complemento"
                                                placeholder="Casa, Apto, Loja"
-                                               jsf:value="#{cadastroBean.cadastro.complemento}"
-                                               required="required"/>
+                                               value="#{cadastroBean.cadastro.complemento}"/>
 
-                                        <h:message for="complemento" styleClass="text-danger"/>
+                                        <p:message for="complemento" styleClass="text-danger"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-3">
-                                    <div class="form-group #{!bairro.valid ? 'has-error' : ''}">
-                                        <label jsf:for="bairro">Bairro</label>
-                                        <input type="text"
+                                    <div class="form-group ">
+                                        <p:outputLabel for="bairro" value="Bairro"/>
+                                        <p:inputText
                                                class="form-control"
-                                               jsf:id="bairro"
-                                               jsf:binding="#{bairro}"
+                                               id="bairro"
                                                placeholder="Informe o bairro"
-                                               jsf:value="#{cadastroBean.cadastro.bairro}"
+                                               value="#{cadastroBean.cadastro.bairro}"
                                                required="required"/>
 
-                                        <h:message for="bairro" styleClass="text-danger"/>
+                                        <p:message for="bairro" styleClass="text-danger"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-3">
-                                    <div class="form-group #{!cidade.valid ? 'has-error' : ''}">
-                                        <label jsf:for="cidade">Cidade</label>
-                                        <input type="text"
+                                    <div class="form-group">
+                                        <p:outputLabel for="cidade" value="Cidade"/>
+                                        <p:inputText
                                                class="form-control"
-                                               jsf:id="cidade"
-                                               jsf:binding="#{cidade}"
-                                               placeholder="São Paulo"
-                                               jsf:value="#{cadastroBean.cadastro.cidade}"
+                                               id="cidade"
+                                               binding="#{cidade}"
+                                               placeholder="Rio de Janeiro"
+                                               value="#{cadastroBean.cadastro.cidade}"
                                                required="required"/>
 
-                                        <h:message for="cidade" styleClass="text-danger"/>
+                                        <p:message for="cidade" styleClass="text-danger"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-3">
-                                    <div class="form-group #{!cep.valid ? 'has-error' : ''}">
-                                        <label jsf:for="cep">CEP</label>
-                                        <input type="text"
-                                               jsf:id="cep"
-                                               jsf:binding="#{cep}"
-                                               class="form-control"
-                                               placeholder="00000-000"
-                                               jsf:value="#{cadastroBean.cadastro.cep}"
-                                               required="required">
-                                               
-                                               </input>
+                                    <div class="form-group">
 
+                                        <p:outputLabel for="cep" value="CEP"/>
+                                        <p:inputMask id="cep" value="#{cadastroBean.cadastro.cep}" mask="99999-999" class="form-control" placeholder="00000-000"/>
                                         <h:message for="cep" styleClass="text-danger"/>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-3 col-md-3">
+                                    
                                     <div class="form-group">
                                         <label jsf:for="estado">Estado</label>
-                                        <select jsf:id="estado"
-                                                size="1"
-                                                class="form-control"
-                                                jsf:value="#{cadastroBean.cadastro.estado}"
-                                                required="required">
-                                            <ui:repeat value="#{cadastroBean.estado}"
-                                                       var="estado"
-                                                       itemLabel="#{estado.nome}"
-                                                       itemValue="#{estado}"
-                                                       jsfc="f:selectItems">
-                                            </ui:repeat>
-                                        </select>
+                                        <h:selectOneMenu id="estado" class="form-control" value="#{cadastroBean.cadastro.estado}" required="true">
+                                            <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
+                                            <f:selectItems value="#{cadastroBean.estado}" var ="estado"
+                                                           itemValue="#{estado}" 
+                                                           itemLabel="#{estado.uf}"/>
+                                        </h:selectOneMenu>
+                                        <p:message for="ambientevendascliente" />
                                     </div>
+                                    
+                                    
+                                    
                                 </div>
-                                
+
                             </div>
-
                             <div class="row">
-
-                                <p:fileUpload fileUploadListener="#{cadastroBean.handleFileUpload}" 
-                                              mode="advanced"
-                                              update="messages" 
-                                              auto="true" 
-                                              sizeLimit="100000" 
-                                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-
-                                <p:growl id="messages" showDetail="true" />
+                            <div class="col-lg-6 col-md-6">
+                                
+                                <div class="form-group">
+                                    <legend>Importar Imagem</legend>
+                                    <h:inputFile value="#{cadastroBean.img}"/>
+                                
+                                </div>
+                                 </div>
                             </div>
                         </fieldset>
                         <fieldset>
                             <legend>Informações Adicionais</legend>
                             <div class="col-lg-12 col-md-12">
-                                        <label >Ouras Informações</label>
-                                        <textarea class="form-control" jsf:binding="#{infos}" jsf:value="#{cadastroBean.cadastro.outrasInformacoes}" rows="7"></textarea>
-                                    </div>
+                                <label >Ouras Informações</label>
+                                <textarea class="form-control" jsf:binding="#{infos}" jsf:value="#{cadastroBean.cadastro.outrasInformacoes}" rows="7"></textarea>
+                            </div>
                         </fieldset>
                         <div style="margin-top: 3%">
-                        <input type="submit"
-                               class="btn btn-primary"
-                               jsf:action="#{cadastroBean.cadastrar}"
-                               value="Cadastrar"
-                               icon="ui-icon-disk"
-                               />
+                            <input type="submit"
+                                   class="btn btn-primary"
+                                   jsf:action="#{cadastroBean.cadastrar}"
+                                   value="Cadastrar"
+                                   icon="ui-icon-disk"
+                                   update="@form"/>
                         </div>
                     </form>
                 </div>

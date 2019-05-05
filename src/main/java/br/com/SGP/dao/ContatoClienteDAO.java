@@ -1,30 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.SGP.dao;
 
-import br.com.SGP.entities.QuadroSWOT;
 import br.com.SGP.entities.Cadastro;
 import br.com.SGP.exception.CadastroException;
+import br.com.SGP.entities.ContatoCliente;
 import java.util.List;
+
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 
-public class QuadroSWOTDAO {
+public class ContatoClienteDAO {
 
-    public void save(QuadroSWOT quadroSWOT){
+    public void save(ContatoCliente contato) {
+        
         EntityManager em = ConnectionFactory.getEntityManager();
 
         try {
             em.getTransaction().begin();
-            if(quadroSWOT.getIdquadroswot() == null){
-                em.persist(quadroSWOT);
+            if(contato.getId() == null){
+                em.persist(contato);
             }else{
-                em.merge(quadroSWOT);
+                em.merge(contato);
             }
             em.getTransaction().commit();
         } catch (RuntimeException e) {
@@ -37,13 +31,15 @@ public class QuadroSWOTDAO {
         }
     }
     
-    public QuadroSWOT findById(Long id){
+    
+     public ContatoCliente findById(Long id){
+        
         EntityManager em = new ConnectionFactory().getEntityManager();
-        QuadroSWOT quadroSWOT = null;
+        ContatoCliente contato = null;
         
         try{
             
-            quadroSWOT = em.find(QuadroSWOT.class, id);
+            contato = em.find(ContatoCliente.class, id);
             
         }catch(Exception e){
             System.err.println(e);
@@ -51,38 +47,51 @@ public class QuadroSWOTDAO {
             em.close();
         }
         
-        return quadroSWOT;
+        return contato;
+        
     }
     
-    public List<QuadroSWOT> findAll(){
+    public List<ContatoCliente> findAll(Cadastro cliente){
+        
         EntityManager em = new ConnectionFactory().getEntityManager();
-        List<QuadroSWOT> quadroSWOTs = null;
+        List<ContatoCliente> contatos = null;
         
         try{
-            quadroSWOTs = em.createQuery("SELECT c FROM Balanco c ").getResultList();
-        }catch(Exception e){
-            System.err.println(e);
-        }finally{
-            em.close();
-        }
-        
-        return quadroSWOTs;
-    }
-    
-    public List<QuadroSWOT> findAllByCliente(Cadastro cliente){
-        EntityManager em = new ConnectionFactory().getEntityManager();
-        List<QuadroSWOT> quadroSWOTs = null;
-        
-        try{
-            quadroSWOTs = em.createQuery("SELECT b FROM QuadroSWOT b WHERE b.cliente = :idcadastro")
+            contatos = em.createQuery("SELECT b FROM ContatoCliente b WHERE b.cliente = :idcadastro")
                     .setParameter("idcadastro", cliente)
-                    .getResultList(); 
+                    .getResultList();
+            
+            
         }catch(Exception e){
             System.err.println(e);
         }finally{
             em.close();
         }
         
-        return quadroSWOTs;
+        return contatos;
     }
+    
+    public void remove(Long id){
+        
+        EntityManager em = new ConnectionFactory().getEntityManager();
+        ContatoCliente contato = null;
+        
+        try{
+            
+            contato = em.find(ContatoCliente.class, id);
+            
+            em.getTransaction().begin();
+            em.remove(contato);
+            em.getTransaction().commit();
+            
+        }catch(Exception e){
+            System.err.println(e);
+            em.getTransaction().rollback();
+        }finally{
+            em.close();
+        }
+        
+              
+    }
+    
 }

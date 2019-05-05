@@ -12,6 +12,7 @@ import br.com.SGP.entities.QuadroSWOT;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.io.IOException;
+import java.util.List;
 import javax.annotation.PostConstruct;
 
 /**
@@ -66,9 +67,8 @@ public class QuadroSWOTBean {
     }
     
     public String cadastrar() throws IOException {
-
-        quadroSWOTDAO.save(quadroSWOT);
-        quadroSWOT = new QuadroSWOT();
+        quadroSWOTDAO.save(this.quadroSWOT);
+        this.quadroSWOT = new QuadroSWOT();
 
         return "/app/sucesso?faces-redirect=true";
     }
@@ -81,18 +81,24 @@ public class QuadroSWOTBean {
         return "/app/sucesso?faces-redirect=true";
     }
 
-    public String editar(QuadroSWOT quadroSWOT) {
-        this.quadroSWOT = quadroSWOT;
+    public String editar(Cadastro cadastro) {
+        if (quadroSWOTDAO.findAllByCliente(cadastro) == null){
+            quadroSWOT = new QuadroSWOT();
+            quadroSWOT.setCliente(cadastro);
+            quadroSWOTDAO.save(quadroSWOT);
+        }else{
+            List<QuadroSWOT> lista = quadroSWOTDAO.findAllByCliente(cadastro);
+        this.quadroSWOT = lista.get(0);
+        }
         return "/app/swot/quadroswot?faces-redirect=true";
     }
 
-    /*
+    
     @PostConstruct
     public void construct() {
-
         quadroSWOT = new QuadroSWOT();
     }
-    */
+    
     
     
 }

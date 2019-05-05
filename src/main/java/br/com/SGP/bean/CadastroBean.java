@@ -2,22 +2,30 @@ package br.com.SGP.bean;
 
 import br.com.SGP.dao.BalancoDAO;
 import br.com.SGP.dao.CadastroDao;
+import br.com.SGP.dao.ContatoClienteDAO;
 import br.com.SGP.dao.ItemBalancoDAO;
 import br.com.SGP.entities.Balanco;
 
 import br.com.SGP.entities.Cadastro;
+import br.com.SGP.entities.ContatoCliente;
 import br.com.SGP.entities.ItemBalanco;
 import br.com.SGP.entities.Produto;
 import br.com.SGP.utils.AmbienteVendasCliente;
 import br.com.SGP.utils.CanalVendasCliente;
+import br.com.SGP.utils.CargoContatoCliente;
 import br.com.SGP.utils.CategoriaCliente;
 import br.com.SGP.utils.ClassificacaoClienteABC;
 import br.com.SGP.utils.Estado;
 import br.com.SGP.utils.ProdutoSuporte;
-
+import static com.sun.faces.facelets.util.Path.context;
+import java.io.IOException;
 
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -25,23 +33,31 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.RollbackException;
+import javax.servlet.ServletContext;
 
 import javax.servlet.http.Part;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.model.Visibility;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class CadastroBean implements Serializable {
 
     //Cliente
     private Cadastro cadastro = new Cadastro();
     private CadastroDao cadastroDao = new CadastroDao();
     private List<Cadastro> cadastros = new ArrayList<Cadastro>();
-    private List<Cadastro>  findAll;
-    private UploadedFile img;
+    private List<Cadastro> findAll;
+    private String pathImg;
+    private Part img;
+    //ContatoCliente
+    private ContatoCliente contato = new ContatoCliente();
+    private ContatoClienteDAO contatoDAO = new ContatoClienteDAO();
+    private List<ContatoCliente> contatos = new ArrayList<ContatoCliente>();
     //Balanço
     private Balanco balanco = new Balanco();
     private BalancoDAO balancoDAO = new BalancoDAO();
@@ -52,26 +68,26 @@ public class CadastroBean implements Serializable {
     private ItemBalancoDAO itemBalancoDAO = new ItemBalancoDAO();
     private List<ItemBalanco> itensBalanco = new ArrayList<ItemBalanco>();
     private List<Boolean> list = new ArrayList<Boolean>();
-   
-    
-    
+
     //---------------Cliente------------------------
-    public UploadedFile getFile() {
+
+    public String getPathImg() {
+        return pathImg;
+    }
+
+    public void setPathImg(String pathImg) {
+        this.pathImg = pathImg;
+    }
+
+    public Part getImg() {
         return img;
     }
- 
-    public void setFile(UploadedFile file) {
-        this.img = file;
-    }
-    
-    public void handleFileUpload(FileUploadEvent event) {
-        cadastro.setFoto(event.getFile().getContents());
-        FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        
-    }
-    
 
+    public void setImg(Part img) {
+        this.img = img;
+    }
+    
+    
     public List<Cadastro> getCadastros() {
         cadastros = cadastroDao.findAll();
         return cadastros;
@@ -93,19 +109,18 @@ public class CadastroBean implements Serializable {
     public ClassificacaoClienteABC[] getClassificacaoClienteabc() {
         return ClassificacaoClienteABC.values();
     }
-    
+
     public AmbienteVendasCliente[] getAmbienteVendasCliente() {
         return AmbienteVendasCliente.values();
     }
-    
+
     public CategoriaCliente[] getCategoriaCliente() {
         return CategoriaCliente.values();
     }
-    
+
     public CanalVendasCliente[] getCanalVendasCliente() {
         return CanalVendasCliente.values();
     }
-       
 
     public List<Cadastro> getFindAll() {
         return findAll;
@@ -114,9 +129,8 @@ public class CadastroBean implements Serializable {
     public void setFindAll(List<Cadastro> findAll) {
         this.findAll = findAll;
     }
-    
+
     //-----------------Balanço---------------------------
-    
     public Balanco getBalanco() {
         return balanco;
     }
@@ -141,9 +155,8 @@ public class CadastroBean implements Serializable {
     public void setFindAllBalancos(List<Balanco> findAllBalancos) {
         this.findAllBalancos = findAllBalancos;
     }
-    
-    //----------------ItemBalanço------------------------------
 
+    //----------------ItemBalanço------------------------------
     public ItemBalanco getItemBalanco() {
         return itemBalanco;
     }
@@ -160,11 +173,8 @@ public class CadastroBean implements Serializable {
     public void setItensBalanco(List<ItemBalanco> itensBalanco) {
         this.itensBalanco = itensBalanco;
     }
-    
-    
-    
+
     //---------------------------------------------------------
-       
     @PostConstruct
     public void construct() {
         //code
@@ -183,17 +193,57 @@ public class CadastroBean implements Serializable {
         return findAll;
 
     }
-    
-    public String cadastroView(){
+
+    public String cadastroView() {
         cadastro = new Cadastro();
         return "/app/cliente/cliente?faces-redirect=true";
     }
+    
+    private static String getFilename(Part part) {
+        for (String cd : part.getHeader("content-disposition").split(";")) {
+            if (cd.trim().startsWith("filename")) {
+                String filename = cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
+                return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1);
+            }
+        }
+        return null;
+    }
 
-    public String cadastrar() {
+    private String getDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+    
+       public String cadastrar() throws IOException {
+           FacesContext context = FacesContext.getCurrentInstance();
+           if (img != null) {
+            FacesContext facesContext = FacesContext.getCurrentInstance(); 
+            ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
+            String path = scontext.getRealPath("/img/");
+            
+            img.write(path + getDateTime() + getFilename(img));
+            pathImg = (getDateTime() + getFilename(img));
+            cadastro.setLogomarca(pathImg);
+        }
+     try{
         cadastroDao.save(cadastro);
+        
+        context.addMessage(null, new FacesMessage("Cadastrado com successo: ",  "Cliente " + cadastro.getNome()) );
+        context.getExternalContext().getFlash().setKeepMessages(true);// faz o flash para a growl aparecer com o redirect
         cadastro = new Cadastro();
         findAll = cadastroDao.findAll();
-        return "/app/sucesso?faces-redirect=true";
+        return "/app/cliente/listacliente?faces-redirect=true"; 
+        
+     }
+     catch(Exception e){
+        
+        FacesContext.getCurrentInstance().addMessage(null, new 
+        FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao cadastrar! ", "CNPJ Já Cadastrado."));
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        return "/app/cliente/cliente?faces-redirect=true";        
+     }       
+        
     }
 
     public String remover() {
@@ -206,37 +256,34 @@ public class CadastroBean implements Serializable {
         this.cadastro = cadastro;
         return "/app/cliente/alterarcliente?faces-redirect=true";
     }
-    
+
     public String balancoCadastrados(Cadastro cadastro) {
-       
-        
+
         return "/app/balanco/listarbalanco?faces-redirect=true";
     }
+
     public String mediaVendas(Cadastro cadastro) {
-       
-        
+
         return "/app/cliente/teste?faces-redirect=true";
     }
-    
-        public String editarBalanco(Balanco balanco) {
+
+    public String editarBalanco(Balanco balanco) {
         this.balanco = balanco;
         return "/app/balanco/itens?faces-redirect=true";
     }
-        
-        
-     
-        public String cadastrarBalanco(Produto produto) {
+
+    public String cadastrarBalanco(Produto produto) {
         balanco.setCliente(cadastro);
         itemBalanco.setProduto(produto);
         balanco.adicionarItem(itemBalanco);
         balancoDAO.save(balanco);
-        
+
         cadastro = new Cadastro();
         findAll = cadastroDao.findAll();
         return "/app/sucesso?faces-redirect=true";
     }
-        
-         public void onAddNew() {
+
+    public void onAddNew() {
         // Add one new item to the table:
         ItemBalanco i = new ItemBalanco();
         i = itemBalanco;
@@ -244,18 +291,37 @@ public class CadastroBean implements Serializable {
         i.setStatusItem(i.getGiro(), i.getCobertura());
         itensBalanco = balanco.getItemBalanco();
         itensBalanco.add(i);
-        
+
         balanco.setItemBalanco(itensBalanco);
-        
+
         balancoDAO.save(balanco);
 
         FacesMessage msg = new FacesMessage("Novo item adicionado");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         itemBalanco = new ItemBalanco();
     }
-         
     
-        public String cadastrarBalanco() {
+       
+    public void onAddNewContato() {
+        // Add one new item to the table:
+        contato.setCliente(cadastro);
+        contatos = cadastro.getContatos();
+        contatos.add(contato);
+        cadastro.setContatos(contatos);
+        cadastroDao.save(cadastro);
+        FacesMessage msg = new FacesMessage("Novo contato adicionado");
+        FacesContext.getCurrentInstance().addMessage(null, msg);       
+        contato = new ContatoCliente();
+    }
+    
+        public void removeContato() {
+            contatos.remove(contato);
+            cadastro.setContatos(contatos);
+            cadastroDao.save(cadastro);
+            contatos = contatoDAO.findAll(cadastro);
+        }
+    
+    public String cadastrarBalanco() {
         balanco.setCliente(cadastro);
         balanco.setItemBalanco(null);
         balancoDAO.save(balanco);
@@ -263,11 +329,10 @@ public class CadastroBean implements Serializable {
 
         return "/app/sucesso?faces-redirect=true";
     }
-    
-    
+
     private List<ProdutoSuporte> produtosSuporte = new ArrayList<>();
     private ProdutoSuporte produtoSuporte = new ProdutoSuporte();
-    
+
     public List<ProdutoSuporte> getProdutosSuporte() {
         produtosSuporte = mediaVendaProduto(cadastro);
         return produtosSuporte;
@@ -284,26 +349,24 @@ public class CadastroBean implements Serializable {
     public void setProdutoSuporte(ProdutoSuporte produtoSuporte) {
         this.produtoSuporte = produtoSuporte;
     }
-        
-        
-                
-       
+
     public List<ProdutoSuporte> mediaVendaProduto(Cadastro cliente) {
         List<ProdutoSuporte> produtos = new ArrayList<>();
         List<Balanco> listaBalanco = balancoDAO.findAllByCliente(cliente);
 
         for (int a = 0; a < listaBalanco.size(); a++) {
             List<ItemBalanco> listaItemBalanco = itemBalancoDAO.findAllByBalanco(listaBalanco.get(a));
-            
+
             for (int i = 0; i < listaItemBalanco.size(); i++) {
-                
+
                 ProdutoSuporte pscheck = new ProdutoSuporte();
-                pscheck.setProduto(listaItemBalanco.get(i).getProduto());                
-                if (!produtos.contains(pscheck)) { 
+                pscheck.setProduto(listaItemBalanco.get(i).getProduto());
+                if (!produtos.contains(pscheck)) {
                     pscheck.setSomaVendas(0);
                     pscheck.setSomaEstoques(0);
-                    produtos.add(pscheck); }
-                
+                    produtos.add(pscheck);
+                }
+
                 for (ProdutoSuporte ps : produtos) {
 
                     if (ps.getProduto().equals(listaItemBalanco.get(i).getProduto())) {
@@ -311,40 +374,48 @@ public class CadastroBean implements Serializable {
                         ps.setSomaVendas(valvenda);
                         int valestoque = listaItemBalanco.get(i).getQtdEstoque() + ps.getSomaEstoques();
                         ps.setSomaEstoques(valestoque);
-                        ps.setOcorrencias(ps.getOcorrencias()+1);
-                    } 
+                        ps.setOcorrencias(ps.getOcorrencias() + 1);
+                    }
                 }
             }
         }
         return produtos;
     }
-    
-    
+
 //------------- Toggler
+    public List<Boolean> getList() {
+        return list;
+    }
+
+    public void setList(List<Boolean> list) {
+        this.list = list;
+    }
+
+    public void onToggle(ToggleEvent e) {
+        list.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
+    }
+
+    public ContatoCliente getContato() {
+        return contato;
+    }
+
+    public void setContato(ContatoCliente contato) {
+        this.contato = contato;
+    }
+
+    public List<ContatoCliente> getContatos() {
+        contatos = contatoDAO.findAll(cadastro);
+        return contatos;
+    }
+
+    public void setContatos(List<ContatoCliente> contatos) {
+        this.contatos = contatos;
+    }
+    
+    public CargoContatoCliente[] getCargoContatoCliente() {
+        return CargoContatoCliente.values();
+    }
+   
     
 
-public List<Boolean> getList() {
-return list;
 }
-
-public void setList(List<Boolean> list) {
-    this.list = list;
-}
- 
-public void onToggle(ToggleEvent e) {
-list.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
-}
-
-}
-        
-    
-        
-        
-    
-    
-    
-        
-        
-    
-
-

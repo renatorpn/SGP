@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -39,6 +40,9 @@ public class QuadroSWOT implements Serializable {
     private String pontosFracos;
     private String ameacas;
     private String oportunidades;
+
+    public QuadroSWOT() {
+    }
 
     public Long getIdquadroswot() {
         return idquadroswot;

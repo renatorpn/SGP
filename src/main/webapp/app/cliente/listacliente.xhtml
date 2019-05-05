@@ -25,7 +25,7 @@
     </head>
     <h:body id="body">
        <ui:include src="/app/header.xhtml"/>
-
+       <p:growl id="growl" showDetail="true" sticky="true" />
         <p:dataTable emptyMessage="Nenhum Cliente Resgitrado." 
                      var="cadastro" 
                      value="#{cadastroBean.findAll()}" 
@@ -64,6 +64,7 @@
                         
             <p:column headerText="Opção">
                 <p:commandButton class="btn-warning" icon="ui-icon-search" value="Info" action="#{cadastroBean.editar(cadastro)}"></p:commandButton>
+                <p:commandButton class="btn-warning" icon="ui-icon-search" value="SWOT" action="#{quadroSWOTMB.editar(cadastro)}"></p:commandButton>
             </p:column>
             <f:facet name="footer">
                 Total de clientes cadastrados: #{cadastroBean.cadastros.size()}</f:facet>

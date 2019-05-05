@@ -10,6 +10,7 @@ import br.com.SGP.dao.CadastroDao;
 import br.com.SGP.dao.CategoriaProdutoDAO;
 import br.com.SGP.dao.ProdutoDAO;
 import br.com.SGP.dao.QuadroSWOTDAO;
+import br.com.SGP.dao.TipoEventoDAO;
 import br.com.SGP.dao.UsuarioDAO;
 import br.com.SGP.entities.Balanco;
 import br.com.SGP.entities.Cadastro;
@@ -17,6 +18,7 @@ import br.com.SGP.entities.CategoriaProduto;
 import br.com.SGP.entities.ItemBalanco;
 import br.com.SGP.entities.Produto;
 import br.com.SGP.entities.QuadroSWOT;
+import br.com.SGP.entities.TipoEvento;
 import br.com.SGP.entities.Usuario;
 import br.com.SGP.utils.AmbienteVendasCliente;
 import br.com.SGP.utils.CanalVendasCliente;
@@ -67,7 +69,7 @@ public class TesteAddAll {
         cadastro.setLogradouro("Rua dos Tolos");
         cadastro.setBairro("Campo Grande");
         cadastro.setCep("20241060");
-        cadastro.setNumero(123);
+        cadastro.setNumero("123");
         cadastro.setCategoriaCliente(CategoriaCliente.DIAMANTE);
         cadastro.setAmbienteVendasCliente(AmbienteVendasCliente.VIRTUAL);
         cadastro.setComplemento("Apt 110");
@@ -95,7 +97,7 @@ public class TesteAddAll {
         Produto produto = new Produto();
         ProdutoDAO produtoDAO = new ProdutoDAO();
         produto.setNome("The Shortstop");
-        produto.setCodigo("TF01");
+        produto.setCodigo("TF0001");
         produto.setCor(CorProduto.ROSA);
         produto.setFxclassificacao(FxClassificacao.P1);
         produto.setPrecovenda(166.90);
@@ -118,5 +120,15 @@ public class TesteAddAll {
                 
         //==========================================
         
+        
+        //==========================================
+        //============ Tipo Evento ADD =============
+        //==========================================
+        TipoEvento tipoEvento = new TipoEvento();
+        tipoEvento.setDescricao("Ação de Vendas");
+        TipoEventoDAO tipoEventoDAO = new TipoEventoDAO();
+        tipoEventoDAO.save(tipoEvento);
+        
+        //==========================================
     }
 }

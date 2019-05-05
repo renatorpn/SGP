@@ -6,12 +6,15 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <!-- Lista de entidades -->
         <class>br.com.SGP.bean.entities.Cadastro</class>
+        <class>br.com.SGP.bean.entities.ContatoCliente</class>
         <class>br.com.SGP.bean.entities.Produto</class>
+        <class>br.com.SGP.bean.entities.CategoriaProduto</class>
         <class>br.com.SGP.bean.entities.Balanco</class>
         <class>br.com.SGP.bean.entities.ItemBalanco</class>
         <class>br.com.SGP.bean.entities.Usuario</class>
         <class>br.com.SGP.entities.TipoEvento</class>
         <class>br.com.SGP.entities.Evento</class>
+        <class>br.com.SGP.bean.entities.QuadroSWOT</class>
         <properties>
             <!-- Propriedades JDBC -->
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
