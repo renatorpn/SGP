@@ -38,6 +38,7 @@ import javax.servlet.ServletContext;
 
 import javax.servlet.http.Part;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.model.Visibility;
@@ -299,28 +300,25 @@ public class CadastroBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
         itemBalanco = new ItemBalanco();
     }
-
     
+       
     public void onAddNewContato() {
         // Add one new item to the table:
-        
-        ContatoCliente i = new ContatoCliente();
-        i = contato;
-        i.setCliente(cadastro);
+        contato.setCliente(cadastro);
         contatos = cadastro.getContatos();
-        contatos.add(i);
+        contatos.add(contato);
         cadastro.setContatos(contatos);
         cadastroDao.save(cadastro);
-        
-        FacesMessage msg = new FacesMessage("Novo item adicionado");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesMessage msg = new FacesMessage("Novo contato adicionado");
+        FacesContext.getCurrentInstance().addMessage(null, msg);       
         contato = new ContatoCliente();
     }
     
-        public void removeContato(ContatoCliente c) {
-        contatoDAO.remove(c.getId());
-        contatos = contatoDAO.findAll(cadastro);
-        
+        public void removeContato() {
+            contatos.remove(contato);
+            cadastro.setContatos(contatos);
+            cadastroDao.save(cadastro);
+            contatos = contatoDAO.findAll(cadastro);
         }
     
     public String cadastrarBalanco() {

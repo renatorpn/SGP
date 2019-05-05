@@ -312,85 +312,21 @@
                                             </p:column>
 
                                             <p:column style="width: 5%" headerText="Opção">
-                                                <p:commandButton
-                                                    ajax="false"
-                                                    class="btn-warning" 
-                                                    icon="ui-icon-search" 
-                                                    action="#{cadastroBean.removeContato(contato)}">
-                                                </p:commandButton>
+                                                <input
+                                                    type="submit"
+                                                    class="btn btn-warning"
+                                                    value="x"
+                                                    action="#{cadastroBean.removeContato()}"/>
                                             </p:column>
                                             <f:facet name="footer">
                                                 Total de Contatos cadastrados: #{cadastroBean.contatos.size()}
                                             </f:facet>
 
                                         </p:dataTable>
-                                           
-                                    </fieldset>
+                                        <p:commandButton style="margin: 3%" value="Novo Contato" type="button" onclick="PF('dlg1').show();" />
+                                        </fieldset>
 
-                                    <fieldset >
-                                        <legend>Adicionar Novo Contato</legend>
-                                        
-                                            <p:growl id="msgs" showDetail="true"/>
-                                            
-                                            <p:commandButton value="Basic" type="button" onclick="PF('dlg1').show();" />
-
-                                            <p:panelGrid  class="ui-grid ui-grid-responsive" columns="7">
-
-
-                                                <label jsf:for="nome">Nome: </label>
-
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control" 
-                                                    placeholder="Nome do Contato" 
-                                                    
-                                                    jsf:value="#{cadastroBean.contato.nome}"/>
-
-                                                <label jsf:for="cargo">Cargo: </label>
-
-                                                <h:selectOneMenu id="cargo" class="form-control" value="#{cadastroBean.contato.cargo}" required="true">
-                                                    <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
-                                                    <f:selectItems value="#{cadastroBean.cargoContatoCliente}" var ="cargo"
-                                                                   itemValue="#{cargo}" 
-                                                                   itemLabel="#{cargo.descricao}"/>
-                                                </h:selectOneMenu>
-
-                                                <label jsf:for="email">E-mail </label>
-
-                                                <input 
-                                                    id="email"
-                                                    type="email" 
-                                                    class="form-control" 
-                                                    placeholder="E-mail do Contato" 
-                                                    
-                                                    jsf:value="#{cadastroBean.contato.email}"/>
-
-                                                <label jsf:for="telefone">Telefone: </label>
-
-                                                <input 
-                                                    id="telefone"
-                                                    type="tel" 
-                                                    class="form-control" 
-                                                    placeholder="Telefone do Contato" 
-                                                    
-                                                    jsf:value="#{cadastroBean.contato.telefone}"/>
-
-
-
-
-                                                <input type="submit"
-                                                       class="btn btn-primary"
-                                                       jsf:action="#{cadastroBean.onAddNewContato()}"
-                                                       value="+"
-                                                       icon="ui-icon-disk"
-                                                       update=":form:msgs"
-                                                       oncomplete="PF('contato').addRow();"
-                                                       />
-
-                                            </p:panelGrid>
-
-                                       
-                                    </fieldset>
+                                    
                                 </fieldset>
 
                             </p:tab>
@@ -429,9 +365,77 @@
                                    value="Media"/>
                         </div>
                     </form>
-                    <p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="40">
-                                            <h:outputText value="Resistance to PrimeFaces is futile!" />
-                                            </p:dialog>
+                    <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="300" class="form-group">
+                        <p:growl id="msgsdialog" showDetail="true" sticky="true"/>
+                        <h:form id="formdialog" enctype="multipart/form-data" >
+                        <div class="row">
+                            <div class="col-lg-9 col-md-9">
+                                <div class="form-group">
+                                   <label jsf:for="nome">Nome: </label>
+                                   <input
+                                       type="text"
+                                       class="form-control"
+                                       placeholder="Nome do Contato"
+                                       jsf:value="#{cadastroBean.contato.nome}"/> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-9 col-md-9">
+                                <div class="form-group">
+                                    <label jsf:for="cargo">Cargo: </label>
+                                    <h:selectOneMenu id="cargo" class="form-control" value="#{cadastroBean.contato.cargo}" required="true">
+                                        <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
+                                        <f:selectItems value="#{cadastroBean.cargoContatoCliente}" 
+                                                       var ="cargo"
+                                                       itemValue="#{cargo}"
+                                                       itemLabel="#{cargo.descricao}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-9 col-md-9">
+                                <div class="form-group">
+                                    <label jsf:for="email">E-mail </label>
+                                    <input
+                                        id="email"
+                                        type="email"
+                                        class="form-control"
+                                        placeholder="E-mail do Contato"
+                                        jsf:value="#{cadastroBean.contato.email}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-9 col-md-9">
+                                <div class="form-group">
+                                    <label jsf:for="telefone">Telefone: </label>
+                                    <input
+                                        id="telefone"
+                                        type="tel"
+                                        class="form-control"
+                                        placeholder="Telefone do Contato"
+                                        jsf:value="#{cadastroBean.contato.telefone}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-9 col-md-9">
+                                <div class="form-group">
+                                    <input 
+                                        type="submit"
+                                        class="btn btn-success"
+                                        jsf:action="#{cadastroBean.onAddNewContato()}"
+                                        value="Salvar"
+                                        
+                                        update=":formdialog:msgsdialog"
+                                        oncomplete="PF('dlg1').hide();"/>  
+                                </div>
+                            </div>
+                        </div>
+                        </h:form>
+                    </p:dialog>
                     
                 </div>
             </div>
