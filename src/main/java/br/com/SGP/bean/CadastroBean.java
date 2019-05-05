@@ -17,11 +17,9 @@ import br.com.SGP.utils.CategoriaCliente;
 import br.com.SGP.utils.ClassificacaoClienteABC;
 import br.com.SGP.utils.Estado;
 import br.com.SGP.utils.ProdutoSuporte;
-import static com.sun.faces.facelets.util.Path.context;
 import java.io.IOException;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,16 +29,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.RollbackException;
 import javax.servlet.ServletContext;
 
 import javax.servlet.http.Part;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleEvent;
-import org.primefaces.model.UploadedFile;
 import org.primefaces.model.Visibility;
 
 @ManagedBean
@@ -70,7 +63,6 @@ public class CadastroBean implements Serializable {
     private List<Boolean> list = new ArrayList<Boolean>();
 
     //---------------Cliente------------------------
-
     public String getPathImg() {
         return pathImg;
     }
@@ -86,8 +78,7 @@ public class CadastroBean implements Serializable {
     public void setImg(Part img) {
         this.img = img;
     }
-    
-    
+
     public List<Cadastro> getCadastros() {
         cadastros = cadastroDao.findAll();
         return cadastros;
@@ -198,7 +189,7 @@ public class CadastroBean implements Serializable {
         cadastro = new Cadastro();
         return "/app/cliente/cliente?faces-redirect=true";
     }
-    
+
     private static String getFilename(Part part) {
         for (String cd : part.getHeader("content-disposition").split(";")) {
             if (cd.trim().startsWith("filename")) {
@@ -214,36 +205,34 @@ public class CadastroBean implements Serializable {
         Date date = new Date();
         return dateFormat.format(date);
     }
-    
-       public String cadastrar() throws IOException {
-           FacesContext context = FacesContext.getCurrentInstance();
-           if (img != null) {
-            FacesContext facesContext = FacesContext.getCurrentInstance(); 
+
+    public String cadastrar() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (img != null) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
             ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
             String path = scontext.getRealPath("/img/");
-            
+
             img.write(path + getDateTime() + getFilename(img));
             pathImg = (getDateTime() + getFilename(img));
             cadastro.setLogomarca(pathImg);
         }
-     try{
-        cadastroDao.save(cadastro);
-        
-        context.addMessage(null, new FacesMessage("Cadastrado com successo: ",  "Cliente " + cadastro.getNome()) );
-        context.getExternalContext().getFlash().setKeepMessages(true);// faz o flash para a growl aparecer com o redirect
-        cadastro = new Cadastro();
-        findAll = cadastroDao.findAll();
-        return "/app/cliente/listacliente?faces-redirect=true"; 
-        
-     }
-     catch(Exception e){
-        
-        FacesContext.getCurrentInstance().addMessage(null, new 
-        FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao cadastrar! ", "CNPJ Já Cadastrado."));
-        context.getExternalContext().getFlash().setKeepMessages(true);
-        return "/app/cliente/cliente?faces-redirect=true";        
-     }       
-        
+        try {
+            cadastroDao.save(cadastro);
+
+            context.addMessage(null, new FacesMessage("Cadastrado com successo: ", "Cliente " + cadastro.getNome()));
+            context.getExternalContext().getFlash().setKeepMessages(true);// faz o flash para a growl aparecer com o redirect
+            cadastro = new Cadastro();
+            findAll = cadastroDao.findAll();
+            return "/app/cliente/listacliente?faces-redirect=true";
+
+        } catch (Exception e) {
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao cadastrar! ", "CNPJ Já Cadastrado."));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "/app/cliente/cliente?faces-redirect=true";
+        }
+
     }
 
     public String remover() {
@@ -300,8 +289,7 @@ public class CadastroBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
         itemBalanco = new ItemBalanco();
     }
-    
-       
+
     public void onAddNewContato() {
         // Add one new item to the table:
         contato.setCliente(cadastro);
@@ -310,17 +298,17 @@ public class CadastroBean implements Serializable {
         cadastro.setContatos(contatos);
         cadastroDao.save(cadastro);
         FacesMessage msg = new FacesMessage("Novo contato adicionado");
-        FacesContext.getCurrentInstance().addMessage(null, msg);       
+        FacesContext.getCurrentInstance().addMessage(null, msg);
         contato = new ContatoCliente();
     }
-    
-        public void removeContato() {
-            contatos.remove(contato);
-            cadastro.setContatos(contatos);
-            cadastroDao.save(cadastro);
-            contatos = contatoDAO.findAll(cadastro);
-        }
-    
+
+    public void removeContato() {
+        contatos.remove(contato);
+        cadastro.setContatos(contatos);
+        cadastroDao.save(cadastro);
+        contatos = contatoDAO.findAll(cadastro);
+    }
+
     public String cadastrarBalanco() {
         balanco.setCliente(cadastro);
         balanco.setItemBalanco(null);
@@ -411,11 +399,9 @@ public class CadastroBean implements Serializable {
     public void setContatos(List<ContatoCliente> contatos) {
         this.contatos = contatos;
     }
-    
+
     public CargoContatoCliente[] getCargoContatoCliente() {
         return CargoContatoCliente.values();
     }
-   
-    
 
 }
