@@ -92,6 +92,7 @@ public class UsuarioCadastro {
             context.addMessage(null, new FacesMessage("Usuário já cadastrado!"));
             usuarioCadastro = new Usuario();
             }
+            usuarios = usuarioDAO.findAll();
             }
                 
             
