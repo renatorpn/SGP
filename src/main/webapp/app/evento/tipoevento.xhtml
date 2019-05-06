@@ -37,7 +37,7 @@ and open the template in the editor.
 
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 col-md-12 ">
+                <div class="col-lg-5 col-md-5 ">
                     <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
                         <fieldset >
 
@@ -50,10 +50,11 @@ and open the template in the editor.
                                          rowsPerPageTemplate="20"
                                          >
                                 <f:facet name="header">Tipos de Evento</f:facet>
-                                <p:column style="width: 5%" headerText="Id" sortBy="#{tipoEvento.idTipoEvento}">
+<!--                                <p:column style="width: 5%" headerText="Id" sortBy="#{tipoEvento.idTipoEvento}">
                                     <h:outputText value="#{tipoEvento.idTipoEvento}" />
                                 </p:column>
-                                <p:column style="width: 10%" headerText="Nome" sortBy="#{tipoEvento.descricao}">
+-->                                
+                                    <p:column style="width: 70%" headerText="Nome" sortBy="#{tipoEvento.descricao}">
                                     <h:outputText value="#{tipoEvento.descricao}" />
                                 </p:column>
                                 <p:column headerText="Opção">

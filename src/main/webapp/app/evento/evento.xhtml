@@ -163,9 +163,21 @@
                                     </h:panelGrid>
                                     <p:separator/>
 
-                                    <p:commandButton value="Salvar" actionListener="#{EventoMB.salvar()}" update="messages schedule" oncomplete="PF('dialogBox').hide();"/>
-                                    <p:commandButton value="Deletar" actionListener="#{EventoMB.deletar()}" update="messages schedule" oncomplete="PF('dialogBox').hide();"/>
-                                    <p:commandButton value="Fechar" actionListener="#{EventoMB.limpar()}" oncomplete="PF('dialogBox').hide();"/>
+                                    <p:commandButton value="Salvar" 
+                                                     actionListener="#{EventoMB.salvar()}" 
+                                                     update="messages schedule" 
+                                                     oncomplete="PF('dialogBox').hide();"
+                                                     />
+                                    <p:commandButton value="Deletar" 
+                                                     actionListener="#{EventoMB.deletar()}" 
+                                                     update="messages schedule" 
+                                                     onclick="if (!confirm('Confirma a exclusão do Evento: #{EventoMB.event.nomeevento}?')) return false;" 
+                                                     oncomplete="PF('dialogBox').hide();"
+                                                     />
+                                    <p:commandButton value="Fechar" 
+                                                     actionListener="#{EventoMB.limpar()}" 
+                                                     oncomplete="PF('dialogBox').hide();"
+                                                     />
                                 </p:outputPanel>
                             </p:dialog>
                     </h:form>

@@ -161,8 +161,8 @@ public class EventoBean implements Serializable {
                 try{
                     eventoDAO.save(event);
                     init();
-                    throw new SQLException();
-                }catch(SQLException e){
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Novo Evento", "Salvo com sucesso!"));
+                }catch(Exception e){
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao salvar evento!", "Erro: " + e.getMessage()));    
                 }
                 event = new Evento();
@@ -174,7 +174,9 @@ public class EventoBean implements Serializable {
                 //event.setRepresentante(u);
                 eventoDAO.save(event);
                 event = new Evento();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Alterar Evento", "Salvo com sucesso!"));
             }
+        init();
     }
     
     public void deletar(){
