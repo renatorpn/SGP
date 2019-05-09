@@ -49,8 +49,7 @@
                                             requiredMessage="Please enter your email address."
                                             validatorMessage="Invalid email format"
                                             >
-                                            <f:validateRegex
-                                                pattern="^[_A-Za-z0-9-\+]" />
+                                            
                                         
                                         </p:inputText>
                                         <p:message for="nome" styleClass="text-danger"/>
@@ -91,15 +90,16 @@
                                 <div class="col-lg-3 col-md-3">
                                     <div class="form-group">
                                         <p:outputLabel for="qtdlojas" value="Quantidade de Lojas"/>
-                                        <input type="number"
+                                        <p:inputText
+                                               type="number"
                                                class="form-control"
-                                               jsf:id="qtdlojas"
-                                               jsf:binding="#{qtdlojas}"
-                                               min="1"
+                                               id="qtdlojas"
                                                maxlength="999"
                                                placeholder="123"
-                                               jsf:value="#{cadastroBean.cadastro.quantidadelojas}"
-                                               required="required"/>
+                                               value="#{cadastroBean.cadastro.quantidadelojas}"
+                                               required="required"
+                                               
+                                               />
 
                                         <p:message for="qtdlojas" styleClass="text-danger"/>
                                     </div>
