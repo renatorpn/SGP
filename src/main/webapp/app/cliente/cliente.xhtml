@@ -31,6 +31,7 @@
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
                     <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
                         <p:growl id="growl" showDetail="true" sticky="true" />
+                       <p:messages id="msgs" />
                         <fieldset>
                             <legend>Dados do Cliente</legend>
                             <div class="row">
@@ -39,13 +40,20 @@
                                         <p:outputLabel for="nome" value="Nome Fantasia"/>
                                         <p:inputText 
                                             id="nome"
-                                               class="form-control"
+                                            class="form-control"
                                             placeholder="Nome Fantasia do Cliente"
                                             value="#{cadastroBean.cadastro.nome}"
-                                            required="required"
-                                            maxlength="50"/>
-
-                                        <h:message for="nome" styleClass="text-danger"/>
+                                            required="true"
+                                            maxlength="50"
+                                            immediate="true"
+                                            requiredMessage="Please enter your email address."
+                                            validatorMessage="Invalid email format"
+                                            >
+                                            <f:validateRegex
+                                                pattern="^[_A-Za-z0-9-\+]" />
+                                        
+                                        </p:inputText>
+                                        <p:message for="nome" styleClass="text-danger"/>
                                     </div>
                                 </div>
                                  
@@ -269,13 +277,13 @@
                                 <textarea class="form-control" jsf:binding="#{infos}" jsf:value="#{cadastroBean.cadastro.outrasInformacoes}" rows="7"></textarea>
                             </div>
                         </fieldset>
-                        <div style="margin-top: 3%">
-                            <input type="submit"
+                       <div style="margin-top: 3%">
+                           <input type="submit"
                                    class="btn btn-primary"
                                    jsf:action="#{cadastroBean.cadastrar}"
                                    value="Cadastrar"
                                    icon="ui-icon-disk"
-                                   update="@form"/>
+                                   update="@all"/>
                         </div>
                     </form>
                 </div>
