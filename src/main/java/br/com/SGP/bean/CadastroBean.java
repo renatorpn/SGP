@@ -209,9 +209,10 @@ public class CadastroBean implements Serializable {
     public String cadastrar() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         if (img != null) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
-            String path = scontext.getRealPath("/img/");
+            //FacesContext facesContext = FacesContext.getCurrentInstance();
+            //ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
+            //String path = scontext.getRealPath("/img/");
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/img/");
 
             img.write(path + getDateTime() + getFilename(img));
             pathImg = (getDateTime() + getFilename(img));
