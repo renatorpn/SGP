@@ -31,7 +31,7 @@ and open the template in the editor.
     </head>
 
     <body jsf:id="body">
-        <p:messages autoUpdate="true"/>
+        <p:growl sticky="true" showDetail="true" autoUpdate="true"/>
 
         <ui:include  src="/app/header.xhtml"/>
 
@@ -71,7 +71,13 @@ and open the template in the editor.
                         </fieldset>
                         <fieldset >
                             <legend>Itens do Balanço</legend>
-
+                            <style type="text/css">
+                                .old {
+                                    background-color: #F35051 !important;
+                                    background-image: none !important;
+                                    color: #000000 !important;
+                                }
+                            </style>
                             <p:dataTable emptyMessage="Nenhum item Resgitrado." 
                                          var="itemBalanco" 
                                          value="#{cadastroBean.balanco.itemBalanco}" 
@@ -81,11 +87,12 @@ and open the template in the editor.
                                          paginator="true"
                                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="5,10,15"
+                                         editable="true"
+                                         rowStyleClass="#{itemBalanco.cobertura le 2 ? 'old' : null}"
                                          >
-                                <f:facet name="header">Relação de Produtos</f:facet>
-                                <p:column style="width: 5%" headerText="Id" sortBy="#{itemBalanco.idItemBalanco}">
-                                    <h:outputText value="#{itemBalanco.idItemBalanco}" />
-                                </p:column>
+                                <f:facet name="header">Itens do Balanço</f:facet>
+
+
                                 <p:column style="width: 10%" headerText="Código" sortBy="#{itemBalanco.produto.codigo}">
                                     <h:outputText value="#{itemBalanco.produto.codigo}" />
                                 </p:column>
@@ -108,170 +115,79 @@ and open the template in the editor.
                                 <p:column style="width: 10%" headerText="Cobertura" sortBy="#{itemBalanco.cobertura}">
                                     <h:outputText value="#{itemBalanco.cobertura}" />
                                 </p:column>
-                                <p:column style="width: 15%" headerText="Status do item" >
+                                <p:column style="width: 10%" headerText="Status" >
                                     <h:outputText value="#{itemBalanco.statusItem}" />
                                 </p:column>
-
+                                <p:column style="width: 8%" headerText="Deletar" >
+                                    <p:commandButton icon="ui-icon-trash" action="#{cadastroBean.removerItem(itemBalanco)}"/>
+                                    
+                                </p:column>
+                                <f:facet name="footer">
+                                    Total de Itens desse balanço: #{cadastroBean.itensBalanco.size()}.
+                                    <p:commandButton value="Novo Item" type="button" onclick="PF('dlg1').show();" icon="ui-icon-plus" />
+                                </f:facet>
                             </p:dataTable>
 
                         </fieldset>
-
-                        						<fieldset>
-						<fieldset >
-                            <legend>Lista de Contatos no Cliente</legend>
-
-                            <p:dataTable emptyMessage="Nenhum item Resgitrado." 
-                                         var="contatos" 
-                                         value="#{cadastroBean.cadastros}" 
-                                         id="contatos"
-                                         widgetVar="contatos"
-                                         rows="5" 
-                                         paginator="true"
-                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                         rowsPerPageTemplate="5,10,15"
-                                         >
-										 
-                                <f:facet name="header">Relação de Contatos</f:facet>
-                                <p:column style="width: 5%" headerText="Nome" sortBy="#{contatos.nome}">
-                                    <h:outputText value="#{contatos.nome}" />
-                                </p:column>
-                                <p:column style="width: 10%" headerText="Código" sortBy="#{itemBalanco.produto.codigo}">
-                                    <h:outputText value="#{itemBalanco.produto.codigo}" />
-                                </p:column>
-                                <p:column style="width: 10%" headerText="Produto" sortBy="#{itemBalanco.produto.nome}">
-                                    <h:outputText value="#{itemBalanco.produto.nome}" />
-                                </p:column>
-                                <p:column style="width: 15%" headerText="Cor" sortBy="#{itemBalanco.produto.cor}">
-                                    <h:outputText value="#{itemBalanco.produto.cor}" />
-                                </p:column>
-                                <p:column style="width: 10%" headerText="Venda" sortBy="#{itemBalanco.qtdVenda}">
-                                    <h:outputText value="#{itemBalanco.qtdVenda}" />
-                                </p:column>
-                                <p:column style="width: 10%" headerText="Estoque" sortBy="#{itemBalanco.qtdEstoque}">
-                                    <h:outputText value="#{itemBalanco.qtdEstoque}" />
-                                </p:column>
-                                <p:column style="width: 10%" headerText="Giro" sortBy="#{itemBalanco.giro}%">
-                                    <h:outputText value="#{itemBalanco.giro}%" />
-                                </p:column>
-
-                                <p:column style="width: 10%" headerText="Cobertura" sortBy="#{itemBalanco.cobertura}">
-                                    <h:outputText value="#{itemBalanco.cobertura}" />
-                                </p:column>
-                                <p:column style="width: 15%" headerText="Status do item" >
-                                    <h:outputText value="#{itemBalanco.statusItem}" />
-                                </p:column>
-
-                            </p:dataTable>
-
-                        </fieldset>
-
-                        <fieldset >
-                            <legend>Adicionar Novo Item</legend>
-                            <h:form id="formgrid">
-                            <p:growl id="msgs" showDetail="true"/>
-
-                                <p:panelGrid  class="ui-grid ui-grid-responsive" columns="7">
-
-                                    <h:outputLabel value="Produto: " for="produto"/>
-
-                                    <h:selectOneMenu class="form-control" value="#{cadastroBean.itemBalanco.produto}" converter="produtoConverter">
-                                        <f:selectItem itemLabel="Selecionar"  noSelectionOption="true"/>
-                                        <f:selectItems value="#{produtoMB.produtos}" var ="produto"
-                                                       itemValue="#{cadastroBean.itemBalanco.produto}" 
-                                                       itemLabel="#{produto.nome} - #{produto.cor}"/>
-                                        
-                                    </h:selectOneMenu>
-
-                                    <label jsf:for="codigo">Quantidade Vendida: </label>
-
-                                    <input 
-										type="text" 
-										class="form-control" 
-										placeholder="0000" 
-										required="required" 
-										jsf:value="#{cadastroBean.itemBalanco.qtdVenda}"/>
-
-                                    <label jsf:for="codigo">Quantidade em Estoque: </label>
-
-                                    <input 
-										type="text" 
-										class="form-control" 
-										placeholder="0000" 
-										required="required" 
-										jsf:value="#{cadastroBean.itemBalanco.qtdEstoque}"/>
-                                    
-
-
-                                    <input type="submit"
-                                           class="btn btn-primary"
-                                           jsf:action="#{cadastroBean.onAddNew}"
-                                           value="+"
-                                           icon="ui-icon-disk"
-                                           update=":formgrid:msgs"
-                                           oncomplete="PF('tabelaitens').addRow();"
-                                           />
-                                    
-                                </p:panelGrid>
-
-                            </h:form>
-                        </fieldset>
-			</fieldset>
-
-
-
-
-
-                        <fieldset >
-                            <legend>Add Novo Item</legend>
-                            <h:form id="formgrid">
-                            <p:growl id="msgs" showDetail="true"/>
-
-                                <p:panelGrid  class="ui-grid ui-grid-responsive" columns="7">
-
-                                    <h:outputLabel value="Produto: " for="produto"/>
-
-                                    <h:selectOneMenu class="form-control" value="#{cadastroBean.itemBalanco.produto}" converter="produtoConverter">
-                                        <f:selectItem itemLabel="Selecionar"  noSelectionOption="true"/>
-                                        <f:selectItems value="#{produtoMB.produtos}" var ="produto"
-                                                       itemValue="#{cadastroBean.itemBalanco.produto}" 
-                                                       itemLabel="#{produto.nome} - #{produto.cor}"/>
-                                        
-                                    </h:selectOneMenu>
-
-                                    <label jsf:for="codigo">Quantidade Vendida: </label>
-
-                                    <input type="text" class="form-control" placeholder="0000" required="required" jsf:value="#{cadastroBean.itemBalanco.qtdVenda}"/>
-
-                                    <label jsf:for="codigo">Quantidade em Estoque: </label>
-
-                                    <input type="text" class="form-control" placeholder="0000" required="required" jsf:value="#{cadastroBean.itemBalanco.qtdEstoque}"/>
-                                    
-
-
-                                    <input type="submit"
-                                           class="btn btn-primary"
-                                           jsf:action="#{cadastroBean.onAddNew}"
-                                           value="+"
-                                           icon="ui-icon-disk"
-                                           update=":formgrid:msgs"
-                                           oncomplete="PF('tabelaitens').addRow();"
-                                           />
-                                    
-                                </p:panelGrid>
-
-                            </h:form>
-                        </fieldset>
-
-
+                        
                     </form>
-                    
+
+
 
                 </div>
             </div>
 
         </div>
 
+        <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="300" class="form-group" >
+            <p:growl id="msgsdialog" showDetail="true" sticky="true"/>
+            <h:form id="formdialog" enctype="multipart/form-data" >
+                
+                <div class="row">
+                    <div class="col-lg-9 col-md-9">
+                        <div class="form-group">
+                            <h:outputLabel value="Produto: "/>
+                            <h:selectOneMenu class="form-control" value="#{cadastroBean.itemBalanco.produto}" converter="produtoConverter">
+                                <f:selectItem itemLabel="Selecionar"  noSelectionOption="true"/>
+                                <f:selectItems value="#{produtoMB.produtos}" var ="produto"
+                                               itemValue="#{cadastroBean.itemBalanco.produto}" 
+                                               itemLabel="#{produto.nome} - #{produto.cor}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-9 col-md-9">
+                        <div class="form-group">
+                            <p:outputLabel value="Quantidade Vendida:" for="qtdvenda" />
+                            <p:inputText id="qtdvenda" class="form-control" value="#{cadastroBean.itemBalanco.qtdVenda}" required="required" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-9 col-md-9">
+                        <div class="form-group">
+                            <p:outputLabel value="Quantidade em Estoque:" for="qtdestoque" />
+                            <p:inputText id="qtdestoque" class="form-control" value="#{cadastroBean.itemBalanco.qtdEstoque}" required="required" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-9 col-md-9">
+                        <div class="form-group">
+                            <input 
+                                type="submit"
+                                class="btn btn-success"
+                                jsf:action="#{cadastroBean.onAddNewItem()}"
+                                value="Salvar"
 
+                                update=":form:msgs"
+                                oncomplete="PF('dlg1').hide();"/>  
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </p:dialog>
 
 
 

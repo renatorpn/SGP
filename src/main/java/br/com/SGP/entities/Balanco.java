@@ -107,6 +107,7 @@ public class Balanco implements Serializable {
 
     public void removerItem(ItemBalanco item) {
         getItemBalanco().remove(item);
+        
     }
     
     public ItemBalanco getItem(Produto produto) {

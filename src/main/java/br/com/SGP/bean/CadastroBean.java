@@ -4,12 +4,14 @@ import br.com.SGP.dao.BalancoDAO;
 import br.com.SGP.dao.CadastroDao;
 import br.com.SGP.dao.ContatoClienteDAO;
 import br.com.SGP.dao.ItemBalancoDAO;
+import br.com.SGP.dao.QuadroSWOTDAO;
 import br.com.SGP.entities.Balanco;
 
 import br.com.SGP.entities.Cadastro;
 import br.com.SGP.entities.ContatoCliente;
 import br.com.SGP.entities.ItemBalanco;
 import br.com.SGP.entities.Produto;
+import br.com.SGP.entities.QuadroSWOT;
 import br.com.SGP.utils.AmbienteVendasCliente;
 import br.com.SGP.utils.CanalVendasCliente;
 import br.com.SGP.utils.CargoContatoCliente;
@@ -164,7 +166,7 @@ public class CadastroBean implements Serializable {
     public void setItensBalanco(List<ItemBalanco> itensBalanco) {
         this.itensBalanco = itensBalanco;
     }
-
+    
     //---------------------------------------------------------
     @PostConstruct
     public void construct() {
@@ -237,7 +239,15 @@ public class CadastroBean implements Serializable {
     }
 
     public String remover() {
-        cadastroDao.remove(cadastro.getId());
+        QuadroSWOTDAO qswot = new QuadroSWOTDAO();
+        List<QuadroSWOT> q = qswot.findAllByCliente(cadastro);
+        
+        if (q.isEmpty()){
+        cadastroDao.remove(cadastro.getId());    
+        }else{
+        qswot.remove(q.get(0).getIdquadroswot());
+        cadastroDao.remove(cadastro.getId());    
+        }
         findAll = cadastroDao.findAll();
         return "/app/cliente/listacliente?faces-redirect=true";
     }
@@ -270,7 +280,11 @@ public class CadastroBean implements Serializable {
 
         cadastro = new Cadastro();
         findAll = cadastroDao.findAll();
-        return "/app/sucesso?faces-redirect=true";
+        
+        FacesMessage msg = new FacesMessage("Novo balanço adicionado");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        
+        return "123";
     }
 
     public void onAddNew() {
@@ -289,6 +303,38 @@ public class CadastroBean implements Serializable {
         FacesMessage msg = new FacesMessage("Novo item adicionado");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         itemBalanco = new ItemBalanco();
+    }
+    
+    public void onAddNewItem() {
+        // Add one new item to the table:
+        ItemBalanco i = new ItemBalanco();
+        i = itemBalanco;
+        i.setIdBalanco(balanco);
+        i.setStatusItem(i.getGiro(), i.getCobertura());
+        itensBalanco = balanco.getItemBalanco();
+        itensBalanco.add(i);
+
+        balanco.setItemBalanco(itensBalanco);
+
+        balancoDAO.save(balanco);
+
+        FacesMessage msg = new FacesMessage("Novo item adicionado");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        itemBalanco = new ItemBalanco();
+    }
+    
+    public String removerItem(ItemBalanco ib) {
+        itensBalanco = null;
+        itensBalanco = balanco.getItemBalanco();
+        int index = balanco.getItemBalanco().indexOf(ib);
+        itensBalanco.remove(index);
+        balanco.setItemBalanco(itensBalanco);
+        balancoDAO.save(balanco);
+        balancos.set(balancos.indexOf(balanco), balanco);
+        cadastro.setBalanco(balancos);
+        cadastroDao.save(cadastro);
+        balancoDAO.findAll();
+        return "/app/balanco/itens?faces-redirect=true";
     }
 
     public void onAddNewContato() {
