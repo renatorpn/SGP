@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+    <head jsf:id="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>SGP</title>
+
+        <link rel="stylesheet" type="text/css"
+              href="#{request.contextPath}/resources/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/stylesheet.css"/>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <script type="text/javascript">
+            PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+                weekHeader: 'Semana',
+                firstDayOfWeek: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Sólo hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText: 'Todo el día'
+            };
+        </script>
+
+        <script type="text/javascript">
+            //<![CDATA[
+            function dateTemplateFunc(date) {
+                return '<span style="background-color:' + ((date.day < 21 && date.day > 10) ? '#81C784' : 'inherit') + ';border-radius:50%;padding: .25em;width: 1.75em; height:1.75em; display:block;">' + date.day + '</span>';
+            }
+            //]]>
+        </script>
+
+        <style type="text/css">
+            .value {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body jsf:id="body">
+
+
+
+
+        <p:growl id="msgs" showDetail="true" />
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                    <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
+                        <fieldset>
+                            <legend>Dados do Cliente</legend>
+
+                            <div class="col-lg-8 col-md-8">
+                                <div class="form-group">
+                                    <label jsf:for="nome">Nome</label>
+                                    <h:outputText
+                                        id="nome"
+                                        binding="#{nome}"
+                                        class="form-control"
+
+                                        value="#{cadastroBean.cadastro.id}, #{cadastroBean.cadastro.nome} - CPNJ: #{cadastroBean.cadastro.cnpj} "
+                                        />
+
+                                    <h:message for="nome" styleClass="text-danger"/>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                        <fieldset>
+                            <legend>Dados do Balanço</legend>
+                            
+                                
+                                <div class="col-lg-8 col-md-8">
+                                    <div class="form-group">
+                                        <label for="startDate">Selecione o Período :</label>
+                                        <p:outputLabel for="month" value="Month Picker:" />
+                                        <p:datePicker id="month" view="month" value="#{cadastroBean.balanco.periodo}" pattern="MM/yyyy" yearNavigator="true" yearRange="2000:2030" />
+
+                                        
+
+                                    </div>
+                                </div>
+                            
+                        </fieldset>
+
+
+                        <input type="submit"
+                               class="btn btn-primary"
+                               jsf:action="#{cadastroBean.cadastrarBalanco}"
+                               value="Salvar" 
+                               style="margin: 10px"
+                               />
+
+
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+
+        <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
+        <h:outputScript name="js/jquery.mask.min.js"/>
+        <h:outputScript name="js/jquery.maskMoney.min.js"/>
+        <h:outputScript name="js/jquery.validate.min.js"/>
+        <h:outputScript name="js/additional-methods.min.js"/>
+        <h:outputScript name="js/localization/messages_pt_BR.min.js"/>
+        <h:outputScript name="js/script.js"/>
+    </body>
+</html>

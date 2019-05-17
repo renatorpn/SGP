@@ -25,7 +25,7 @@
 
     </head>
     <body jsf:id="body">
-        <p:growl autoUpdate="true"/>
+        <p:growl />
         <ui:include src="/app/header.xhtml"/>
 
         <div class="container">
@@ -73,7 +73,9 @@
                                         <h:outputText value="#{balanco.itemBalanco.size()}" />
                                     </p:column>
                                     <p:column headerText="Período" sortBy="#{balanco.periodo}}">
-                                        <h:outputText value="#{balanco.periodo}" />
+                                        <h:outputText value="#{balanco.periodo}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
                                     </p:column>
                                     
                                     <p:column headerText="Opção">
