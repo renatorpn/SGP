@@ -145,12 +145,12 @@ public class ItemBalanco implements Serializable {
     }
     
         public void setStatusItem(double giro, double cobertura){
-         if(giro >= 0.25 && cobertura < 2.5){
+         if(giro > 2.5 && cobertura < 2.5){
              this.statusItem = "Ruptura";
-         }else if(giro >= 0.25 && cobertura >= 2.5){
+         }else if(giro > 2.5 && cobertura > 2.5){
              this.statusItem = "Abastecido";
-         }else if(giro < 0.25 && cobertura >= 2.5){
-             this.statusItem = "Atenção";
+         }else if(giro < 2.5 && cobertura > 2.5){
+             this.statusItem = "Baixa Demanda";
          }else{
              this.statusItem = "Descontinuado";
          }

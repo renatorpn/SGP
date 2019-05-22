@@ -92,9 +92,6 @@
                             <div class="form-group">
                                 <label for="startDate">Selecione o Período :</label>
                                 <p:inputText  id="startDate" class="date-picker" value="#{cadastroBean.balanco.periodo}"/>
-                                    
-                                
-
                                 <h:message for="periodo" styleClass="text-danger"/>
                                 
                                 
@@ -105,7 +102,7 @@
                                                
                         <input type="submit"
                                class="btn btn-primary"
-                               jsf:action="#{cadastroBean.cadastrarBalanco}"
+                               jsf:action="#{cadastroBean.cadastrarBalanco()}"
                                value="Salvar" 
                                style="margin: 10px"
                                />

@@ -90,17 +90,18 @@
 
                         <input type="submit"
                                class="btn btn-primary"
-                               jsf:action="#{cadastroBean.cadastrarBalanco}"
+                               jsf:action="#{cadastroBean.cadastroBalanco}"
                                value="Novo Balanço" 
                                style="margin: 10px"
                                />
-                        
-                        <p:lightBox iframe="true" id="lighbox3" onHide="remote()">
-                            <h:outputLink class="btn btn-primary" value="http://localhost:8084/WEBSGP/app/balanco/balanco.xhtml" title="Novo Balanço">
-                                <h:outputText value="Cadastrar Novo Balanço" />
-                            </h:outputLink>
-                        </p:lightBox>                       
-                        <p:remoteCommand name="remote" update="grid lighbox3"/> 
+                        <input type="submit"
+                                   class="btn btn-primary"
+                                   jsf:action="#{cadastroBean.mediaVendas(cadastroBean.cadastro)}"
+                                   value="Media dos Balanços"/>
+                        <input type="submit"
+                                   class="btn btn-primary"
+                                   jsf:action="#{cadastroBean.somaVendas(cadastroBean.cadastro)}"
+                                   value="Total de vendas"/>
 
 
                     </form>

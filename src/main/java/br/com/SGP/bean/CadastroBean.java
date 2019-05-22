@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -173,13 +174,7 @@ public class CadastroBean implements Serializable {
         //code
         balanco = new Balanco();
         findAll = cadastroDao.findAll();
-        list.add(Boolean.TRUE);
-        list.add(Boolean.TRUE);
-        list.add(Boolean.TRUE);
-        list.add(Boolean.TRUE);
-        list.add(Boolean.TRUE);
-        list.add(Boolean.TRUE);
-        list.add(Boolean.TRUE);
+        
     }
 
     public List<Cadastro> findAll() {
@@ -263,11 +258,18 @@ public class CadastroBean implements Serializable {
     }
 
     public String mediaVendas(Cadastro cadastro) {
-
+        limparList();
         return "/app/cliente/teste?faces-redirect=true";
+    }
+    
+    public String somaVendas(Cadastro cadastro) {
+        limparList();
+        return "/app/balanco/somavendas?faces-redirect=true";
     }
 
     public String editarBalanco(Balanco balanco) {
+        limparItem();
+        limparList();
         this.balanco = balanco;
         return "/app/balanco/itens?faces-redirect=true";
     }
@@ -302,6 +304,10 @@ public class CadastroBean implements Serializable {
 
         FacesMessage msg = new FacesMessage("Novo item adicionado");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        limparItem();
+    }
+    
+    public void limparItem(){
         itemBalanco = new ItemBalanco();
     }
     
@@ -309,6 +315,7 @@ public class CadastroBean implements Serializable {
         // Add one new item to the table:
         ItemBalanco i = new ItemBalanco();
         i = itemBalanco;
+        limparItem();
         i.setIdBalanco(balanco);
         i.setStatusItem(i.getGiro(), i.getCobertura());
         itensBalanco = balanco.getItemBalanco();
@@ -357,12 +364,20 @@ public class CadastroBean implements Serializable {
     }
 
     public String cadastrarBalanco() {
+        
         balanco.setCliente(cadastro);
         balanco.setItemBalanco(null);
         balancoDAO.save(balanco);
         balanco = new Balanco();
 
-        return "/app/sucesso?faces-redirect=true";
+        return "/app/balanco/listarbalanco?faces-redirect=true";
+    }
+    
+    public String cadastroBalanco() {
+        
+        balanco = new Balanco();
+
+        return "/app/balanco/balanco?faces-redirect=true";
     }
 
     private List<ProdutoSuporte> produtosSuporte = new ArrayList<>();
@@ -416,10 +431,33 @@ public class CadastroBean implements Serializable {
         }
         return produtos;
     }
+    
+    public Integer getSomaGeral(){
+        Integer somaGeral = new Integer(0);
+        
+        for (ProdutoSuporte ps : getProdutosSuporte()){
+            somaGeral += ps.getSomaVendas();
+        }
+        
+        return somaGeral;
+    }
 
 //------------- Toggler
     public List<Boolean> getList() {
         return list;
+    }
+    
+    private void limparList(){
+        list = new ArrayList<Boolean>();
+        list.add(Boolean.TRUE);
+        list.add(Boolean.TRUE);
+        list.add(Boolean.TRUE);
+        list.add(Boolean.TRUE);
+        list.add(Boolean.TRUE);
+        list.add(Boolean.TRUE);
+        list.add(Boolean.TRUE);
+        list.add(Boolean.TRUE);
+        list.add(Boolean.TRUE);
     }
 
     public void setList(List<Boolean> list) {
