@@ -28,7 +28,7 @@
        <p:growl id="growl" showDetail="true" sticky="true" />
         <p:dataTable emptyMessage="Nenhum Cliente Resgitrado." 
                      var="cadastro" 
-                     value="#{cadastroBean.findAll()}" 
+                     value="#{cadastroBean.findAll(LoginMB.usuario)}" 
                      style="margin: 100px" 
                      rows="5" 
                      paginator="true"
@@ -67,7 +67,7 @@
                 <p:commandButton class="btn-warning" icon="ui-icon-search" value="SWOT" action="#{quadroSWOTMB.editar(cadastro)}"></p:commandButton>
             </p:column>
             <f:facet name="footer">
-                Total de clientes cadastrados: #{cadastroBean.cadastros.size()}</f:facet>
+                Total de clientes cadastrados: #{cadastroBean.findAll(LoginMB.usuario).size()}</f:facet>
  
             
         </p:dataTable>

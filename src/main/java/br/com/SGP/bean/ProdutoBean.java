@@ -9,6 +9,7 @@ import br.com.SGP.dao.CategoriaProdutoDAO;
 import br.com.SGP.dao.ProdutoDAO;
 import br.com.SGP.entities.CategoriaProduto;
 import br.com.SGP.entities.Produto;
+import br.com.SGP.entities.Usuario;
 import br.com.SGP.utils.*;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -17,10 +18,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 import javax.servlet.http.Part;
 
 /**
@@ -56,7 +57,6 @@ public class ProdutoBean {
         this.pathImg = pathImg;
     }
 
-    
     public String cadastroProduto() {
         produto = new Produto();
         return "/app/produto/produto?faces-redirect=true";
@@ -109,22 +109,30 @@ public class ProdutoBean {
     }
 
     public String cadastrar() throws IOException {
-        if (img != null) {
-            //FacesContext facesContext = FacesContext.getCurrentInstance(); 
-            //ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
-            //String path = scontext.getRealPath("/img/");
-            
-            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/img/");
-            
-            img.write(path + getDateTime() + getFilename(img));
-            pathImg = (getDateTime() + getFilename(img));
-            produto.setImagem(pathImg);
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (verificaProduto(produto) == true) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Falha no cadastro.", "Produto já cadastrado!"));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "/app/produto/produto?faces-redirect=true";
+        } else {
+            if (img != null) {
+                //FacesContext facesContext = FacesContext.getCurrentInstance(); 
+                //ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
+                //String path = scontext.getRealPath("/img/");
+
+                String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/img/");
+
+                img.write(path + getDateTime() + getFilename(img));
+                pathImg = (getDateTime() + getFilename(img));
+                produto.setImagem(pathImg);
+            }
+            produtoDAO.save(produto);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Produto: "+produto.getNome()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            produto = new Produto();
+            return "/app/produto/listarproduto?faces-redirect=true";
         }
 
-        produtoDAO.save(produto);
-        produto = new Produto();
-
-        return "/app/sucesso?faces-redirect=true";
     }
 
     public String alterar() throws IOException {
@@ -139,8 +147,13 @@ public class ProdutoBean {
         produtoDAO.remove(produto.getIdproduto());
     }
 
-    public String editar(Produto produto) {
-        this.produto = produto;
+    public String alterarProduto() {
+        produtoDAO.save(produto);
+        return "/app/produto/listarproduto?faces-redirect=true";
+    }
+
+    public String editar(Produto p) {
+        this.produto = p;
         return "/app/produto/alterarproduto?faces-redirect=true";
     }
 
@@ -152,6 +165,7 @@ public class ProdutoBean {
     }
 
     public String cadastrarCategoria() {
+
         categoriaDAO.save(categoria);
         categoria = new CategoriaProduto();
 
@@ -181,6 +195,15 @@ public class ProdutoBean {
         DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
         Date date = new Date();
         return dateFormat.format(date);
+    }
+
+    public boolean verificaProduto(Produto novo) {
+        for (Produto p : produtos) {
+            if (p.getCodigo().equals(novo.getCodigo()) && p.getCor().equals(novo.getCor())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

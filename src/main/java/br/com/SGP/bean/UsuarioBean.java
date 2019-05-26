@@ -59,7 +59,7 @@ public class UsuarioBean {
     }
     
     public Usuario getUsuario() {
-        return usuario;
+        return this.usuario;
     }
 
     public void setUsuario(Usuario usuario) {

@@ -2,6 +2,7 @@ package br.com.SGP.dao;
 
 import br.com.SGP.exception.CadastroException;
 import br.com.SGP.entities.Cadastro;
+import br.com.SGP.entities.Usuario;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -50,13 +51,15 @@ public class CadastroDao {
         
     }
     
-    public List<Cadastro> findAll(){
+    public List<Cadastro> findAll(Usuario usuario){
         
         EntityManager em = new ConnectionFactory().getEntityManager();
         List<Cadastro> cadastros = null;
         
         try{
-            cadastros = em.createQuery("SELECT c FROM Cadastro c ").getResultList();
+            cadastros = em.createQuery("SELECT c FROM Cadastro c  WHERE c.representante = :idusuario ")
+                    .setParameter("idusuario", usuario)
+                    .getResultList();
         }catch(Exception e){
             System.err.println(e);
         }finally{

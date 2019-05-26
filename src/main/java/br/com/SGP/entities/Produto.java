@@ -155,8 +155,8 @@ public class Produto implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 47 * hash + Objects.hashCode(this.idproduto);
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.idproduto);
         return hash;
     }
 
@@ -175,12 +175,14 @@ public class Produto implements Serializable {
         if (!Objects.equals(this.idproduto, other.idproduto)) {
             return false;
         }
+        if (this.cor != other.cor) {
+            return false;
+        }
         return true;
     }
 
+          
         
-    
-    
     
     
 }

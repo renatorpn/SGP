@@ -312,11 +312,16 @@
                                             </p:column>
 
                                             <p:column style="width: 5%" headerText="Opção">
-                                                <input
-                                                    type="submit"
-                                                    class="btn btn-warning"
-                                                    value="x"
-                                                    action="#{cadastroBean.removeContato()}"/>
+
+                                                <input type="submit"
+                                                       class="btn btn-danger"
+                                                       jsf:action="#{cadastroBean.removeContato()}"
+                                                       value="x"
+
+                                                       onclick="if (!confirm('Confirma a exclusão do Contato: #{contato.nome}?'))
+                                                                   return false;"
+                                                       />
+
                                             </p:column>
                                             <f:facet name="footer">
                                                 Total de Contatos cadastrados: #{cadastroBean.contatos.size()}
@@ -346,11 +351,12 @@
                         <div style="margin-top: 3%">
                             <h:commandButton
                                 class="btn btn-primary"
-                                action="#{cadastroBean.cadastrar}"
-                                value="Salvar Alterações"/>
+                                action="#{cadastroBean.alterarCliente()}"
+                                value="Salvar Alterações"
+                                />
                             <input type="submit"
                                    class="btn btn-primary"
-                                   jsf:action="#{cadastroBean.remover}"
+                                   jsf:action="#{cadastroBean.removerCliente}"
                                    value="Excluir"
                                    onclick="if (!confirm('Confirma a exclusão do Cliente: #{cadastroBean.cadastro.nome}?'))
                                                return false;"
@@ -359,7 +365,7 @@
                                    class="btn btn-primary"
                                    jsf:action="#{cadastroBean.balancoCadastrados(cadastroBean.cadastro)}"
                                    value="Balanço"/>
-                            
+
                         </div>
                     </form>
                     <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="300" class="form-group">
