@@ -51,14 +51,13 @@ public class CadastroDao {
         
     }
     
-    public List<Cadastro> findAll(Usuario usuario){
+    public List<Cadastro> findAll(){
         
         EntityManager em = new ConnectionFactory().getEntityManager();
         List<Cadastro> cadastros = null;
         
         try{
-            cadastros = em.createQuery("SELECT c FROM Cadastro c  WHERE c.representante = :idusuario ")
-                    .setParameter("idusuario", usuario)
+            cadastros = em.createQuery("SELECT c FROM Cadastro c  ")
                     .getResultList();
         }catch(Exception e){
             System.err.println(e);

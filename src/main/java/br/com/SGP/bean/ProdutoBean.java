@@ -169,11 +169,35 @@ public class ProdutoBean {
         categoriaDAO.save(categoria);
         categoria = new CategoriaProduto();
 
-        return "/app/sucesso?faces-redirect=true";
+        return "/app/produto/categoriaproduto?faces-redirect=true";
+    }
+    
+    public void limparCategoria(){
+        categoria = new CategoriaProduto();
+    }
+    
+    public boolean verificaCategoria(CategoriaProduto categoriaExlcuir) {
+        for (Produto p : produtos) {
+            if (p.getCategoriaProduto().getIdcategoria().equals(categoriaExlcuir.getIdcategoria())) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void removerCategoria() {
-        categoriaDAO.remove(categoria.getIdcategoria());
+    public String removerCategoria(CategoriaProduto categoriaEcluir) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (verificaCategoria(categoriaEcluir) == true){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Falha na exclusão.", "Categoria associada a Produto!"));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "/app/produto/categoriaproduto?faces-redirect=true";
+        }else{
+        categoriaDAO.remove(categoriaEcluir.getIdcategoria());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Excluída com Sucesso.", ""));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+        return "/app/produto/categoriaproduto?faces-redirect=true";
+        
+        }
     }
 
     public String editarCategoria(CategoriaProduto c) {

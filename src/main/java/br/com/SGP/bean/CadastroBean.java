@@ -87,6 +87,7 @@ public class CadastroBean implements Serializable {
     }
 
     public List<Cadastro> getCadastros() {
+        cadastros = cadastroDao.findAll();
         return cadastros;
     }
 
@@ -172,7 +173,7 @@ public class CadastroBean implements Serializable {
     }
 
     public List<Cadastro> findAll(Usuario usuario) {
-        findAll = cadastroDao.findAll(usuario);
+        findAll = cadastroDao.findAll();
         return findAll;
     }
 
@@ -359,15 +360,32 @@ public class CadastroBean implements Serializable {
         FacesMessage msg = new FacesMessage("Contato removido.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         }
+    
+    public boolean verificaBalanco(Balanco novoBalanco) {
+        for (Balanco b : balancos) {
+            if (b.getPeriodo().equals(novoBalanco.getPeriodo())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public String cadastrarBalanco() {
-
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (verificaBalanco(balanco) == true) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Falha no cadastro.", "Balanco já cadastrado!"));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "/app/balanco/balanco?faces-redirect=true";
+        }else{
         balanco.setCliente(cadastro);
         balanco.setItemBalanco(null);
         balancoDAO.save(balanco);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Balanco de: "+balanco.getPeriodo()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
         balanco = new Balanco();
 
         return "/app/balanco/listarbalanco?faces-redirect=true";
+        }
     }
 
     public String cadastroBalanco() {
