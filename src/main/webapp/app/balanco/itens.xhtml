@@ -111,7 +111,7 @@ and open the template in the editor.
                                 <p:column style="width: 10%" headerText="Produto" sortBy="#{itemBalanco.produto.nome}" exportable="#{cadastroBean.list[1]}">
                                     <h:outputText value="#{itemBalanco.produto.nome}" />
                                 </p:column>
-                                <p:column style="width: 15%" headerText="Cor" sortBy="#{itemBalanco.produto.cor}" exportable="#{cadastroBean.list[2]}">
+                                <p:column style="width: 15%" headerText="Cor" sortBy="#{itemBalanco.produto.cor.descricao}" exportable="#{cadastroBean.list[2]}">
                                     <h:outputText value="#{itemBalanco.produto.cor}" />
                                 </p:column>
                                 <p:column style="width: 10%" headerText="Venda" sortBy="#{itemBalanco.qtdVenda}" exportable="#{cadastroBean.list[3]}">
@@ -131,7 +131,10 @@ and open the template in the editor.
                                     <h:outputText value="#{itemBalanco.statusItem}" />
                                 </p:column>
                                 <p:column style="width: 8%" headerText="Deletar" exportable="false">
-                                    <p:commandButton icon="ui-icon-trash" action="#{cadastroBean.removerItem(itemBalanco)}"/>
+                                    <p:commandButton icon="ui-icon-trash" action="#{cadastroBean.removerItem(itemBalanco)}"
+                                                     onclick="if (!confirm('Confirma a exclusão do Item: #{itemBalanco.produto.nome}, #{itemBalanco.produto.cor.descricao}?'))
+                                                                   return false;"
+                                                     />
 
                                 </p:column>
                                 <f:facet name="footer">
@@ -192,8 +195,8 @@ and open the template in the editor.
                                 class="btn btn-success"
                                 jsf:action="#{cadastroBean.onAddNewItem()}"
                                 value="Salvar"
-
-                                update=":form:msgs"
+                                
+                                update="@all"
                                 oncomplete="PF('dlg1').hide();"/>  
                         </div>
                     </div>

@@ -230,13 +230,12 @@ public class CadastroBean implements Serializable {
         }
 
     }
-    
-    public String alterarCliente(){
+
+    public String alterarCliente() {
         cadastroDao.save(cadastro);
         return "/app/cliente/listacliente?faces-redirect=true";
     }
-    
-        
+
     public String removerCliente() {
         QuadroSWOTDAO qswot = new QuadroSWOTDAO();
         List<QuadroSWOT> q = qswot.findAllByCliente(cadastro);
@@ -314,9 +313,9 @@ public class CadastroBean implements Serializable {
         itemBalanco = new ItemBalanco();
     }
 
-    public void onAddNewItem() {
+    public String onAddNewItem() {
         // Add one new item to the table:
-        ItemBalanco i = new ItemBalanco();
+        /* ItemBalanco i = new ItemBalanco();
         i = itemBalanco;
         limparItem();
         i.setIdBalanco(balanco);
@@ -327,23 +326,24 @@ public class CadastroBean implements Serializable {
         balanco.setItemBalanco(itensBalanco);
 
         balancoDAO.save(balanco);
-
-        FacesMessage msg = new FacesMessage("Novo item adicionado");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+         */
+        itemBalanco.setIdBalanco(balanco);
+        itemBalanco.setStatusItem(itemBalanco.getGiro(), itemBalanco.getCobertura());
+        itemBalancoDAO.save(itemBalanco);
+        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "" ));
+        context.getExternalContext().getFlash().setKeepMessages(true);
         itemBalanco = new ItemBalanco();
+        balanco = balancoDAO.findById(balanco.getId());
+        return "/app/balanco/itens?faces-redirect=true";
     }
 
     public String removerItem(ItemBalanco ib) {
-        itensBalanco = null;
-        itensBalanco = balanco.getItemBalanco();
-        int index = balanco.getItemBalanco().indexOf(ib);
-        itensBalanco.remove(index);
-        balanco.setItemBalanco(itensBalanco);
-        balancoDAO.save(balanco);
-        balancos.set(balancos.indexOf(balanco), balanco);
-        cadastro.setBalanco(balancos);
-        cadastroDao.save(cadastro);
-        balancoDAO.findAll();
+        itemBalancoDAO.remove(ib.getIdItemBalanco());
+        balanco = balancoDAO.findById(balanco.getId());
+        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item excluído com Sucesso.", ""));
+            context.getExternalContext().getFlash().setKeepMessages(true);
         return "/app/balanco/itens?faces-redirect=true";
     }
 
@@ -359,8 +359,8 @@ public class CadastroBean implements Serializable {
         contatoDAO.remove(contato.getId());
         FacesMessage msg = new FacesMessage("Contato removido.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        }
-    
+    }
+
     public boolean verificaBalanco(Balanco novoBalanco) {
         for (Balanco b : balancos) {
             if (b.getPeriodo().equals(novoBalanco.getPeriodo())) {
@@ -376,15 +376,15 @@ public class CadastroBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Falha no cadastro.", "Balanco já cadastrado!"));
             context.getExternalContext().getFlash().setKeepMessages(true);
             return "/app/balanco/balanco?faces-redirect=true";
-        }else{
-        balanco.setCliente(cadastro);
-        balanco.setItemBalanco(null);
-        balancoDAO.save(balanco);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Balanco de: "+balanco.getPeriodo()));
+        } else {
+            balanco.setCliente(cadastro);
+            balanco.setItemBalanco(null);
+            balancoDAO.save(balanco);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Balanco de: " + balanco.getPeriodo()));
             context.getExternalContext().getFlash().setKeepMessages(true);
-        balanco = new Balanco();
+            balanco = new Balanco();
 
-        return "/app/balanco/listarbalanco?faces-redirect=true";
+            return "/app/balanco/listarbalanco?faces-redirect=true";
         }
     }
 

@@ -46,7 +46,7 @@ public class Balanco implements Serializable {
     private String periodo;
     
     
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "idBalanco", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "idBalanco", cascade = CascadeType.MERGE)
     private List<ItemBalanco> itemBalanco;
 
     @ManyToOne(optional = false)
