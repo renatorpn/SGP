@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <head jsf:id="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>SGP</title>
+
+        <link rel="stylesheet" type="text/css"
+              href="#{request.contextPath}/resources/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/stylesheet.css"/>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+
+    <body jsf:id="body">
+        <p:messages autoUpdate="true"/>
+
+        <ui:include  src="/app/header.xhtml"/>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 ">
+                    <h:form id="form" enctype="multipart/form-data" prependId="false">
+                        <fieldset>
+                            <legend>Relatório: Vendas</legend>
+
+                            <p:dataTable emptyMessage="Nenhum item Resgitrado." 
+                                         var="produtosSuporte" 
+                                         value="#{cadastroBean.produtosSuporte}" 
+                                         id="tabelaitens"
+                                         widgetVar="produtosSuporte"
+                                         rows="5" 
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         style="align-items:    center"
+
+                                         >
+                                <f:facet name="header">
+
+                                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify" />
+                                    <p:columnToggler datasource="tabelaitens" trigger="toggler">
+                                        <p:ajax event="toggle" listener="#{cadastroBean.onToggle}" />
+                                    </p:columnToggler>
+
+                                    <h:commandLink>Relatório
+
+                                        <p:dataExporter type="pdf" target="tabelaitens" fileName="Relatório" />
+
+
+                                    </h:commandLink>
+
+
+                                </f:facet>
+
+
+                                <p:column style="width: 10%" headerText="Produto" exportable="#{cadastroBean.list[0]}" >
+                                    <h:outputText value="#{produtosSuporte.produto.nome}" />
+                                </p:column>
+                                <p:column style="width: 10%" headerText="Cor" exportable="#{cadastroBean.list[1]}">
+                                    <h:outputText value="#{produtosSuporte.produto.cor.descricao}" />
+                                </p:column>
+                                <p:column style="width: 6%" headerText="Total de Vendas" exportable="#{cadastroBean.list[2]}">
+                                    <h:outputText value="#{produtosSuporte.somaVendas}" />
+                                </p:column>
+                                <p:column style="width: 6%" headerText="Total de Balanços(Produto)" exportable="#{cadastroBean.list[3]}">
+                                    <h:outputText value="#{produtosSuporte.ocorrencias}" />
+                                </p:column>
+                                <p:columnGroup type="footer" >
+                                    <p:row>
+                                        <p:column colspan="2"  style="text-align:right" footerText="Total(Cliente):" />
+                                        <p:column footerText="#{cadastroBean.somaGeral}" />
+                                        <p:column footerText="#{cadastroBean.balancos.size()}" />
+                                    </p:row>
+                                </p:columnGroup>
+                            </p:dataTable>
+
+                        </fieldset>
+
+
+
+                    </h:form>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
+        <h:outputScript name="js/jquery.mask.min.js"/>
+        <h:outputScript name="js/jquery.maskMoney.min.js"/>
+        <h:outputScript name="js/jquery.validate.min.js"/>
+        <h:outputScript name="js/additional-methods.min.js"/>
+        <h:outputScript name="js/localization/messages_pt_BR.min.js"/>
+        <h:outputScript name="js/script.js"/>
+    </body>
+</html>

@@ -7,6 +7,7 @@ package br.com.SGP.utils;
 
 import br.com.SGP.entities.Produto;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -122,6 +123,8 @@ public class ProdutoSuporte implements Serializable{
     public void setOcorrencias(int ocorrencias) {
         this.ocorrencias = ocorrencias;
     }
+    
+    
 
     @Override
     public int hashCode() {

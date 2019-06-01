@@ -25,55 +25,60 @@
     </head>
     <h:body id="body">
         <ui:include src="/app/header.xhtml"/>
-     
-      <p:dataTable emptyMessage="Nenhum Cliente Resgitrado." var="produto" value="#{produtoMB.produtos}" style="margin: 100px" rows="5" paginator="true">
-		<p:column headerText="Nome">
-                    <h:outputText value="#{produto.nome}" />
-		</p:column>
 
-		<p:column headerText="Codigo">
-                    <h:outputText value="#{produto.codigo}" />
-		</p:column>
-
-		<p:column headerText="Cor">
-                    <h:outputText value="#{produto.cor.descricao}" />
-		</p:column>
-
-		<p:column headerText="Faixa Classificação">
-                    <h:outputText value="#{produto.fxclassificacao}" />
-		</p:column>
-
-		<p:column headerText="Genero">
-                    <h:outputText value="#{produto.genero}" />
-		</p:column>
-		
-		
-		<p:column headerText="Categoria">
-                    <h:outputText value="#{produto.categoriaProduto.descricao}" />
-		</p:column>
-				
-		<p:column headerText="Preço Venda">
-                    <h:outputText value="#{produto.precovenda}" />
-
-		</p:column>
-          
-                 <p:column headerText="Imagem">
-                     <h:graphicImage value="/img/#{produto.imagem}" width="100px" height="100px"/>
-                     
-                </p:column>
-                <p:column headerText="Opção">
-                    <p:commandButton class="btn-warning" icon="ui-icon-search" value="Info" action="#{produtoMB.editar(produto)}">
-
-                     </p:commandButton>
-                </p:column>
-                <f:facet name="footer">
-                    Total de produtos cadastrados: #{produtoMB.produtos.size()}</f:facet>
-          
-				
-	</p:dataTable>
+        <p:growl id="growl" showDetail="true" sticky="true" />
+        <p:messages id="msgs" />
 
 
-       <h:outputScript name="js/jquery-3.2.1.min.js"/>
+        <p:dataTable emptyMessage="Nenhum Cliente Resgitrado." var="produto" value="#{produtoMB.produtos}" style="margin: 100px" rows="5" paginator="true">
+            <p:column headerText="Nome">
+                <h:outputText value="#{produto.nome}" />
+            </p:column>
+
+            <p:column headerText="Codigo">
+                <h:outputText value="#{produto.codigo}" />
+            </p:column>
+
+            <p:column headerText="Cor">
+                <h:outputText value="#{produto.cor.descricao}" />
+            </p:column>
+
+            <p:column headerText="Faixa Classificação">
+                <h:outputText value="#{produto.fxclassificacao}" />
+            </p:column>
+
+            <p:column headerText="Genero">
+                <h:outputText value="#{produto.genero}" />
+            </p:column>
+
+
+            <p:column headerText="Categoria">
+                <h:outputText value="#{produto.categoriaProduto.descricao}" />
+            </p:column>
+
+            <p:column headerText="Preço Venda">
+                <h:outputText value="#{produto.precovenda}" />
+
+            </p:column>
+
+            <p:column headerText="Imagem">
+                <h:graphicImage value="/img/#{produto.imagem}" width="100px" height="100px"/>
+
+            </p:column>
+            <p:column headerText="Opção">
+                
+                 <p:commandButton class="btn-warning" icon="ui-icon-search" value="Info" action="#{produtoMB.editar(produto)}"></p:commandButton>
+                
+              
+            </p:column>
+            <f:facet name="footer">
+                Total de produtos cadastrados: #{produtoMB.produtos.size()}</f:facet>
+
+
+        </p:dataTable>
+
+
+        <h:outputScript name="js/jquery-3.2.1.min.js"/>
         <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
         <h:outputScript name="js/jquery.mask.min.js"/>
         <h:outputScript name="js/jquery.maskMoney.min.js"/>
@@ -81,7 +86,7 @@
         <h:outputScript name="js/additional-methods.min.js"/>
         <h:outputScript name="js/localization/messages_pt_BR.min.js"/>
         <h:outputScript name="js/script.js"/>
-        
 
-</h:body>
+
+    </h:body>
 </html>

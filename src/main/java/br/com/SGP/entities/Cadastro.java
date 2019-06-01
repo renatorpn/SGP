@@ -91,10 +91,13 @@ public class Cadastro implements Serializable{
     @Valid
     private List<Balanco> balanco;
     
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
-    @Valid
     private List<ContatoCliente> contatos;
+           
+    @NotNull
+    @ManyToOne(optional = false)
+    private Usuario representante;
     
     public List<Balanco> getBalanco() {
         return balanco;
@@ -111,6 +114,15 @@ public class Cadastro implements Serializable{
     public void setContatos(List<ContatoCliente> contatos) {
         this.contatos = contatos;
     }
+
+    public Usuario getRepresentante() {
+        return representante;
+    }
+
+    public void setRepresentante(Usuario representante) {
+        this.representante = representante;
+    }
+
     
     
 

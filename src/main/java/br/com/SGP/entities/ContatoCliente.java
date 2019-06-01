@@ -56,9 +56,9 @@ public class ContatoCliente implements Serializable {
     @Size(min = 11, max = 11)
     @Column(name = "telefone")
     private String telefone;
-
+    
+    @NotNull
     @ManyToOne(optional = false)
-    @JoinColumn(referencedColumnName = "id", name = "idcliente_fk", nullable = false)
     private Cadastro cliente;
 
     public Long getId() {

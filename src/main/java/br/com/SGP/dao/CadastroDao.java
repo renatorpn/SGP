@@ -2,6 +2,7 @@ package br.com.SGP.dao;
 
 import br.com.SGP.exception.CadastroException;
 import br.com.SGP.entities.Cadastro;
+import br.com.SGP.entities.Usuario;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -56,7 +57,8 @@ public class CadastroDao {
         List<Cadastro> cadastros = null;
         
         try{
-            cadastros = em.createQuery("SELECT c FROM Cadastro c ").getResultList();
+            cadastros = em.createQuery("SELECT c FROM Cadastro c  ")
+                    .getResultList();
         }catch(Exception e){
             System.err.println(e);
         }finally{

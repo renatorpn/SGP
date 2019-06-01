@@ -77,6 +77,7 @@ public class QuadroSWOTDAO {
             quadroSWOTs = em.createQuery("SELECT b FROM QuadroSWOT b WHERE b.cliente = :idcadastro")
                     .setParameter("idcadastro", cliente)
                     .getResultList(); 
+            
         }catch(Exception e){
             System.err.println(e);
         }finally{
@@ -85,4 +86,28 @@ public class QuadroSWOTDAO {
         
         return quadroSWOTs;
     }
+    
+    
+    public void remove(Long id){
+        
+        EntityManager em = new ConnectionFactory().getEntityManager();
+        QuadroSWOT quadroSWOT = null;
+        
+        try{
+            
+            quadroSWOT = em.find(QuadroSWOT.class, id);
+            
+            em.getTransaction().begin();
+            em.remove(quadroSWOT);
+            em.getTransaction().commit();
+            
+        }catch(Exception e){
+            System.err.println(e);
+            em.getTransaction().rollback();
+        }finally{
+            em.close();
+        }
+    }
+    
+    
 }

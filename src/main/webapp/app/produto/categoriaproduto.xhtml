@@ -28,66 +28,113 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                <div class="col-lg-12 col-md-12 ">
                     <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
-                        <fieldset>
-                            <legend>Dados Gerais</legend>
-                            <div class="row">
+                        <fieldset >
+                            <legend>Manutenção de Categorias de Produtos</legend>
+                            <p:dataTable emptyMessage="Nenhuma categoria cadastrada." 
+                                         var="categoria" 
+                                         value="#{produtoMB.categorias}" 
+                                         id="categorias"
+                                         widgetVar="categorias"
+                                         rows="5" 
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         editable="true">
 
-                                <div class="col-lg-12 col-md-12">
-                                    <div class="form-group #{!nomeCategoria.valid ? 'has-error' : ''}">
-                                        <label jsf:for="nomeCategoria">Nome Categoria</label>
-                                        <input type="text"
-                                               jsf:id="nomeCategoria"
-                                               jsf:binding="#{nome}"
-                                               class="form-control"
-                                               placeholder="Nome da categoria"
-                                               
-                                               jsf:value="#{produtoMB.categoria.nomeCategoria}"
-                                               required="required"/>
+                                <f:facet name="header">Categorias Cadastradas
+                                </f:facet>
 
-                                        <h:message for="nomeCategoria" styleClass="text-danger"/>
-                                    </div>
-                                </div>
-                            </div>
+                                <p:column style="width: 10%" headerText="Nome Categoria" sortBy="#{categoria.nomeCategoria}" >
+                                    <h:outputText value="#{categoria.nomeCategoria}" />
+                                </p:column>
 
-                            <div class="row">
+                                <p:column style="width: 10%" headerText="Descrição" sortBy="#{categoria.descricao}" >
+                                    <h:outputText value="#{categoria.descricao}" />
+                                </p:column>
 
-                                <div class="col-lg-12 col-md-12">
-                                    <div class="form-group #{!drescricao.valid ? 'has-error' : ''}">
-                                        <label jsf:for="drescricao">Descrição</label>
-                                        <input type="text"
-                                               jsf:id="drescricao"
-                                               jsf:binding="#{drescricao}"
-                                               class="form-control"
-                                               placeholder="Drescreva as caracterristicas da categoria."
-                                               jsf:value="#{produtoMB.categoria.descricao}"
-                                               required="required"/>
+                                <p:column style="width: 8%" headerText="Deletar" exportable="false">
+                                    <p:commandButton icon="ui-icon-trash" 
+                                                     action="#{produtoMB.removerCategoria(categoria)}"
+                                                     onclick="if (!confirm('Confirma a exclusão da Categoria: #{categoria.nomeCategoria}?'))
+                                                                   return false;"
+                                                     />
+                                </p:column>
 
-                                        <h:message for="drescricao" styleClass="text-danger"/>
-                                    </div>
-                                </div>
+                                <f:facet name="footer">
+                                    Total de categorias cadastradas: #{produtoMB.categorias.size()}.
+                                    <p:commandButton value="Nova categoria" type="button" actionListener="#{produtoMB.limparCategoria()}" onclick="PF('dlg1').show();" icon="ui-icon-plus" />
+                                </f:facet>
 
-
-                            </div>
-
-
+                            </p:dataTable>
                         </fieldset>
-
-
-
-
-
-                        <input type="submit"
-                               class="btn btn-primary"
-                               jsf:action="#{produtoMB.cadastrarCategoria()}"
-                               value="Cadastrar categoria"/>
-
                     </form>
                 </div>
             </div>
         </div>
 
+        <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="300" class="form-group" >
+            <p:growl id="msgsdialog" showDetail="true" sticky="true"/>
+            <h:form id="formdialog" enctype="multipart/form-data" >
+
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                        <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
+                            <fieldset>
+                                <legend>Cadastro Nova Categoria</legend>
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group #{!nomeCategoria.valid ? 'has-error' : ''}">
+                                            <label jsf:for="nomeCategoria">Nome Categoria</label>
+                                            <input type="text"
+                                                   jsf:id="nomeCategoria"
+                                                   jsf:binding="#{nome}"
+                                                   class="form-control"
+                                                   placeholder="Nome da categoria"
+
+                                                   jsf:value="#{produtoMB.categoria.nomeCategoria}"
+                                                   required="required"/>
+
+                                            <h:message for="nomeCategoria" styleClass="text-danger"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group #{!drescricao.valid ? 'has-error' : ''}">
+                                            <label jsf:for="drescricao">Descrição</label>
+                                            <input type="text"
+                                                   jsf:id="drescricao"
+                                                   jsf:binding="#{drescricao}"
+                                                   class="form-control"
+                                                   placeholder="Drescreva as caracterristicas da categoria."
+                                                   jsf:value="#{produtoMB.categoria.descricao}"
+                                                   required="required"/>
+
+                                            <h:message for="drescricao" styleClass="text-danger"/>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </fieldset>
+
+                            <input type="submit"
+                                   class="btn btn-primary"
+                                   jsf:action="#{produtoMB.cadastrarCategoria()}"
+                                   value="Cadastrar categoria"/>
+
+                        </form>
+                    </div>
+                </div>
+            </h:form>
+        </p:dialog>
 
         <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
         <h:outputScript name="js/jquery.mask.min.js"/>

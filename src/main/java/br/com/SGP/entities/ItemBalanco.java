@@ -9,6 +9,7 @@ import br.com.SGP.entities.Balanco;
 import br.com.SGP.entities.Produto;
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -144,31 +145,72 @@ public class ItemBalanco implements Serializable {
     }
     
         public void setStatusItem(double giro, double cobertura){
-         if(giro >= 0.25 && cobertura < 2.5){
+         if(giro > 2.5 && cobertura < 2.5){
              this.statusItem = "Ruptura";
-         }else if(giro >= 0.25 && cobertura >= 2.5){
+         }else if(giro > 2.5 && cobertura > 2.5){
              this.statusItem = "Abastecido";
-         }else if(giro < 0.25 && cobertura >= 2.5){
-             this.statusItem = "Atenção";
+         }else if(giro < 2.5 && cobertura > 2.5){
+             this.statusItem = "Baixa Demanda";
          }else{
              this.statusItem = "Descontinuado";
          }
          this.statusItem = statusItem;
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.idItemBalanco);
+        hash = 83 * hash + Objects.hashCode(this.idBalanco);
+        hash = 83 * hash + Objects.hashCode(this.produto);
+        hash = 83 * hash + Objects.hashCode(this.qtdVenda);
+        hash = 83 * hash + Objects.hashCode(this.qtdEstoque);
+        hash = 83 * hash + (int) (Double.doubleToLongBits(this.giro) ^ (Double.doubleToLongBits(this.giro) >>> 32));
+        hash = 83 * hash + (int) (Double.doubleToLongBits(this.cobertura) ^ (Double.doubleToLongBits(this.cobertura) >>> 32));
+        hash = 83 * hash + Objects.hashCode(this.statusItem);
+        return hash;
+    }
+
     @Override
     public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null) return false;
-    if (getClass() != obj.getClass()) return false;
-    ItemBalanco other = (ItemBalanco) obj;
-    if (produto == null) {
-      if (other.produto != null) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ItemBalanco other = (ItemBalanco) obj;
+        if (Double.doubleToLongBits(this.giro) != Double.doubleToLongBits(other.giro)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.cobertura) != Double.doubleToLongBits(other.cobertura)) {
+            return false;
+        }
+        if (!Objects.equals(this.statusItem, other.statusItem)) {
+            return false;
+        }
+        if (!Objects.equals(this.idItemBalanco, other.idItemBalanco)) {
+            return false;
+        }
+        if (!Objects.equals(this.idBalanco, other.idBalanco)) {
+            return false;
+        }
+        if (!Objects.equals(this.produto, other.produto)) {
+            return false;
+        }
+        if (!Objects.equals(this.qtdVenda, other.qtdVenda)) {
+            return false;
+        }
+        if (!Objects.equals(this.qtdEstoque, other.qtdEstoque)) {
+            return false;
+        }
+        return true;
     }
-    else if (!produto.equals(other.produto)) return false;
-    return true;
-  }
-
+    
+   
     
     
 

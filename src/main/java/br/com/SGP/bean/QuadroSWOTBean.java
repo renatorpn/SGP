@@ -82,7 +82,9 @@ public class QuadroSWOTBean {
     }
 
     public String editar(Cadastro cadastro) {
-        if (quadroSWOTDAO.findAllByCliente(cadastro) == null){
+        List<QuadroSWOT> q;
+        q = quadroSWOTDAO.findAllByCliente(cadastro);
+        if ( q.isEmpty()){
             quadroSWOT = new QuadroSWOT();
             quadroSWOT.setCliente(cadastro);
             quadroSWOTDAO.save(quadroSWOT);

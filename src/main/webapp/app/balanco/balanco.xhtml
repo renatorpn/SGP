@@ -31,7 +31,9 @@
             monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
             changeYear: true,
             showButtonPanel: true,
-            dateFormat: 'MM yy',
+            dateFormat: 'MM/yy',
+            closeText : "Fechar",
+            currentText : "Atual",
             onClose: function(dateText, inst) { 
                 var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
                 var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
@@ -57,12 +59,12 @@
 
     </head>
     <body jsf:id="body">
-        
+        <ui:include  src="/app/header.xhtml"/>
             
        
         
-        <p:growl autoUpdate="true"/>
-      
+        <p:growl autoUpdate="true" showDetail="true" sticky="true"/>
+        
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
@@ -92,9 +94,6 @@
                             <div class="form-group">
                                 <label for="startDate">Selecione o Período :</label>
                                 <p:inputText  id="startDate" class="date-picker" value="#{cadastroBean.balanco.periodo}"/>
-                                    
-                                
-
                                 <h:message for="periodo" styleClass="text-danger"/>
                                 
                                 
@@ -105,7 +104,7 @@
                                                
                         <input type="submit"
                                class="btn btn-primary"
-                               jsf:action="#{cadastroBean.cadastrarBalanco}"
+                               jsf:action="#{cadastroBean.cadastrarBalanco()}"
                                value="Salvar" 
                                style="margin: 10px"
                                />

@@ -25,11 +25,13 @@
     </head>
     <body jsf:id="body">
         <ui:include src="/app/header.xhtml"/>
-
+        
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
-                    <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
+                    <h:form id="form" enctype="multipart/form-data" prependId="false">
+                        <p:growl id="growl" showDetail="true" sticky="true" />
+                        <p:messages id="msgs" />
                         <fieldset>
                             <legend>Dados Gerais</legend>
                             <div class="row">
@@ -169,12 +171,15 @@
 
                         
 
+                                               
                         <input type="submit"
-                               class="btn btn-primary"
-                               jsf:action="#{produtoMB.cadastrar()}"
-                               value="Enviar"/>
-
-                    </form>
+                                   class="btn btn-primary"
+                                   jsf:action="#{produtoMB.cadastrar()}"
+                                   value="Cadastrar"
+                                   icon="ui-icon-disk"
+                                   update="@all"/>
+                        
+                    </h:form>
                 </div>
             </div>
         </div>

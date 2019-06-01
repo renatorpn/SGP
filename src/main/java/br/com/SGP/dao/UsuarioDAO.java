@@ -37,7 +37,7 @@ public class UsuarioDAO {
         try {
             em.getTransaction().begin();
 
-            if (usuario.getId() == null) {
+            if (usuario.getId()== null) {
                 em.persist(usuario);
             } else {
                 em.merge(usuario);

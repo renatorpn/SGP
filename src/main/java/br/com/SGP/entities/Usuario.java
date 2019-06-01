@@ -6,17 +6,24 @@
 package br.com.SGP.entities;
 import br.com.SGP.utils.Cargo;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.validator.constraints.Email;
 
 @Entity
@@ -46,6 +53,11 @@ public class Usuario implements Serializable{
     @NotNull
     @Enumerated(EnumType.STRING)
     private Cargo cargo;
+    
+        
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "representante", cascade = CascadeType.REMOVE)
+    @Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
+    private List<Cadastro> idCliente;
 
     public String getNome() {
         return nome;
@@ -54,8 +66,14 @@ public class Usuario implements Serializable{
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
-    
+
+    public List<Cadastro> getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(List<Cadastro> idCliente) {
+        this.idCliente = idCliente;
+    }
 
     public Long getId() {
         return id;
@@ -64,7 +82,8 @@ public class Usuario implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-    
+
+       
     
     public String getNomeUsuario() {
         return nomeUsuario;
@@ -97,14 +116,11 @@ public class Usuario implements Serializable{
     public void setCargo(Cargo cargo) {
         this.cargo = cargo;
     }
-    
-    
-    
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.id);
+        int hash = 5;
+        hash = 13 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -120,11 +136,12 @@ public class Usuario implements Serializable{
             return false;
         }
         final Usuario other = (Usuario) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
         return true;
     }
+    
+    
+    
+
     
     
 }
