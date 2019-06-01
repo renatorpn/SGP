@@ -147,9 +147,26 @@ public class ProdutoBean {
         produtoDAO.remove(produto.getIdproduto());
     }
 
-    public String alterarProduto() {
+    public String alterarProduto() throws IOException {
         produtoDAO.save(produto);
-        return "/app/produto/listarproduto?faces-redirect=true";
+        FacesContext context = FacesContext.getCurrentInstance();
+            if (img != null) {
+                //FacesContext facesContext = FacesContext.getCurrentInstance(); 
+                //ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
+                //String path = scontext.getRealPath("/img/");
+
+                String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/img/");
+
+                img.write(path + getDateTime() + getFilename(img));
+                pathImg = (getDateTime() + getFilename(img));
+                produto.setImagem(pathImg);
+            }
+            produtoDAO.save(produto);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Produto: "+produto.getNome()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            produto = new Produto();
+            return "/app/produto/listarproduto?faces-redirect=true";
+        
     }
 
     public String editar(Produto p) {

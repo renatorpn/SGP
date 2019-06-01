@@ -31,121 +31,128 @@
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
                     <form jsf:id="form" enctype="multipart/form-data" >
                         <fieldset>
-                            <legend>Dados do Cadastro</legend>
+
+                            <legend>Usuarios Cadastros</legend>
                             <div class="row">
-
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="form-group ">
-                                        <label jsf:for="nomeUsuario">Nome de Usuário</label>
-                                        <input type="text"
-                                               jsf:id="nomeUsuario"
-                                               jsf:binding="#{nomeUsuario}"
-                                               class="form-control"
-                                               placeholder="Usuário"
-                                               jsf:value="#{Usuario.usuarioCadastro.nomeUsuario}"
-                                               required="required"/>
-
-                                        <h:message for="nomeUsuario" styleClass="text-danger"/>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="form-group">
-                                        <label jsf:for="senha">Senha</label>
-                                        <input type="password"
-                                               jsf:id="senha"
-                                               jsf:binding="#{senha}"
-                                               class="form-control"
-                                               
-                                               maxlength="8"
-                                               jsf:value="#{Usuario.usuarioCadastro.senha}"
-                                               required="required"/>
-
-                                        <h:message for="senha" styleClass="text-danger"/>
-                                    </div>
-                                </div>
+                                <p:dataTable id="tbusuarios" emptyMessage="Nenhum Usuário Resgitrado." var="usuario" value="#{Usuario.usuarios}" style="margin: 100px" rows="5" paginator="true">
+                                    <p:column headerText="Id de Usuário">
+                                        <h:outputText value="#{usuario.id}" />
+                                    </p:column>                                
+                                    <p:column headerText="Nome de Usuário">
+                                        <h:outputText value="#{usuario.nomeUsuario}" />
+                                    </p:column>
+                                    <p:column headerText="Cargo">
+                                        <h:outputText value="#{usuario.cargo.descricao}" />
+                                    </p:column>
+                                    <p:column headerText="Opção">
+                                        <p:commandButton class="btn-warning" icon="ui-icon-search" value="Info" action="#{Usuario.editar(usuario)}"></p:commandButton>
+                                        <p:commandButton value="Editar Usuario" type="button" onclick="PF('dlg1').show();" icon="ui-icon-plus">
+                                            <f:setPropertyActionListener value="#{usuario}" target="#{Usuario.usuarioSelecionado}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
                             </div>
-
-                            <div class="row">
-                             <div class="col-lg-4 col-md-4">
-                                    <div class="form-group ">
-                                        <label jsf:for="email">E-mail do Usuário</label>
-                                        <input type="email"
-                                               jsf:id="email"
-                                               jsf:binding="#{email}"
-                                               class="form-control"
-                                               placeholder="exemplo@exemplo.com.br"
-                                               jsf:value="#{Usuario.usuarioCadastro.email}"
-                                               required="required"/>
-
-                                        <h:message for="email" styleClass="text-danger"/>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="form-group ">
-                                        <label jsf:for="nome">Nome Completo</label>
-                                        <input type="text"
-                                               jsf:id="nome"
-                                               jsf:binding="#{nome}"
-                                               class="form-control"
-                                               placeholder="Nome Completo"
-                                               jsf:value="#{Usuario.usuarioCadastro.nome}"
-                                               required="required"/>
-
-                                        <h:message for="nome" styleClass="text-danger"/>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-3">
-                                    <div class="form-group">
-                                        <label jsf:for="cargo">Cargo</label>
-                                        <h:selectOneMenu id="cargo" class="form-control" value="#{Usuario.usuarioCadastro.cargo}" required="true">
-                                            <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
-                                            <f:selectItems value="#{Usuario.cargo}" var ="cargo"
-                                                           itemValue="#{cargo}" 
-                                                           itemLabel="#{cargo.descricao}"/>
-                                            </h:selectOneMenu>
-                                        <p:message for="cargo" />
-                                    </div>
-                                </div>
-                                
-
-                                
-                               
-                            </div>
-                            
-                            <input type="submit"
-                               class="btn btn-primary"
-                               jsf:action="#{Usuario.cadastrar()}"
-                               value="Salvar usuário"
-                               update=":form:tbusuarios"
-                               oncomplete="PF('tbusuarios').addRow();"
-                               />
-                            
-                           <legend>Clientes Cadastros</legend>
-                           <div class="row">
-                            <p:dataTable id="tbusuarios" emptyMessage="Nenhum Usuário Resgitrado." var="usuario" value="#{Usuario.usuarios}" style="margin: 100px" rows="5" paginator="true">
-                                <p:column headerText="Id de Usuário">
-                                    <h:outputText value="#{usuario.id}" />
-                                </p:column>                                
-                                <p:column headerText="Nome de Usuário">
-                                    <h:outputText value="#{usuario.nomeUsuario}" />
-                                </p:column>
-                                <p:column headerText="Cargo">
-                                    <h:outputText value="#{usuario.cargo.descricao}" />
-                                </p:column>
-                            </p:dataTable>
-                               </div>
-                            </fieldset>
-
-
-                        
-
-                        
-
+                        </fieldset>
+                        <p:commandButton value="Novo Usuario" type="button" actionListener="#{Usuario.limparUsuario()}" onclick="PF('dlg1').show();" icon="ui-icon-plus" />
                     </form>
                 </div>
             </div>
         </div>
 
+        <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="300" class="form-group" >
+            <p:growl id="msgsdialog" showDetail="true" sticky="true"/>
+            <h:form id="formdialog" enctype="multipart/form-data" >
+
+                <legend>Dados do Cadastro</legend>
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4">
+                        <div class="form-group ">
+                            <label jsf:for="nomeUsuario">Nome de Usuário</label>
+                            <input type="text"
+                                   jsf:id="nomeUsuario"
+                                   jsf:binding="#{nomeUsuario}"
+                                   class="form-control"
+                                   placeholder="Usuário"
+                                   jsf:value="#{Usuario.usuarioCadastro.nomeUsuario}"
+                                   required="required"/>
+
+                            <h:message for="nomeUsuario" styleClass="text-danger"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="form-group">
+                            <label jsf:for="senha">Senha</label>
+                            <input type="password"
+                                   jsf:id="senha"
+                                   jsf:binding="#{senha}"
+                                   class="form-control"
+
+                                   maxlength="8"
+                                   jsf:value="#{Usuario.usuarioCadastro.senha}"
+                                   required="required"/>
+
+                            <h:message for="senha" styleClass="text-danger"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="form-group ">
+                            <label jsf:for="email">E-mail do Usuário</label>
+                            <input type="email"
+                                   jsf:id="email"
+                                   jsf:binding="#{email}"
+                                   class="form-control"
+                                   placeholder="exemplo@exemplo.com.br"
+                                   jsf:value="#{Usuario.usuarioCadastro.email}"
+                                   required="required"/>
+
+                            <h:message for="email" styleClass="text-danger"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="form-group ">
+                            <label jsf:for="nome">Nome Completo</label>
+                            <input type="text"
+                                   jsf:id="nome"
+                                   jsf:binding="#{nome}"
+                                   class="form-control"
+                                   placeholder="Nome Completo"
+                                   jsf:value="#{Usuario.usuarioCadastro.nome}"
+                                   required="required"/>
+
+                            <h:message for="nome" styleClass="text-danger"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <div class="form-group">
+                            <label jsf:for="cargo">Cargo</label>
+                            <h:selectOneMenu id="cargo" class="form-control" value="#{Usuario.usuarioCadastro.cargo}" required="true">
+                                <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
+                                <f:selectItems value="#{Usuario.cargo}" var ="cargo"
+                                               itemValue="#{cargo}" 
+                                               itemLabel="#{cargo.descricao}"/>
+                            </h:selectOneMenu>
+                            <p:message for="cargo" />
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+                <input type="submit"
+                       class="btn btn-primary"
+                       jsf:action="#{Usuario.cadastrar()}"
+                       value="Salvar usuário"
+                       update=":form:tbusuarios"
+                       oncomplete="PF('tbusuarios').addRow();"
+                       />
+            </h:form>
+        </p:dialog>
         
         <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
         <h:outputScript name="js/jquery.mask.min.js"/>

@@ -231,9 +231,32 @@ public class CadastroBean implements Serializable {
 
     }
 
-    public String alterarCliente() {
-        cadastroDao.save(cadastro);
-        return "/app/cliente/listacliente?faces-redirect=true";
+    public String alterarCliente () throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (img != null) {
+            //FacesContext facesContext = FacesContext.getCurrentInstance();
+            //ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
+            //String path = scontext.getRealPath("/img/");
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/img/");
+
+            img.write(path + getDateTime() + getFilename(img));
+            pathImg = (getDateTime() + getFilename(img));
+            cadastro.setLogomarca(pathImg);
+        }
+        try {
+            cadastroDao.save(cadastro);
+
+            context.addMessage(null, new FacesMessage("Alterado com successo: ", "Cliente " + cadastro.getNome()));
+            context.getExternalContext().getFlash().setKeepMessages(true);// faz o flash para a growl aparecer com o redirect
+
+            return "/app/cliente/listacliente?faces-redirect=true";
+
+        } catch (Exception e) {
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao Alterar! ", e.getMessage()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "/app/cliente/cliente?faces-redirect=true";
+        }
     }
 
     public String removerCliente() {

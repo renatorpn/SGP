@@ -27,9 +27,20 @@ public class UsuarioCadastro {
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     private Usuario usuarioCadastro = new Usuario();
     private List<Usuario> usuarios = new ArrayList<Usuario>();
-
+    private Usuario usuarioSelecionado = new Usuario();
+    
     public UsuarioCadastro() {
     }
+
+    public Usuario getUsuarioSelecionado() {
+        return usuarioSelecionado;
+    }
+
+    public void setUsuarioSelecionado(Usuario usuarioSelecionado) {
+        this.usuarioSelecionado = usuarioSelecionado;
+    }
+    
+    
     
     public UsuarioCadastro(Usuario usuario) {
         this.usuarioCadastro = usuario;
@@ -94,6 +105,13 @@ public class UsuarioCadastro {
             }
             usuarios = usuarioDAO.findAll();
             }
+     public void editar(Usuario usuario) {
+        this.usuarioCadastro = usuario;
+    }
+     
+     public void limparUsuario() {
+        usuarioCadastro = new Usuario();
+    }
                 
             
                         

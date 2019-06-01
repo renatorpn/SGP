@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
+    <head jsf:id="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <title>SGP</title>
+
+        <link rel="stylesheet" type="text/css"
+              href="#{request.contextPath}/resources/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/stylesheet.css"/>
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <h:body id="body">
+        <ui:include src="/app/header.xhtml"/>
+
+        <p:growl id="growl" showDetail="true" sticky="true" />
+        <p:messages id="msgs" />
+
+
+        <p:dataTable emptyMessage="Nenhum Cliente Resgitrado." var="produto" value="#{produtoMB.produtos}" style="margin: 100px" rows="5" paginator="true">
+            <p:column headerText="Nome">
+                <h:outputText value="#{produto.nome}" />
+            </p:column>
+
+            <p:column headerText="Codigo">
+                <h:outputText value="#{produto.codigo}" />
+            </p:column>
+
+            <p:column headerText="Cor">
+                <h:outputText value="#{produto.cor.descricao}" />
+            </p:column>
+
+            <p:column headerText="Faixa Classificação">
+                <h:outputText value="#{produto.fxclassificacao}" />
+            </p:column>
+
+            <p:column headerText="Genero">
+                <h:outputText value="#{produto.genero}" />
+            </p:column>
+
+
+            <p:column headerText="Categoria">
+                <h:outputText value="#{produto.categoriaProduto.descricao}" />
+            </p:column>
+
+            <p:column headerText="Preço Venda">
+                <h:outputText value="#{produto.precovenda}" />
+
+            </p:column>
+
+            <p:column headerText="Imagem">
+                <h:graphicImage value="/img/#{produto.imagem}" width="100px" height="100px"/>
+
+            </p:column>
+            <p:column headerText="Opção">
+                
+                 <p:commandButton class="btn-warning" icon="ui-icon-search" value="Info" action="#{produtoMB.editar(produto)}"></p:commandButton>
+                
+              
+            </p:column>
+            <f:facet name="footer">
+                Total de produtos cadastrados: #{produtoMB.produtos.size()}</f:facet>
+
+
+        </p:dataTable>
+
+
+        <h:outputScript name="js/jquery-3.2.1.min.js"/>
+        <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
+        <h:outputScript name="js/jquery.mask.min.js"/>
+        <h:outputScript name="js/jquery.maskMoney.min.js"/>
+        <h:outputScript name="js/jquery.validate.min.js"/>
+        <h:outputScript name="js/additional-methods.min.js"/>
+        <h:outputScript name="js/localization/messages_pt_BR.min.js"/>
+        <h:outputScript name="js/script.js"/>
+
+
+    </h:body>
+</html>
