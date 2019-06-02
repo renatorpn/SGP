@@ -13,6 +13,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -20,15 +21,15 @@ import javax.faces.context.FacesContext;
  *
  * @author lucas
  */
-
 @ManagedBean(name = "Usuario")
-@ViewScoped
+@SessionScoped
 public class UsuarioCadastro {
+
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     private Usuario usuarioCadastro = new Usuario();
     private List<Usuario> usuarios = new ArrayList<Usuario>();
     private Usuario usuarioSelecionado = new Usuario();
-    
+
     public UsuarioCadastro() {
     }
 
@@ -39,9 +40,7 @@ public class UsuarioCadastro {
     public void setUsuarioSelecionado(Usuario usuarioSelecionado) {
         this.usuarioSelecionado = usuarioSelecionado;
     }
-    
-    
-    
+
     public UsuarioCadastro(Usuario usuario) {
         this.usuarioCadastro = usuario;
     }
@@ -62,7 +61,6 @@ public class UsuarioCadastro {
         this.usuarioCadastro = usuarioCadastro;
     }
 
-
     public List<Usuario> getUsuarios() {
         return usuarios;
     }
@@ -70,49 +68,65 @@ public class UsuarioCadastro {
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-    
+
     public Cargo[] getCargo() {
         return Cargo.values();
     }
-    
+
     @PostConstruct
     public void construct() {
-        
+
         usuarioCadastro = new Usuario();
         usuarios = usuarioDAO.findAll();
     }
-    
+
     public boolean verifica(Usuario novo) {
-    for (Usuario u : usuarios) {
-      if (u.getNomeUsuario().equals(novo.getNomeUsuario()) ) {
-         return true;
-      }
-   }
-   return false;
-}
-    
+        for (Usuario u : usuarios) {
+            if (u.getNomeUsuario().equals(novo.getNomeUsuario())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void cadastrar() {
-            if(verifica(usuarioCadastro) == false){            
+        if (verifica(usuarioCadastro) == false) {
             usuarioDAO.inserirUsuario(usuarioCadastro);
-            FacesContext context = FacesContext.getCurrentInstance(); 
+            FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Cadastrado!"));
             usuarioCadastro = new Usuario();
-            }
-            else{
-            FacesContext context = FacesContext.getCurrentInstance(); 
+        } else {
+            FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Usuário já cadastrado!"));
             usuarioCadastro = new Usuario();
-            }
-            usuarios = usuarioDAO.findAll();
-            }
-     public void editar(Usuario usuario) {
-        this.usuarioCadastro = usuario;
+        }
+        usuarios = usuarioDAO.findAll();
     }
-     
-     public void limparUsuario() {
+
+    public void alterar() {
+        usuarioDAO.inserirUsuario(usuarioCadastro);
+        limparUsuario();
+        usuarios = usuarioDAO.findAll();
+    }
+
+    public void editar(Usuario usuario) {
+        this.usuarioCadastro = usuario;
+
+    }
+
+    public void excluir(Usuario usuario, Usuario logado) {
+        if (usuario.getId().equals(logado.getId())) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "O Administrador do Sistema não pode ser excluído.", ""));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+        } else {
+            usuarioDAO.deletarUsuario(usuario.getId());
+            usuarios = usuarioDAO.findAll();
+        }
+    }
+
+    public void limparUsuario() {
         usuarioCadastro = new Usuario();
     }
-                
-            
-                        
-    }
+
+}

@@ -54,7 +54,7 @@ public class UsuarioDAO {
         return usuario;
     }
 
-    public Usuario deletarUsuario(Integer id) {
+    public Usuario deletarUsuario(Long id) {
         EntityManager em = new ConnectionFactory().getEntityManager();
         Usuario usuario = null;
         

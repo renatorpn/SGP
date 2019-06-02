@@ -105,6 +105,9 @@ public class Produto implements Serializable {
     }
 
      public String getImagem() {
+         if (imagem == null){
+            return "sem-foto.gif";
+        }
         return imagem;
     }
 
