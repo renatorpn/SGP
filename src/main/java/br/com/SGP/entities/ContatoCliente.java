@@ -53,7 +53,7 @@ public class ContatoCliente implements Serializable {
     @Enumerated(EnumType.STRING)
     private CargoContatoCliente cargo;
 
-    @Size(min = 11, max = 11)
+    
     @Column(name = "telefone")
     private String telefone;
     
