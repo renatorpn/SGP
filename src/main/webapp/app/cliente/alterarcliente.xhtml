@@ -375,11 +375,15 @@
                                 <div class="col-lg-9 col-md-9">
                                     <div class="form-group">
                                         <label jsf:for="nome">Nome: </label>
-                                        <input
-                                            type="text"
+                                        <p:inputText
+                                            id="nomecontato"
                                             class="form-control"
                                             placeholder="Nome do Contato"
-                                            jsf:value="#{cadastroBean.contato.nome}"/> 
+                                            value="#{cadastroBean.contato.nome}"
+                                            required="true"
+                                            requiredMessage="Nome não pode ser nulo."
+                                            /> 
+                                        <p:message for="nomecontato" />
                                     </div>
                                 </div>
                             </div>
@@ -387,13 +391,20 @@
                                 <div class="col-lg-9 col-md-9">
                                     <div class="form-group">
                                         <label jsf:for="cargo">Cargo: </label>
-                                        <h:selectOneMenu id="cargo" class="form-control" value="#{cadastroBean.contato.cargo}" required="true">
+                                        <h:selectOneMenu id="cargo" 
+                                                         class="form-control"
+                                                         binding="#{cargo}"
+                                                         value="#{cadastroBean.contato.cargo}" 
+                                                         required="true"
+                                                         requiredMessage="Cargo não pode ser nulo."
+                                                         >
                                             <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
                                             <f:selectItems value="#{cadastroBean.cargoContatoCliente}" 
                                                            var ="cargo"
                                                            itemValue="#{cargo}"
                                                            itemLabel="#{cargo.descricao}"/>
                                         </h:selectOneMenu>
+                                        <p:message for="cargo" />
                                     </div>
                                 </div>
                             </div>
@@ -401,12 +412,15 @@
                                 <div class="col-lg-9 col-md-9">
                                     <div class="form-group">
                                         <label jsf:for="email">E-mail </label>
-                                        <input
-                                            id="email"
-                                            type="email"
-                                            class="form-control"
-                                            placeholder="E-mail do Contato"
-                                            jsf:value="#{cadastroBean.contato.email}"/>
+                                        <input type="email"
+                                               jsf:id="email"
+                                               jsf:binding="#{email}"
+                                               class="form-control"
+                                               placeholder="exemplo@exemplo.com.br"
+                                               jsf:value="#{cadastroBean.contato.email}"
+                                               required="required"/>
+
+                                        <h:message for="email" styleClass="text-danger"/>
                                     </div>
                                 </div>
                             </div>
@@ -414,12 +428,15 @@
                                 <div class="col-lg-9 col-md-9">
                                     <div class="form-group">
                                         <label jsf:for="telefone">Telefone: </label>
-                                        <input
+                                        <p:inputMask
                                             id="telefone"
-                                            type="tel"
+                                            mask="(99) 99999999?9"
+                                            maxlength="9"
+                                            required="true"
+                                            requiredMessage="Obrigatório."
                                             class="form-control"
-                                            placeholder="Telefone do Contato"
-                                            jsf:value="#{cadastroBean.contato.telefone}"/>
+                                            value="#{cadastroBean.contato.telefone}"/>
+                                        <p:message for="telefone" />
                                     </div>
                                 </div>
                             </div>
