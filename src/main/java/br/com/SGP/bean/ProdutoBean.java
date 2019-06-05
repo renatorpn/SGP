@@ -125,7 +125,7 @@ public class ProdutoBean {
                 img.write(path + getDateTime() + getFilename(img));
                 pathImg = (getDateTime() + getFilename(img));
                 produto.setImagem(pathImg);
-            }
+            }            
             produtoDAO.save(produto);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Produto: "+produto.getNome()));
             context.getExternalContext().getFlash().setKeepMessages(true);

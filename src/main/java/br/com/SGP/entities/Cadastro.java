@@ -151,6 +151,9 @@ public class Cadastro implements Serializable{
     }
 
     public String getLogomarca() {
+        if (logomarca == null){
+            return "sem-foto.gif";
+        }
         return logomarca;
     }
 

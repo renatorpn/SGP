@@ -25,41 +25,46 @@
     </head>
     <body jsf:id="body">
         <ui:include src="/app/header.xhtml"/>
-        <p:growl id="growl" showDetail="false" sticky="false" life="3000"  />
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
                     <form jsf:id="form" enctype="multipart/form-data" >
+                        <p:growl id="growl" showDetail="false" sticky="false" life="3000"  />
+                        <p:messages id="msgs" />
                         <fieldset>
 
                             <legend>Usuarios Cadastros</legend>
                             <div class="row">
                                 <p:dataTable id="tbusuarios" emptyMessage="Nenhum Usuário Resgitrado." var="usuario" value="#{Usuario.usuarios}" style="margin: 100px" rows="5" paginator="true">
-                                    <p:column headerText="Id de Usuário">
+                                    <p:column headerText="Id" width="5%">
                                         <h:outputText value="#{usuario.id}" />
                                     </p:column>                                
-                                    <p:column headerText="Nome de Usuário">
+                                    <p:column headerText="Nome de Usuário" width="15%">
                                         <h:outputText value="#{usuario.nomeUsuario}" />
                                     </p:column>
-                                    <p:column headerText="Cargo">
+                                    <p:column headerText="Cargo" width="20%">
                                         <h:outputText value="#{usuario.cargo.descricao}" />
                                     </p:column>
-                                    <p:column headerText="Opção">
-                                        <p:commandButton class="btn-warning" icon="ui-icon-search" value="Info" action="#{Usuario.editar(usuario)}"></p:commandButton>
-                                        <p:commandButton value="Editar Usuario" type="button" onclick="PF('dlg1').show();" icon="ui-icon-plus">
-                                            <f:setPropertyActionListener value="#{usuario}" target="#{Usuario.usuarioSelecionado}" />
-                                        </p:commandButton>
+                                    <p:column headerText="Opção" width="10%">
+                                        <p:commandButton update=":dlgeditar" immediate="true" action="#{Usuario.editar(usuario)}" oncomplete="PF('dlg1editar').show();" icon="ui-icon-circle-zoomout"/>
+                                        <p:commandButton action="#{Usuario.excluir(usuario, LoginMB.usuario)}"
+                                                         update="@all"
+                                                         icon="ui-icon-trash"
+                                                         onclick="if (!confirm('Confirma a exclusão do Usuário: #{usuario.nomeUsuario}?'))
+                                                                     return false;"
+                                                         />
                                     </p:column>
                                 </p:dataTable>
                             </div>
                         </fieldset>
-                        <p:commandButton value="Novo Usuario" type="button" actionListener="#{Usuario.limparUsuario()}" onclick="PF('dlg1').show();" icon="ui-icon-plus" />
+                        <p:commandButton value="Novo Usuario" update=":formdialog" action="#{Usuario.limparUsuario()}" oncomplete="PF('dlg1').show();" icon="ui-icon-plus" />
                     </form>
                 </div>
             </div>
         </div>
 
-        <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="300" class="form-group" >
+        <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="600" class="form-group" >
             <p:growl id="msgsdialog" showDetail="true" sticky="true"/>
             <h:form id="formdialog" enctype="multipart/form-data" >
 
@@ -83,14 +88,13 @@
                     <div class="col-lg-4 col-md-4">
                         <div class="form-group">
                             <label jsf:for="senha">Senha</label>
-                            <input type="password"
-                                   jsf:id="senha"
-                                   jsf:binding="#{senha}"
-                                   class="form-control"
-
-                                   maxlength="8"
-                                   jsf:value="#{Usuario.usuarioCadastro.senha}"
-                                   required="required"/>
+                            <p:password
+                                id="senha"
+                                class="form-control"
+                                redisplay="true"
+                                maxlength="8"
+                                value="#{Usuario.usuarioCadastro.senha}"
+                                required="required"/>
 
                             <h:message for="senha" styleClass="text-danger"/>
                         </div>
@@ -148,12 +152,100 @@
                        class="btn btn-primary"
                        jsf:action="#{Usuario.cadastrar()}"
                        value="Salvar usuário"
-                       update=":form:tbusuarios"
-                       oncomplete="PF('tbusuarios').addRow();"
+                       update=":form"
+
                        />
             </h:form>
         </p:dialog>
-        
+
+        <p:dialog id="dlgeditar" header="Edição de Usuário" widgetVar="dlg1editar" height="500" width="600" class="form-group"  >
+            <h:form id="formdialogeditar" enctype="multipart/form-data" >
+                <legend>Editar Usuario</legend>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="form-group ">
+                            <label jsf:for="nomeUsuario">Nome de Usuário</label>
+                            <p:outputLabel
+                                id="nomeUsuario"
+                                class="form-control"
+                                value="#{Usuario.usuarioCadastro.nomeUsuario}"
+
+                                />
+                            <h:message for="nomeUsuario" styleClass="text-danger"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="form-group">
+                            <label jsf:for="senha">Senha</label>
+                            <p:password
+                                id="senha"
+                                class="form-control"
+                                redisplay="true"
+                                maxlength="8"
+                                value="#{Usuario.usuarioCadastro.senha}"
+                                required="required"/>
+
+                            <h:message for="senha" styleClass="text-danger"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="form-group ">
+                            <label jsf:for="email">E-mail do Usuário</label>
+                            <p:inputText id="email" value="#{Usuario.usuarioCadastro.email}" required="true" label="Email" >
+                                <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                            </p:inputText>
+                            <h:message for="email" styleClass="text-danger"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="form-group ">
+                            <label jsf:for="nome">Nome Completo</label>
+                            <p:inputText
+                                id="nome"
+                                class="form-control"
+                                value="#{Usuario.usuarioCadastro.nome}"
+                                required="required"/>
+
+                            <h:message for="nome" styleClass="text-danger"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="form-group">
+                            <label jsf:for="cargo">Cargo</label>
+                            <h:selectOneMenu id="cargo" class="form-control" value="#{Usuario.usuarioCadastro.cargo}" required="true">
+                                <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
+                                <f:selectItems value="#{Usuario.cargo}" var ="cargo"
+                                               itemValue="#{cargo}" 
+                                               itemLabel="#{cargo.descricao}"/>
+                            </h:selectOneMenu>
+                            <p:message for="cargo" />
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+                <input type="submit"
+                       class="btn btn-primary"
+                       jsf:action="#{Usuario.alterar()}"
+                       value="Salvar usuário"
+                       update=":form"
+
+                       />
+            </h:form>
+        </p:dialog>
+
         <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
         <h:outputScript name="js/jquery.mask.min.js"/>
         <h:outputScript name="js/jquery.maskMoney.min.js"/>
