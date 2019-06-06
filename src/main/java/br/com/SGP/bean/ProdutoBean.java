@@ -5,9 +5,13 @@
  */
 package br.com.SGP.bean;
 
+import br.com.SGP.dao.BalancoDAO;
 import br.com.SGP.dao.CategoriaProdutoDAO;
+import br.com.SGP.dao.ItemBalancoDAO;
 import br.com.SGP.dao.ProdutoDAO;
+import br.com.SGP.entities.Balanco;
 import br.com.SGP.entities.CategoriaProduto;
+import br.com.SGP.entities.ItemBalanco;
 import br.com.SGP.entities.Produto;
 import br.com.SGP.entities.Usuario;
 import br.com.SGP.utils.*;
@@ -125,9 +129,9 @@ public class ProdutoBean {
                 img.write(path + getDateTime() + getFilename(img));
                 pathImg = (getDateTime() + getFilename(img));
                 produto.setImagem(pathImg);
-            }            
+            }
             produtoDAO.save(produto);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Produto: "+produto.getNome()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Produto: " + produto.getNome()));
             context.getExternalContext().getFlash().setKeepMessages(true);
             produto = new Produto();
             return "/app/produto/listarproduto?faces-redirect=true";
@@ -150,23 +154,23 @@ public class ProdutoBean {
     public String alterarProduto() throws IOException {
         produtoDAO.save(produto);
         FacesContext context = FacesContext.getCurrentInstance();
-            if (img != null) {
-                //FacesContext facesContext = FacesContext.getCurrentInstance(); 
-                //ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
-                //String path = scontext.getRealPath("/img/");
+        if (img != null) {
+            //FacesContext facesContext = FacesContext.getCurrentInstance(); 
+            //ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
+            //String path = scontext.getRealPath("/img/");
 
-                String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/img/");
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/img/");
 
-                img.write(path + getDateTime() + getFilename(img));
-                pathImg = (getDateTime() + getFilename(img));
-                produto.setImagem(pathImg);
-            }
-            produtoDAO.save(produto);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Produto: "+produto.getNome()));
-            context.getExternalContext().getFlash().setKeepMessages(true);
-            produto = new Produto();
-            return "/app/produto/listarproduto?faces-redirect=true";
-        
+            img.write(path + getDateTime() + getFilename(img));
+            pathImg = (getDateTime() + getFilename(img));
+            produto.setImagem(pathImg);
+        }
+        produtoDAO.save(produto);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Produto: " + produto.getNome()));
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        produto = new Produto();
+        return "/app/produto/listarproduto?faces-redirect=true";
+
     }
 
     public String editar(Produto p) {
@@ -188,11 +192,11 @@ public class ProdutoBean {
 
         return "/app/produto/categoriaproduto?faces-redirect=true";
     }
-    
-    public void limparCategoria(){
+
+    public void limparCategoria() {
         categoria = new CategoriaProduto();
     }
-    
+
     //Verifica se categoria está sendo utilizada - Impede exclusão se sim
     public boolean verificaCategoria(CategoriaProduto categoriaExlcuir) {
         for (Produto p : produtos) {
@@ -205,16 +209,16 @@ public class ProdutoBean {
 
     public String removerCategoria(CategoriaProduto categoriaEcluir) {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (verificaCategoria(categoriaEcluir) == true){
+        if (verificaCategoria(categoriaEcluir) == true) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Falha na exclusão.", "Categoria associada a Produto!"));
             context.getExternalContext().getFlash().setKeepMessages(true);
             return "/app/produto/categoriaproduto?faces-redirect=true";
-        }else{
-        categoriaDAO.remove(categoriaEcluir.getIdcategoria());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Excluída com Sucesso.", ""));
+        } else {
+            categoriaDAO.remove(categoriaEcluir.getIdcategoria());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Excluída com Sucesso.", ""));
             context.getExternalContext().getFlash().setKeepMessages(true);
-        return "/app/produto/categoriaproduto?faces-redirect=true";
-        
+            return "/app/produto/categoriaproduto?faces-redirect=true";
+
         }
     }
 
@@ -244,6 +248,39 @@ public class ProdutoBean {
             if (p.getCodigo().equals(novo.getCodigo()) && p.getCor().equals(novo.getCor())) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public String removerProduto() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (verificaExclusaoProduto(produto) == true){
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Falha na exclusão.", "Produto associado a balanço!"));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "/app/produto/alterarproduto?faces-redirect=true";
+        } else {
+            produtoDAO.remove(produto.getIdproduto());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Produto excluído com Sucesso.", ""));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "/app/produto/listarproduto?faces-redirect=true";
+
+        }
+    }
+
+    public boolean verificaExclusaoProduto(Produto produtoExlcuir) {
+        List<Balanco> balancos = new ArrayList<>();
+        BalancoDAO balancoDAO = new BalancoDAO();
+        balancos = balancoDAO.findAll();
+        for (Balanco b : balancos) {
+            List<ItemBalanco> itensBalanco = new ArrayList<>();
+            //ItemBalancoDAO itemBalancoDAO = new ItemBalancoDAO();
+            itensBalanco = b.getItemBalanco();
+            for (ItemBalanco ib : itensBalanco) {
+                if (ib.getProduto().getIdproduto().equals(produtoExlcuir.getIdproduto())) {
+                    return true;
+                }
+            }
+
         }
         return false;
     }

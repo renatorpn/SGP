@@ -24,12 +24,15 @@
         <![endif]-->
     </head>
     <body jsf:id="body">
+
         <ui:include src="/app/header.xhtml"/>
 
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
                     <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
+                        <p:growl id="growl" showDetail="true" sticky="true" />
+                        <p:messages id="msgs" />
                         <fieldset>
                             <legend>Dados Gerais</legend>
                             <div class="row">
@@ -190,7 +193,14 @@
                         <input type="submit"
                                class="btn btn-primary"
                                jsf:action="#{produtoMB.alterarProduto}"
-                               value="Enviar"/>
+                               value="Salvar"/>
+                        <input type="submit"
+                               class="btn btn-primary"
+                               jsf:action="#{produtoMB.removerProduto()}"
+                               value="Excluir"
+                               onclick="if (!confirm('Confirma a exclusão do Produto #{produtoMB.produto.nome}?'))
+                                           return false;"
+                               />
 
                     </form>
                 </div>
