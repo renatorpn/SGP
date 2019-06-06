@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <html lang="pt-br"
       xmlns="http://www.w3.org/1999/xhtml"
@@ -27,104 +22,115 @@ and open the template in the editor.
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-
     </head>
-
     <body jsf:id="body">
-        <p:messages autoUpdate="true"/>
-
-        <ui:include  src="/app/header.xhtml"/>
+        <ui:include src="/app/header.xhtml"/>
 
         <div class="container">
             <div class="row">
-                <div class="col-lg-5 col-md-5 ">
+                <div class="col-lg-12 col-md-12 ">
                     <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
                         <fieldset >
-
-                            <p:dataTable emptyMessage="Nenhum tipo registrado." 
-                                         var="tipoEvento" 
+                            <legend>Manutenção de Tipos de Evento</legend>
+                            <p:dataTable emptyMessage="Nenhuma categoria cadastrada." 
+                                         var="tipoevento" 
                                          value="#{EventoMB.listaTipoEvento}" 
-                                         id="tabelaitens"
-                                         widgetVar="tabelaitens"
-                                         rows="20" 
-                                         rowsPerPageTemplate="20"
-                                         >
-                                <f:facet name="header">Tipos de Evento</f:facet>
-<!--                                <p:column style="width: 5%" headerText="Id" sortBy="#{tipoEvento.idTipoEvento}">
-                                    <h:outputText value="#{tipoEvento.idTipoEvento}" />
+                                         id="tipoeventos"
+                                         widgetVar="tipoeventos"
+                                         rows="5" 
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         editable="true">
+
+                                <f:facet name="header">Tipo Evento Cadastrados
+                                </f:facet>
+
+                                <p:column style="width: 10%" headerText="Tipo Evento" sortBy="#{tipoevento}" >
+                                    <h:outputText value="#{tipoevento.descricao}" />
                                 </p:column>
--->                                
-                                    <p:column style="width: 70%" headerText="Nome" sortBy="#{tipoEvento.descricao}">
-                                    <h:outputText value="#{tipoEvento.descricao}" />
+
+                                <p:column style="width: 8%" headerText="Deletar" exportable="false">
+                                    <p:commandButton icon="ui-icon-trash" 
+                                                     action="#{EventoMB.removerTipoEvento(tipoevento)}"
+                                                     onclick="if (!confirm('Confirma a exclusão do Tipo de Evento: #{tipoevento.descricao}?'))
+                                                                   return false;"
+                                                     />
                                 </p:column>
-                                <p:column headerText="Opção">
-                                    <p:commandButton  oncomplete="PF('dlg2').show()" icon="pi pi-search" title="View">
-                                        <f:setPropertyActionListener value="#{EventoMB.editarTipoEvento(tipoEvento)}" target="#{EventoMB.tipoEvento}" />
-            </p:commandButton>
-                                </p:column>
-                                
-                              
+
+                                <f:facet name="footer">
+                                    Total de tipos cadastradao: #{produtoMB.categorias.size()}.
+                                    <p:commandButton value="Novo Tipo" type="button" actionListener="#{EventoMB.limparTipoEvento()}" onclick="PF('dlg1').show();" icon="ui-icon-plus" />
+                                </f:facet>
+
                             </p:dataTable>
-
                         </fieldset>
-
-
-
-
-
-
-
-                        <fieldset >
-                            <legend>Add Novo Tipo de Evento</legend>
-                            <h:form id="formgrid">
-                            <p:growl id="msgs" showDetail="true"/>
-
-                                <p:panelGrid  class="ui-grid ui-grid-responsive" columns="7">
-
-                                    <h:outputLabel value="Tipo de Evento:" for="tipoEvento"/>
-
-                                    <input type="text" class="form-control" placeholder="Exemplo" required="required" jsf:value="#{EventoMB.tipoEvento.descricao}"/>
-
-                                    <input type="submit"
-                                           class="btn btn-primary"
-                                           jsf:action="#{EventoMB.cadastrarTipoEvento()}"
-                                           value="+"
-                                           icon="ui-icon-disk"
-                                           update=":formgrid:msgs"
-                                           oncomplete="PF('tabelaitens').addRow();"
-                                           />
-                                    
-                                </p:panelGrid>
-
-                            </h:form>
-                        </fieldset>
-
-
                     </form>
-                    
-
                 </div>
             </div>
-
         </div>
-        
-        <p:dialog header="Informações de Tipo Evento" widgetVar="dlg2" modal="true" closable="true" >
-            <p:outputPanel id="eventDetails">
-                <h:panelGrid columns="2" >
 
-                    <p:outputLabel value="Nome"/>
-                    <p:inputText value="#{tipoEvento.descricao}"/>
+        <p:dialog header="Adicionar Novo Tipo de Evento" widgetVar="dlg1" height="300" width="300" class="form-group" >
+            <p:growl id="msgsdialog" showDetail="true" sticky="true"/>
+            <h:form id="formdialog" enctype="multipart/form-data" >
+
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+                        <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
+                            <fieldset>
+                                <legend>Cadastro Novo Tipo de Evento</legend>
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group #{!tipoevento.valid ? 'has-error' : ''}">
+                                            <label jsf:for="nomeTipoEvento">nomeTipoEvento</label>
+                                            <input type="text"
+                                                   jsf:id="nomeTipoEvento"
+                                                   jsf:binding="#{descricao}"
+                                                   class="form-control"
+                                                   placeholder="Nome do Tipo Evento"
+
+                                                   jsf:value="#{EventoMB.tipoEvento.descricao}"
+                                                   required="required"/>
+
+                                            <h:message for="nomeCategoria" styleClass="text-danger"/>
+                                        </div>
+                                    </div>
+                                </div>
+<!--
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group #{!drescricao.valid ? 'has-error' : ''}">
+                                            <label jsf:for="drescricao">Descrição</label>
+                                            <input type="text"
+                                                   jsf:id="drescricao"
+                                                   jsf:binding="#{drescricao}"
+                                                   class="form-control"
+                                                   placeholder="Drescreva as caracterristicas da categoria."
+                                                   jsf:value="#{produtoMB.categoria.descricao}"
+                                                   required="required"/>
+
+                                            <h:message for="drescricao" styleClass="text-danger"/>
+                                        </div>
+                                    </div>
 
 
-                </h:panelGrid>
-                <p:separator/>
+                                </div>
+-->
 
-                
-                <p:commandButton value="Salvar" actionListener="#{EventoMB.editarTipoEvento(tipoEvento.descricao)}" oncomplete="PF('dlg2').hide();"/>
-                <p:commandButton value="Deletar" actionListener="#{EventoMB.removerTipoEvento()}" oncomplete="PF('dlg2').hide();"/>
-                <p:commandButton value="Fechar" actionListener="#{EventoMB.limpar()}" oncomplete="PF('dlg2').hide();"/>
-            </p:outputPanel>
-        </p:dialog>   
+                            </fieldset>
+
+                            <input type="submit"
+                                   class="btn btn-primary"
+                                   jsf:action="#{EventoMB.cadastrarTipoEvento()}"
+                                   value="Cadastrar Tipo Evento"/>
+
+                        </form>
+                    </div>
+                </div>
+            </h:form>
+        </p:dialog>
 
         <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
         <h:outputScript name="js/jquery.mask.min.js"/>

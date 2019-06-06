@@ -20,6 +20,7 @@ import br.com.SGP.entities.Usuario;
 import br.com.SGP.utils.VendaRealizadaEvento;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -50,6 +51,7 @@ public class EventoBean implements Serializable {
     private TipoEvento tipoEvento = new TipoEvento();
     private List<TipoEvento> listaTipoEvento;
     private TipoEventoDAO tipoEventoDAO = new TipoEventoDAO();
+    private List<Evento> eventos = new ArrayList<>();
     
     public EventoDAO getEventoDAO() {
         return eventoDAO;
@@ -183,6 +185,33 @@ public class EventoBean implements Serializable {
         if(event.getIdevento() != null)
         eventoDAO.remove(event.getIdevento());
         init();
+    }
+    
+    public String removerTipoEvento(TipoEvento tipoEvento) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (verificaTipoEvento(tipoEvento) == true){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Falha na exclusão.", "Categoria associada a Produto!"));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            return "/app/evento/tipoevento?faces-redirect=true";
+        }else{
+        tipoEventoDAO.remove(tipoEvento.getIdTipoEvento());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Excluída com Sucesso.", ""));
+            context.getExternalContext().getFlash().setKeepMessages(true);
+        return "/app/evento/tipoevento?faces-redirect=true";
+        }
+    }
+    
+    public void limparTipoEvento(){
+        tipoEvento = new TipoEvento();
+    }
+    
+    public boolean verificaTipoEvento(TipoEvento tipoEvento) {
+        for (Evento e : eventos) {
+            if (e.getTipoevento().getIdTipoEvento().equals(tipoEvento.getIdTipoEvento())) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public VendaRealizadaEvento[] getVendaRealizada() {

@@ -193,6 +193,7 @@ public class ProdutoBean {
         categoria = new CategoriaProduto();
     }
     
+    //Verifica se categoria está sendo utilizada - Impede exclusão se sim
     public boolean verificaCategoria(CategoriaProduto categoriaExlcuir) {
         for (Produto p : produtos) {
             if (p.getCategoriaProduto().getIdcategoria().equals(categoriaExlcuir.getIdcategoria())) {
