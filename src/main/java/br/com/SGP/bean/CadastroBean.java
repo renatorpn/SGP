@@ -526,5 +526,7 @@ public class CadastroBean implements Serializable {
     public CargoContatoCliente[] getCargoContatoCliente() {
         return CargoContatoCliente.values();
     }
+    
+
 
 }

@@ -24,54 +24,64 @@
         <![endif]-->
     </head>
     <h:body id="body">
-       <ui:include src="/app/header.xhtml"/>
-       <p:growl id="growl" showDetail="true" sticky="true" />
-        <p:dataTable emptyMessage="Nenhum Cliente Resgitrado." 
-                     var="cadastro" 
-                     value="#{cadastroBean.findAll(LoginMB.usuario)}" 
-                     style="margin: 100px" 
-                     rows="5" 
-                     paginator="true"
-                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                     rowsPerPageTemplate="5,10,15"
-                     >
+        <ui:include src="/app/header.xhtml"/>
+        <p:growl id="growl" showDetail="true" sticky="true" />
+        <h:form>
+            <p:dataTable 
+                id="listaclientes"
+                widgetVar="listaclientes"
+                emptyMessage="Nenhum Cliente Resgitrado." 
+                var="cadastro" 
+                value="#{cadastroBean.findAll(LoginMB.usuario)}" 
+                style="margin: 100px" 
+                rows="5" 
+                paginator="true"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="5,10,15"
+                editable="true"
+                >
                 <f:facet name="header">Lista de Clientes</f:facet>
-            <p:column headerText="Nome" sortBy="#{cadastro.nome}">
-                <h:outputText value="#{cadastro.nome}" />
-            </p:column>
 
-                <p:column headerText="CNPJ" sortBy="#{cadastro.cnpj}">
+                <p:column width="10%" headerText="Logo" >
+                    <h:graphicImage value="/img/#{cadastro.logomarca}" width="100px" height="100px"/>
+                </p:column>
+
+                <p:column headerText="Nome" sortBy="#{cadastro.nome}" filterBy="#{cadastro.nome}" filterMatchMode="contains">
+                    <h:outputText value="#{cadastro.nome}" />
+                </p:column>
+
+                <p:column width="14%" headerText="CNPJ" sortBy="#{cadastro.cnpj}" filterBy="#{cadastro.cnpj}" filterMatchMode="contains">
                     <h:outputText value="#{cadastro.cnpj}" />
-            </p:column>
+                </p:column>
 
-                <p:column headerText="Categoria"  sortBy="#{cadastro.categoriaCliente}">
+                <p:column width="13%" headerText="Categoria"  sortBy="#{cadastro.categoriaCliente}" filterBy="#{cadastro.categoriaCliente}" filterMatchMode="contains">
                     <h:outputText value="#{cadastro.categoriaCliente}" />
-            </p:column>
+                </p:column>
 
-                <p:column headerText="Ambiente" sortBy="#{cadastro.ambienteVendasCliente}">
+                <p:column width="13%" headerText="Ambiente" sortBy="#{cadastro.ambienteVendasCliente}" filterBy="#{cadastro.ambienteVendasCliente}" filterMatchMode="contains">
                     <h:outputText value="#{cadastro.ambienteVendasCliente}" />
-            </p:column>
+                </p:column>
 
-                <p:column headerText="Canal"  sortBy="#{cadastro.canalVendasCliente}">
+                <p:column width="13%" headerText="Canal"  sortBy="#{cadastro.canalVendasCliente}" filterBy="#{cadastro.canalVendasCliente}" filterMatchMode="contains">
                     <h:outputText value="#{cadastro.canalVendasCliente}" />
-            </p:column>
+                </p:column>
 
 
-            <p:column headerText="Estado" sortBy="#{cadastro.estado}">
-                <h:outputText value="#{cadastro.estado}" />
-            </p:column>
+                <p:column width="11%" headerText="Estado" sortBy="#{cadastro.estado}" filterBy="#{cadastro.estado}" filterMatchMode="contains">
+                    <h:outputText value="#{cadastro.estado}" />
+                </p:column>
 
-                        
-            <p:column headerText="Opção">
-                <p:commandButton class="btn-warning" icon="ui-icon-search" value="Info" action="#{cadastroBean.editar(cadastro)}"></p:commandButton>
-                <p:commandButton class="btn-warning" icon="ui-icon-search" value="SWOT" action="#{quadroSWOTMB.editar(cadastro)}"></p:commandButton>
-            </p:column>
-            <f:facet name="footer">
-                Total de clientes cadastrados: #{cadastroBean.findAll(LoginMB.usuario).size()}</f:facet>
- 
-            
-        </p:dataTable>
 
+                <p:column width="6%" headerText="Opção">
+                    <p:commandButton class="btn-warning" icon="ui-icon-search"  action="#{cadastroBean.editar(cadastro)}"></p:commandButton>
+
+                </p:column>
+                <f:facet name="footer">
+                    Total de clientes cadastrados: #{cadastroBean.findAll(LoginMB.usuario).size()}</f:facet>
+
+
+            </p:dataTable>
+        </h:form>
 
         <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
         <h:outputScript name="js/jquery.mask.min.js"/>

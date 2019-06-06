@@ -353,19 +353,29 @@
                                 class="btn btn-primary"
                                 action="#{cadastroBean.alterarCliente()}"
                                 value="Salvar Alterações"
+                                style="margin: 3%"
+                                />
+                            
+                            <input type="submit"
+                                   class="btn btn-primary"
+                                   jsf:action="#{cadastroBean.balancoCadastrados(cadastroBean.cadastro)}"
+                                   value="Balanço"
+                                   style="margin: 3%"
+                                   />
+                            <h:commandButton 
+                                class="btn btn-primary" 
+                                value="SWOT" 
+                                action="#{quadroSWOTMB.editar(cadastro)}" 
+                                style="margin: 3%"
                                 />
                             <input type="submit"
                                    class="btn btn-primary"
                                    jsf:action="#{cadastroBean.removerCliente}"
-                                   value="Excluir"
+                                   value="Excluir Cliente"
                                    onclick="if (!confirm('Confirma a exclusão do Cliente: #{cadastroBean.cadastro.nome}?'))
                                                return false;"
-                                   />
-                            <input type="submit"
-                                   class="btn btn-primary"
-                                   jsf:action="#{cadastroBean.balancoCadastrados(cadastroBean.cadastro)}"
-                                   value="Balanço"/>
-
+                                   style="margin: 3%"
+                                               />
                         </div>
                     </form>
                     <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="300" class="form-group">

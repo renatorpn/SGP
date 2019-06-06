@@ -29,54 +29,66 @@
         <p:growl id="growl" showDetail="true" sticky="true" />
         <p:messages id="msgs" />
 
-
-        <p:dataTable emptyMessage="Nenhum Cliente Resgitrado." var="produto" value="#{produtoMB.produtos}" style="margin: 100px" rows="5" paginator="true">
-            <p:column headerText="Nome">
-                <h:outputText value="#{produto.nome}" />
-            </p:column>
-
-            <p:column headerText="Codigo">
-                <h:outputText value="#{produto.codigo}" />
-            </p:column>
-
-            <p:column headerText="Cor">
-                <h:outputText value="#{produto.cor.descricao}" />
-            </p:column>
-
-            <p:column headerText="Faixa Classificação">
-                <h:outputText value="#{produto.fxclassificacao}" />
-            </p:column>
-
-            <p:column headerText="Genero">
-                <h:outputText value="#{produto.genero}" />
-            </p:column>
-
-
-            <p:column headerText="Categoria">
-                <h:outputText value="#{produto.categoriaProduto.descricao}" />
-            </p:column>
-
-            <p:column headerText="Preço Venda">
-                <h:outputText value="#{produto.precovenda}" />
-
-            </p:column>
-
-            <p:column headerText="Imagem">
-                <h:graphicImage value="/img/#{produto.imagem}" width="100px" height="100px"/>
-
-            </p:column>
-            <p:column headerText="Opção">
+        <h:form enctype="multipart/form-data">
+            <p:dataTable 
+                emptyMessage="Nenhum Cliente Resgitrado." 
+                var="produto" 
+                value="#{produtoMB.produtos}" 
+                style="margin: 100px" 
+                rows="5" 
+                paginator="true">
                 
-                 <p:commandButton class="btn-warning" icon="ui-icon-search" value="Info" action="#{produtoMB.editar(produto)}"></p:commandButton>
+                <f:facet name="header" >Produtos
+                </f:facet>
                 
-              
-            </p:column>
-            <f:facet name="footer">
-                Total de produtos cadastrados: #{produtoMB.produtos.size()}</f:facet>
+                <p:column headerText="Imagem">
+                    <h:graphicImage value="/img/#{produto.imagem}" width="100px" height="100px"/>
+
+                </p:column>
+
+                <p:column headerText="Nome" sortBy="#{produto.nome}" filterBy="#{produto.nome}" filterMatchMode="contains">
+                    <h:outputText value="#{produto.nome}" />
+                </p:column>
+
+                <p:column headerText="Codigo" sortBy="#{produto.codigo}" filterBy="#{produto.codigo}" filterMatchMode="contains">
+                    <h:outputText value="#{produto.codigo}" />
+                </p:column>
+
+                <p:column headerText="Cor" sortBy="#{produto.cor.descricao}" filterBy="#{produto.cor.descricao}" filterMatchMode="contains">
+                    <h:outputText value="#{produto.cor.descricao}" />
+                </p:column>
+
+                <p:column width="14%" headerText="Classificação" sortBy="#{produto.fxclassificacao}" filterBy="#{produto.fxclassificacao}" filterMatchMode="contains">
+                    <h:outputText value="#{produto.fxclassificacao}" />
+                </p:column>
+
+                <p:column headerText="Genero" sortBy="#{produto.genero}" filterBy="#{produto.genero}" filterMatchMode="contains">
+                    <h:outputText value="#{produto.genero}" />
+                </p:column>
 
 
-        </p:dataTable>
+                <p:column headerText="Categoria" sortBy="#{produto.precovenda}" filterBy="#{produto.precovenda}" filterMatchMode="contains">
+                    <h:outputText value="#{produto.categoriaProduto.descricao}" />
+                </p:column>
 
+                <p:column headerText="Preço Venda" sortBy="#{produto.precovenda}" filterBy="#{produto.precovenda}" filterMatchMode="contains">
+                    <h:outputText value="#{produto.precovenda}" />
+
+                </p:column>
+
+
+                <p:column width="6%" headerText="Opção">
+
+                    <p:commandButton class="btn-warning" icon="ui-icon-search" action="#{produtoMB.editar(produto)}"></p:commandButton>
+
+
+                </p:column>
+                <f:facet name="footer">
+                    Total de produtos cadastrados: #{produtoMB.produtos.size()}</f:facet>
+
+
+            </p:dataTable>
+        </h:form>
 
         <h:outputScript name="js/jquery-3.2.1.min.js"/>
         <h:outputScript name="bootstrap/3.3.7/js/bootstrap.min.js"/>
