@@ -129,7 +129,7 @@ public class ItemBalanco implements Serializable {
     public double getGiro() {
         Double v = (double) qtdVenda;
         Double e = (double) qtdEstoque;
-        giro = ( v + e ) / e;
+        giro = (v / (v + e));
         return giro;
     }
     
@@ -145,15 +145,18 @@ public class ItemBalanco implements Serializable {
     }
     
         public void setStatusItem(double giro, double cobertura){
-         if(giro > 2.5 && cobertura < 2.5){
-             this.statusItem = "Ruptura";
-         }else if(giro > 2.5 && cobertura > 2.5){
-             this.statusItem = "Abastecido";
-         }else if(giro < 2.5 && cobertura > 2.5){
-             this.statusItem = "Baixa Demanda";
-         }else{
-             this.statusItem = "Descontinuado";
+         if(giro >= 0.25 && cobertura <= 2.5){
+             this.statusItem = "Repor Estoque";
          }
+         else if(giro >= 0.25 && cobertura >= 2.5){
+             this.statusItem = "Estoque Abastecido";
+         }
+         else if(giro <= 0.25 && cobertura >= 2.5){
+             this.statusItem = "Baixa Demanda de Compra";
+         }
+         else if(giro <= 0.25 && cobertura <= 2.5){
+             this.statusItem = "Descontinuado";
+         }else
          this.statusItem = statusItem;
     }
 

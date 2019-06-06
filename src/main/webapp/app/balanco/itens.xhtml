@@ -72,8 +72,18 @@ and open the template in the editor.
                         <fieldset >
                             <legend>Itens do Balanço</legend>
                             <style type="text/css">
-                                .old {
-                                    background-color: #F35051 !important;
+                                .vermelho {
+                                    background-color: #ff8066 !important;
+                                    background-image: none !important;
+                                    color: #000000 !important;
+                                }
+                                .amarelo {
+                                    background-color:   #ffff52 !important;
+                                    background-image: none !important;
+                                    color: #000000 !important;
+                                }
+                                .verde {
+                                    background-color: #73ff5c !important;
                                     background-image: none !important;
                                     color: #000000 !important;
                                 }
@@ -88,52 +98,61 @@ and open the template in the editor.
                                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="5,10,15"
                                          editable="true"
-                                         rowStyleClass="#{itemBalanco.cobertura le 2 ? 'old' : null}"
+                                         rowStyleClass="#{itemBalanco.statusItem == 'Repor Estoque' ? 'verde' : 
+                                                          itemBalanco.statusItem == 'Estoque Abastecido' ? 'amarelo' :
+                                                          itemBalanco.statusItem == 'Baixa Demanda de Compra' ? 'vermelho' :
+                                                          null}"
                                          >
-                                <f:facet name="header">Itens do Balanço
+                                <f:facet name="header" >Itens do Balanço
 
                                     <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify" />
                                     <p:columnToggler datasource="tabelaitens" trigger="toggler">
                                         <p:ajax event="toggle" listener="#{cadastroBean.onToggle}" />
                                     </p:columnToggler>
-                                    
-                                    
+
+
                                     <h:commandLink>Relatório
-                                   <p:dataExporter type="pdf" target="tabelaitens" fileName="Relatório" />
+                                        <p:dataExporter type="pdf" target="tabelaitens" fileName="Relatório" />
                                     </h:commandLink>
+
+                                    
 
                                 </f:facet>
 
 
-                                <p:column style="width: 10%" headerText="Código" sortBy="#{itemBalanco.produto.codigo}" exportable="#{cadastroBean.list[0]}">
+                                <p:column style="width: 10%" headerText="Código" sortBy="#{itemBalanco.produto.codigo}" filterBy="#{itemBalanco.produto.codigo}" filterMatchMode="contains" exportable="#{cadastroBean.list[0]}">
                                     <h:outputText value="#{itemBalanco.produto.codigo}" />
                                 </p:column>
-                                <p:column style="width: 10%" headerText="Produto" sortBy="#{itemBalanco.produto.nome}" exportable="#{cadastroBean.list[1]}">
+                                <p:column style="width: 10%" headerText="Produto" sortBy="#{itemBalanco.produto.nome}" filterBy="#{itemBalanco.produto.nome}" filterMatchMode="contains"  exportable="#{cadastroBean.list[1]}">
                                     <h:outputText value="#{itemBalanco.produto.nome}" />
                                 </p:column>
-                                <p:column style="width: 15%" headerText="Cor" sortBy="#{itemBalanco.produto.cor.descricao}" exportable="#{cadastroBean.list[2]}">
-                                    <h:outputText value="#{itemBalanco.produto.cor}" />
+                                <p:column style="width: 15%" headerText="Cor" sortBy="#{itemBalanco.produto.cor.descricao}" filterBy="#{itemBalanco.produto.cor.descricao}" filterMatchMode="contains" exportable="#{cadastroBean.list[2]}">
+                                    <h:outputText value="#{itemBalanco.produto.cor.descricao}" />
                                 </p:column>
-                                <p:column style="width: 10%" headerText="Venda" sortBy="#{itemBalanco.qtdVenda}" exportable="#{cadastroBean.list[3]}">
+                                <p:column style="width: 8%" headerText="Venda" sortBy="#{itemBalanco.qtdVenda}" exportable="#{cadastroBean.list[3]}">
                                     <h:outputText value="#{itemBalanco.qtdVenda}" />
                                 </p:column>
-                                <p:column style="width: 10%" headerText="Estoque" sortBy="#{itemBalanco.qtdEstoque}" exportable="#{cadastroBean.list[4]}">
+                                <p:column style="width: 9%" headerText="Estoque" sortBy="#{itemBalanco.qtdEstoque}" exportable="#{cadastroBean.list[4]}">
                                     <h:outputText value="#{itemBalanco.qtdEstoque}" />
                                 </p:column>
-                                <p:column style="width: 10%" headerText="Giro" sortBy="#{itemBalanco.giro}%" exportable="#{cadastroBean.list[5]}">
-                                    <h:outputText value="#{itemBalanco.giro}%" />
+                                <p:column style="width: 8%" headerText="Giro" sortBy="#{itemBalanco.giro}%" exportable="#{cadastroBean.list[5]}">
+                                    <h:outputText value="#{itemBalanco.giro}" >
+                                        <f:convertNumber type="percent"/>
+                                    </h:outputText>
                                 </p:column>
 
-                                <p:column style="width: 10%" headerText="Cobertura" sortBy="#{itemBalanco.cobertura}" exportable="#{cadastroBean.list[6]}">
-                                    <h:outputText value="#{itemBalanco.cobertura}" />
+                                <p:column style="width: 15%" headerText="Cobertura(meses)" sortBy="#{itemBalanco.cobertura}" exportable="#{cadastroBean.list[6]}">
+                                    <h:outputText value="#{itemBalanco.cobertura}" >
+                                        <f:convertNumber pattern="#,#0.0"/>
+                                    </h:outputText>
                                 </p:column>
-                                <p:column style="width: 10%" headerText="Status" exportable="#{cadastroBean.list[7]}">
+                                <p:column style="width: 15%" headerText="Status" filterBy="#{itemBalanco.statusItem}" filterMatchMode="contains" exportable="#{cadastroBean.list[7]}">
                                     <h:outputText value="#{itemBalanco.statusItem}" />
                                 </p:column>
-                                <p:column style="width: 8%" headerText="Deletar" exportable="false">
+                                <p:column style="width: 6%" headerText="Deletar" exportable="false">
                                     <p:commandButton icon="ui-icon-trash" action="#{cadastroBean.removerItem(itemBalanco)}"
                                                      onclick="if (!confirm('Confirma a exclusão do Item: #{itemBalanco.produto.nome}, #{itemBalanco.produto.cor.descricao}?'))
-                                                                   return false;"
+                                                                 return false;"
                                                      />
 
                                 </p:column>
@@ -195,7 +214,7 @@ and open the template in the editor.
                                 class="btn btn-success"
                                 jsf:action="#{cadastroBean.onAddNewItem()}"
                                 value="Salvar"
-                                
+
                                 update="@all"
                                 oncomplete="PF('dlg1').hide();"/>  
                         </div>
