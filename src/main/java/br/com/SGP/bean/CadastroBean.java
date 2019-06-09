@@ -21,6 +21,7 @@ import br.com.SGP.utils.CategoriaCliente;
 import br.com.SGP.utils.ClassificacaoClienteABC;
 import br.com.SGP.utils.Estado;
 import br.com.SGP.utils.ProdutoSuporte;
+import static com.sun.faces.facelets.util.Path.context;
 import java.io.IOException;
 
 import java.io.Serializable;
@@ -64,6 +65,7 @@ public class CadastroBean implements Serializable {
     private ItemBalancoDAO itemBalancoDAO = new ItemBalancoDAO();
     private List<ItemBalanco> itensBalanco = new ArrayList<ItemBalanco>();
     private List<Boolean> list = new ArrayList<Boolean>();
+    
 
     //---------------Cliente------------------------
     private void limparCliente() {
@@ -203,9 +205,7 @@ public class CadastroBean implements Serializable {
         Usuario representante = usuarioDAO.findById(id);
         FacesContext context = FacesContext.getCurrentInstance();
         if (img != null) {
-            //FacesContext facesContext = FacesContext.getCurrentInstance();
-            //ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
-            //String path = scontext.getRealPath("/img/");
+            
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/img/");
 
             img.write(path + getDateTime() + getFilename(img));
@@ -215,28 +215,23 @@ public class CadastroBean implements Serializable {
         try {
             cadastro.setRepresentante(representante);
             cadastroDao.save(cadastro);
-
-            context.addMessage(null, new FacesMessage("Cadastrado com successo: ", "Cliente " + cadastro.getNome()));
-            context.getExternalContext().getFlash().setKeepMessages(true);// faz o flash para a growl aparecer com o redirect
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Cliente:" + cadastro.getNome()));
+            context.getExternalContext().getFlash().setKeepMessages(true);
             cadastro = new Cadastro();
-
             return "/app/cliente/listacliente?faces-redirect=true";
 
         } catch (Exception e) {
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao cadastrar! ", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Falha no cadastro.", "CNPJ já cadastrado!"));
             context.getExternalContext().getFlash().setKeepMessages(true);
             return "/app/cliente/cliente?faces-redirect=true";
         }
 
     }
 
-    public String alterarCliente () throws IOException {
+    public String alterarCliente() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         if (img != null) {
-            //FacesContext facesContext = FacesContext.getCurrentInstance();
-            //ServletContext scontext = (ServletContext) facesContext.getExternalContext().getContext();
-            //String path = scontext.getRealPath("/img/");
+            
             String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/img/");
 
             img.write(path + getDateTime() + getFilename(img));
@@ -245,14 +240,14 @@ public class CadastroBean implements Serializable {
         }
         try {
             cadastroDao.save(cadastro);
-
+            
             context.addMessage(null, new FacesMessage("Alterado com successo: ", "Cliente " + cadastro.getNome()));
             context.getExternalContext().getFlash().setKeepMessages(true);// faz o flash para a growl aparecer com o redirect
 
             return "/app/cliente/listacliente?faces-redirect=true";
 
         } catch (Exception e) {
-
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao Alterar! ", e.getMessage()));
             context.getExternalContext().getFlash().setKeepMessages(true);
             return "/app/cliente/cliente?faces-redirect=true";
@@ -354,7 +349,7 @@ public class CadastroBean implements Serializable {
         itemBalanco.setStatusItem(itemBalanco.getGiro(), itemBalanco.getCobertura());
         itemBalancoDAO.save(itemBalanco);
         FacesContext context = FacesContext.getCurrentInstance();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "" ));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", ""));
         context.getExternalContext().getFlash().setKeepMessages(true);
         itemBalanco = new ItemBalanco();
         balanco = balancoDAO.findById(balanco.getId());
@@ -366,7 +361,7 @@ public class CadastroBean implements Serializable {
         balanco = balancoDAO.findById(balanco.getId());
         FacesContext context = FacesContext.getCurrentInstance();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item excluído com Sucesso.", ""));
-            context.getExternalContext().getFlash().setKeepMessages(true);
+        context.getExternalContext().getFlash().setKeepMessages(true);
         return "/app/balanco/itens?faces-redirect=true";
     }
 
@@ -378,10 +373,12 @@ public class CadastroBean implements Serializable {
         contato = new ContatoCliente();
     }
 
-    public void removeContato() {
-        contatoDAO.remove(contato.getId());
-        FacesMessage msg = new FacesMessage("Contato removido.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    public void removeContato(ContatoCliente contatoExcluir) {
+        contatoDAO.remove(contatoExcluir.getId());
+        contatos = contatoDAO.findAll(cadastro);
+        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contato excluído com Sucesso.", ""));
+        context.getExternalContext().getFlash().setKeepMessages(true);
     }
 
     public boolean verificaBalanco(Balanco novoBalanco) {
@@ -526,7 +523,5 @@ public class CadastroBean implements Serializable {
     public CargoContatoCliente[] getCargoContatoCliente() {
         return CargoContatoCliente.values();
     }
-    
-
 
 }

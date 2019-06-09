@@ -312,15 +312,16 @@
                                             </p:column>
 
                                             <p:column style="width: 5%" headerText="Opção">
-
-                                                <input type="submit"
-                                                       class="btn btn-danger"
-                                                       jsf:action="#{cadastroBean.removeContato()}"
-                                                       value="x"
-
-                                                       onclick="if (!confirm('Confirma a exclusão do Contato: #{contato.nome}?'))
-                                                                   return false;"
-                                                       />
+                                                
+                                                <h:commandButton
+                                                    class="btn btn-danger"
+                                                    value="x"
+                                                    action="#{cadastroBean.removeContato(contato)}"
+                                                    onclick="if (!confirm('Confirma a exclusão do Item: #{contato.nome}?'))
+                                                                return false;"
+                                                    >
+                                                    
+                                                </h:commandButton>
 
                                             </p:column>
                                             <f:facet name="footer">
@@ -355,7 +356,7 @@
                                 value="Salvar Alterações"
                                 style="margin: 3%"
                                 />
-                            
+
                             <input type="submit"
                                    class="btn btn-primary"
                                    jsf:action="#{cadastroBean.balancoCadastrados(cadastroBean.cadastro)}"
@@ -365,7 +366,7 @@
                             <h:commandButton 
                                 class="btn btn-primary" 
                                 value="SWOT" 
-                                action="#{quadroSWOTMB.editar(cadastro)}" 
+                                action="#{quadroSWOTMB.editar(cadastroBean.cadastro)}" 
                                 style="margin: 3%"
                                 />
                             <input type="submit"
@@ -375,7 +376,8 @@
                                    onclick="if (!confirm('Confirma a exclusão do Cliente: #{cadastroBean.cadastro.nome}?'))
                                                return false;"
                                    style="margin: 3%"
-                                               />
+                                   />
+                            <a class="btn btn-primary"  href="/WEBSGP/app/cliente/listacliente.xhtml">Voltar</a>
                         </div>
                     </form>
                     <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="300" class="form-group">
