@@ -14,16 +14,17 @@ import javax.faces.bean.SessionScoped;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
  * @author renas
  */
-
 @ManagedBean(name = "quadroSWOTMB")
 @SessionScoped
 public class QuadroSWOTBean {
-    
+
     private Cadastro cadastro = new Cadastro();
     private QuadroSWOT quadroSWOT = new QuadroSWOT();
     private CadastroDao cadastroDAO = new CadastroDao();
@@ -60,17 +61,19 @@ public class QuadroSWOTBean {
     public void setQuadroSWOTDAO(QuadroSWOTDAO quadroSWOTDAO) {
         this.quadroSWOTDAO = quadroSWOTDAO;
     }
-    
-    public String cadastroQuadroSWOT(){
+
+    public String cadastroQuadroSWOT() {
         quadroSWOT = new QuadroSWOT();
         return "/app/swot/quadroswot?faces-redirect=true";
     }
-    
+
     public String cadastrar() throws IOException {
         quadroSWOTDAO.save(this.quadroSWOT);
         this.quadroSWOT = new QuadroSWOT();
-
-        return "/app/sucesso?faces-redirect=true";
+        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Análise de SWOT registada.", ""));
+        context.getExternalContext().getFlash().setKeepMessages(true);
+        return "/app/cliente/alterarcliente?faces-redirect=true";
     }
 
     public String alterar() throws IOException {
@@ -84,23 +87,20 @@ public class QuadroSWOTBean {
     public String editar(Cadastro cadastro) {
         List<QuadroSWOT> q;
         q = quadroSWOTDAO.findAllByCliente(cadastro);
-        if ( q.isEmpty()){
+        if (q.isEmpty()) {
             quadroSWOT = new QuadroSWOT();
             quadroSWOT.setCliente(cadastro);
             quadroSWOTDAO.save(quadroSWOT);
-        }else{
+        } else {
             List<QuadroSWOT> lista = quadroSWOTDAO.findAllByCliente(cadastro);
-        this.quadroSWOT = lista.get(0);
+            this.quadroSWOT = lista.get(0);
         }
         return "/app/swot/quadroswot?faces-redirect=true";
     }
 
-    
     @PostConstruct
     public void construct() {
         quadroSWOT = new QuadroSWOT();
     }
-    
-    
-    
+
 }

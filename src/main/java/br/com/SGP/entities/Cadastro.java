@@ -66,7 +66,7 @@ public class Cadastro implements Serializable{
     private String logradouro;
     @NotNull
     private String numero;
-    @NotBlank
+    
     private String complemento;
     @NotBlank
     private String bairro;
@@ -75,7 +75,7 @@ public class Cadastro implements Serializable{
     @NotNull
     @Enumerated(EnumType.STRING)
     private Estado estado;
-    
+    @NotBlank
     private String cep;
     
     @NotNull
@@ -91,7 +91,7 @@ public class Cadastro implements Serializable{
     @Valid
     private List<Balanco> balanco;
     
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @Fetch(org.hibernate.annotations.FetchMode.SUBSELECT)
     private List<ContatoCliente> contatos;
            

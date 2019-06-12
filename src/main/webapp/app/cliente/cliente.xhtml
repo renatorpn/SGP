@@ -4,7 +4,6 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:p="http://primefaces.org/ui">
@@ -31,7 +30,7 @@
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
                     <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
                         <p:growl id="growl" showDetail="true" sticky="true" />
-                        <p:messages id="msgs" />
+
                         <fieldset>
                             <legend>Dados do Cliente</legend>
                             <div class="row">
@@ -45,13 +44,8 @@
                                             value="#{cadastroBean.cadastro.nome}"
                                             required="true"
                                             maxlength="50"
-                                            immediate="true"
-                                            requiredMessage="Please enter your email address."
-                                            validatorMessage="Invalid email format"
-                                            >
-
-
-                                        </p:inputText>
+                                            requiredMessage="Nome Fantasia não informado."
+                                            />
                                         <p:message for="nome" styleClass="text-danger"/>
                                     </div>
                                 </div>
@@ -67,9 +61,12 @@
                                             class="form-control"
                                             placeholder="00.000.000/0000-00"
                                             value="#{cadastroBean.cadastro.cnpj}"
-                                            mask="99.999.999/9999-99"/>
+                                            mask="99.999.999/9999-99"
+                                            required="true"
+                                            requiredMessage="CNPJ não informado."
+                                            />
 
-                                        <h:message for="cnpj" styleClass="text-danger"/>
+                                        <p:message for="cnpj" styleClass="text-danger"/>
                                     </div>
                                 </div>
 
@@ -81,9 +78,12 @@
                                             class="form-control"
                                             placeholder="Razão Social Cliente"
                                             value="#{cadastroBean.cadastro.razaoSocial}"
-                                            required="required"/>
+                                            required="true"
+                                            requiredMessage="Razão Social não informado."
+                                            />
 
-                                        <h:message for="razao" styleClass="text-danger"/>
+
+                                        <p:message for="razao" styleClass="text-danger"/>
                                     </div>
                                 </div>
 
@@ -97,8 +97,8 @@
                                             maxlength="999"
                                             placeholder="123"
                                             value="#{cadastroBean.cadastro.quantidadelojas}"
-                                            required="required"
-
+                                            required="true"
+                                            requiredMessage="Lojas não informado."
                                             />
 
                                         <p:message for="qtdlojas" styleClass="text-danger"/>
@@ -110,50 +110,73 @@
                             <div class="row">
                                 <div class="col-lg-3 col-md-3">
                                     <div class="form-group">
-                                        <label jsf:for="classificacaoabc">Classificação ABC</label>
-                                        <h:selectOneMenu id="classificacaoabc" class="form-control" value="#{cadastroBean.cadastro.classificacaoabc}" required="true">
+                                        
+                                        <p:outputLabel for="classificacaoabc" value="Classificação ABC"/>
+                                        <h:selectOneMenu id="classificacaoabc" 
+                                                         class="form-control" 
+                                                         value="#{cadastroBean.cadastro.classificacaoabc}" 
+                                                         required="true"
+                                                         requiredMessage="Classificação não informado."
+                                                         >
                                             <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
                                             <f:selectItems value="#{cadastroBean.classificacaoClienteabc}" var ="classificacaoabc"
                                                            itemValue="#{classificacaoabc}" 
                                                            itemLabel="#{classificacaoabc.descricao}"/>
                                         </h:selectOneMenu>
-                                        <p:message for="classificacaoabc" />
+                                        <p:message for="classificacaoabc" styleClass="text-danger"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-3">
                                     <div class="form-group">
-                                        <label jsf:for="ambientevendascliente">Ambiente de Vendas</label>
-                                        <h:selectOneMenu id="ambientevendascliente" class="form-control" value="#{cadastroBean.cadastro.ambienteVendasCliente}" required="true">
+                                        
+                                        <p:outputLabel for="ambientevendascliente" value="Ambiente de Vendas"/>
+                                        <h:selectOneMenu id="ambientevendascliente" 
+                                                         class="form-control" 
+                                                         value="#{cadastroBean.cadastro.ambienteVendasCliente}" 
+                                                         required="true"
+                                                         requiredMessage="Ambiente não informado."
+                                                         >
                                             <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
                                             <f:selectItems value="#{cadastroBean.ambienteVendasCliente}" var ="ambientevendascliente"
                                                            itemValue="#{ambientevendascliente}" 
                                                            itemLabel="#{ambientevendascliente.descricao}"/>
                                         </h:selectOneMenu>
-                                        <p:message for="ambientevendascliente" />
+                                        <p:message for="ambientevendascliente" styleClass="text-danger" />
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-3">
                                     <div class="form-group">
-                                        <label jsf:for="categoriacliente">Categoria do Cliente</label>
-                                        <h:selectOneMenu id="categoriacliente" class="form-control" value="#{cadastroBean.cadastro.categoriaCliente}" required="true">
+                                        <p:outputLabel for="categoriacliente" value="Categoria do Cliente"/>
+                                        <h:selectOneMenu id="categoriacliente" 
+                                                         class="form-control" 
+                                                         value="#{cadastroBean.cadastro.categoriaCliente}" 
+                                                         required="true"
+                                                         requiredMessage="Categoria não informado."
+                                                         >
                                             <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
                                             <f:selectItems value="#{cadastroBean.categoriaCliente}" var ="categoriacliente"
                                                            itemValue="#{categoriacliente}" 
                                                            itemLabel="#{categoriacliente.descricao}"/>
                                         </h:selectOneMenu>
-                                        <p:message for="ambientevendascliente" />
+                                        <p:message for="categoriacliente" styleClass="text-danger"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-3">
                                     <div class="form-group">
-                                        <label jsf:for="canalvendascliente">Canal de Vendas</label>
-                                        <h:selectOneMenu id="canalvendascliente" class="form-control" value="#{cadastroBean.cadastro.canalVendasCliente}" required="true">
+                                        
+                                        <p:outputLabel for="canalvendascliente" value="Canal de Vendas"/>
+                                        <h:selectOneMenu id="canalvendascliente" 
+                                                         class="form-control" 
+                                                         value="#{cadastroBean.cadastro.canalVendasCliente}" 
+                                                         required="true"
+                                                         requiredMessage="Canal não informado."
+                                                         >
                                             <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
-                                            <f:selectItems value="#{cadastroBean.canalVendasCliente}" var ="canalvendascliente"
+                                            <f:selectItems value="#{cadastroBean.canalVendasCliente}" var="canalvendascliente"
                                                            itemValue="#{canalvendascliente}" 
                                                            itemLabel="#{canalvendascliente.descricao}"/>
                                         </h:selectOneMenu>
-                                        <p:message for="ambientevendascliente" />
+                                        <p:message for="canalvendascliente" styleClass="text-danger" />
                                     </div>
                                 </div>
                             </div>
@@ -172,9 +195,11 @@
                                             id="logradouro"
                                             placeholder="Av. Presidente Vargas"
                                             value="#{cadastroBean.cadastro.logradouro}"
-                                            required="required"/>
+                                            required="true"
+                                            requiredMessage="Logradouro não informado."
+                                            />
 
-                                        <h:message for="logradouro" styleClass="text-danger"/>
+                                        <p:message for="logradouro" styleClass="text-danger"/>
                                     </div>
                                 </div>
 
@@ -187,7 +212,9 @@
                                             maxlength="6"
                                             placeholder="123"
                                             value="#{cadastroBean.cadastro.numero}"
-                                            required="required"/>
+                                            required="true"
+                                            requiredMessage="Número não informado."
+                                            />
 
                                         <p:message for="numero" styleClass="text-danger"/>
                                     </div>
@@ -200,7 +227,9 @@
                                             class="form-control"
                                             id="complemento"
                                             placeholder="Casa, Apto, Loja"
-                                            value="#{cadastroBean.cadastro.complemento}"/>
+                                            value="#{cadastroBean.cadastro.complemento}"
+                                            required="false"
+                                            />
 
                                         <p:message for="complemento" styleClass="text-danger"/>
                                     </div>
@@ -213,7 +242,9 @@
                                             id="bairro"
                                             placeholder="Informe o bairro"
                                             value="#{cadastroBean.cadastro.bairro}"
-                                            required="required"/>
+                                            required="true"
+                                            requiredMessage="Bairro não informado."
+                                            />
 
                                         <p:message for="bairro" styleClass="text-danger"/>
                                     </div>
@@ -227,31 +258,47 @@
                                             binding="#{cidade}"
                                             placeholder="Rio de Janeiro"
                                             value="#{cadastroBean.cadastro.cidade}"
-                                            required="required"/>
+                                            required="true"
+                                            requiredMessage="Cidade não informado."
+                                            />
 
                                         <p:message for="cidade" styleClass="text-danger"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-3">
                                     <div class="form-group">
-
                                         <p:outputLabel for="cep" value="CEP"/>
-                                        <p:inputMask id="cep" value="#{cadastroBean.cadastro.cep}" mask="99999-999" class="form-control" placeholder="00000-000"/>
-                                        <h:message for="cep" styleClass="text-danger"/>
+                                        <p:inputMask 
+                                            id="cep" 
+                                            value="#{cadastroBean.cadastro.cep}" 
+                                            mask="99999-999" 
+                                            class="form-control" 
+                                            placeholder="00000-000"
+                                            required="true"
+                                            requiredMessage="CEP não informado."
+                                            />
+                                        <p:message for="cep" styleClass="text-danger"/>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-3 col-md-3">
 
                                     <div class="form-group">
-                                        <label jsf:for="estado">Estado</label>
-                                        <h:selectOneMenu id="estado" class="form-control" value="#{cadastroBean.cadastro.estado}" required="true">
+                                        
+                                        <p:outputLabel for="estado" value="Estado"/>
+                                        <h:selectOneMenu 
+                                            id="estado" 
+                                            class="form-control" 
+                                            value="#{cadastroBean.cadastro.estado}" 
+                                            required="true"
+                                            requiredMessage="Estado não informado."
+                                            >
                                             <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
                                             <f:selectItems value="#{cadastroBean.estado}" var ="estado"
                                                            itemValue="#{estado}" 
                                                            itemLabel="#{estado.uf}"/>
                                         </h:selectOneMenu>
-                                        <p:message for="ambientevendascliente" />
+                                        <p:message for="estado" styleClass="text-danger"/>
                                     </div>
 
 
