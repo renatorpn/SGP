@@ -45,7 +45,7 @@
                                                class="form-control"
                                                placeholder="Meu Nome"
                                                jsf:value="#{produtoMB.produto.nome}"
-                                               required="required"/>
+                                               required="true"/>
 
                                         <h:message for="nome" styleClass="text-danger"/>
                                     </div>
@@ -77,20 +77,12 @@
                                         <f:viewParam name="sexo" value="#{produtoMB.produto.genero}"/>
                                         <div>
                                         <div class="row">
-                                            <label class="radio-inline">
-                                                <input type="radio"
-                                                       jsf:id="sexoMasculino"
-                                                       a:name="sexo"
-                                                       jsf:value="#{produtoMB.sexo[0]}"
-                                                       checked="checked"/> Masculino
-                                            </label>
-
-                                            <label class="radio-inline">
-                                                <input type="radio"
-                                                       jsf:id="sexoFeminino"
-                                                       a:name="sexo"
-                                                       jsf:value="#{produtoMB.sexo[1]}"/> Feminino
-                                            </label>
+                                            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                                    <p:selectOneRadio id="sexo" value="#{produtoMB.produto.genero}" unselectable="true">
+                                                        <f:selectItem itemLabel="Masculino" itemValue="#{produtoMB.sexo[0]}" />
+                                                        <f:selectItem itemLabel="Feminino" itemValue="#{produtoMB.sexo[1]}" />
+                                                    </p:selectOneRadio>
+                                                </h:panelGrid>
                                             
                                         </div></div>
                                     </div>

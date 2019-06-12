@@ -44,8 +44,12 @@
                                                     class="form-control"
                                                     placeholder="Nome Fantasia do Cliente"
                                                     value="#{cadastroBean.cadastro.nome}"
-                                                    required="required"
-                                                    maxlength="50"/>
+                                                    required="true"
+                                                    maxlength="50"
+                                                    requiredMessage="Nome Fantasia não informado."
+                                                    >
+                                                    <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                                </p:inputText>
 
                                                 <h:message for="nome" styleClass="text-danger"/>
                                             </div>
@@ -74,7 +78,11 @@
                                                     class="form-control"
                                                     placeholder="Razão Social Cliente"
                                                     value="#{cadastroBean.cadastro.razaoSocial}"
-                                                    required="required"/>
+                                                    required="required"
+                                                    requiredMessage="Razão não informado."
+                                            >
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        </p:inputText>
                                                 <h:message for="razao" styleClass="text-danger"/>
                                             </div>
                                         </div>
@@ -188,7 +196,11 @@
                                                     id="logradouro"
                                                     placeholder="Av. Presidente Vargas"
                                                     value="#{cadastroBean.cadastro.logradouro}"
-                                                    required="required"/>
+                                                    required="true"
+                                                    requiredMessage="Logradouro não informado."
+                                            >
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        </p:inputText>
 
                                                 <h:message for="logradouro" styleClass="text-danger"/>
                                             </div>
@@ -203,7 +215,11 @@
                                                     maxlength="6"
                                                     placeholder="123"
                                                     value="#{cadastroBean.cadastro.numero}"
-                                                    required="required"/>
+                                                    required="true"
+                                                    requiredMessage="Número não informado."
+                                            >
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        </p:inputText>
 
                                                 <p:message for="numero" styleClass="text-danger"/>
                                             </div>
@@ -216,7 +232,12 @@
                                                     class="form-control"
                                                     id="complemento"
                                                     placeholder="Casa, Apto, Loja"
-                                                    value="#{cadastroBean.cadastro.complemento}"/>
+                                                    value="#{cadastroBean.cadastro.complemento}"
+                                                    required="true"
+                                                    requiredMessage="Complemento não informado."
+                                            >
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        </p:inputText>
 
                                                 <p:message for="complemento" styleClass="text-danger"/>
                                             </div>
@@ -229,7 +250,11 @@
                                                     id="bairro"
                                                     placeholder="Informe o bairro"
                                                     value="#{cadastroBean.cadastro.bairro}"
-                                                    required="required"/>
+                                                    required="true"
+                                                    requiredMessage="Razão não informado."
+                                            >
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        </p:inputText>
 
                                                 <p:message for="bairro" styleClass="text-danger"/>
                                             </div>
@@ -243,7 +268,11 @@
                                                     binding="#{cidade}"
                                                     placeholder="Rio de Janeiro"
                                                     value="#{cadastroBean.cadastro.cidade}"
-                                                    required="required"/>
+                                                    required="true"
+                                                    requiredMessage="Razão não informado."
+                                            >
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        </p:inputText>
 
                                                 <p:message for="cidade" styleClass="text-danger"/>
                                             </div>
@@ -312,7 +341,7 @@
                                             </p:column>
 
                                             <p:column style="width: 5%" headerText="Opção">
-                                                
+
                                                 <h:commandButton
                                                     class="btn btn-danger"
                                                     value="x"
@@ -320,7 +349,7 @@
                                                     onclick="if (!confirm('Confirma a exclusão do Item: #{contato.nome}?'))
                                                                 return false;"
                                                     >
-                                                    
+
                                                 </h:commandButton>
 
                                             </p:column>
@@ -393,8 +422,9 @@
                                             placeholder="Nome do Contato"
                                             value="#{cadastroBean.contato.nome}"
                                             required="true"
-                                            requiredMessage="Nome não pode ser nulo."
-                                            /> 
+                                            requiredMessage="Nome não pode ser nulo.">
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        </p:inputText>
                                         <p:message for="nomecontato" />
                                     </div>
                                 </div>
@@ -430,7 +460,9 @@
                                                class="form-control"
                                                placeholder="exemplo@exemplo.com.br"
                                                jsf:value="#{cadastroBean.contato.email}"
-                                               required="required"/>
+                                               required="true">
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        </input>
 
                                         <h:message for="email" styleClass="text-danger"/>
                                     </div>

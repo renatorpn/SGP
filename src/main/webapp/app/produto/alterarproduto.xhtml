@@ -40,13 +40,16 @@
                                 <div class="col-lg-12 col-md-12">
                                     <div class="form-group #{!nome.valid ? 'has-error' : ''}">
                                         <label jsf:for="nome">Nome</label>
-                                        <input type="text"
-                                               jsf:id="nome"
-                                               jsf:binding="#{nome}"
+                                        <p:inputText type="text"
+                                               id="nome"
+                                               binding="#{nome}"
                                                class="form-control"
                                                placeholder="Meu Nome"
-                                               jsf:value="#{produtoMB.produto.nome}"
-                                               required="required"/>
+                                               value="#{produtoMB.produto.nome}"
+                                               required="true"
+                                               requiredMessage="Nome do Produto não informado.">
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        </p:inputText>
 
                                         <h:message for="nome" styleClass="text-danger"/>
                                     </div>
@@ -57,14 +60,17 @@
                                 <div class="col-lg-4 col-md-4">
                                     <div class="form-group #{!codigo.valid ? 'has-error' : ''}">
                                         <label jsf:for="codigo">Código</label>
-                                        <input type="text"
-                                               jsf:id="codigo"
-                                               jsf:binding="#{codigo}"
+                                        <p:inputText type="text"
+                                               id="codigo"
+                                               binding="#{codigo}"
                                                class="form-control"
                                                placeholder="000000"
                                                maxlength="6"
-                                               jsf:value="#{produtoMB.produto.codigo}"
-                                               required="required"/>
+                                               value="#{produtoMB.produto.codigo}"
+                                               required="true"
+                                               requiredMessage="Código do Produto não informado.">
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        </p:inputText>
 
                                         <h:message for="codigo" styleClass="text-danger"/>
                                     </div>
@@ -78,20 +84,13 @@
                                         <f:viewParam name="sexo" value="#{produtoMB.produto.genero}"/>
                                         <div>
                                             <div class="row">
-                                                <label class="radio-inline">
-                                                    <input type="radio"
-                                                           jsf:id="sexoMasculino"
-                                                           a:name="sexo"
-                                                           jsf:value="#{produtoMB.sexo[0]}"
-                                                           checked="checked"/> Masculino
-                                                </label>
+                                                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                                    <p:selectOneRadio id="sexo" value="#{produtoMB.produto.genero}" unselectable="true">
+                                                        <f:selectItem itemLabel="Masculino" itemValue="#{produtoMB.sexo[0]}" />
+                                                        <f:selectItem itemLabel="Feminino" itemValue="#{produtoMB.sexo[1]}" />
+                                                    </p:selectOneRadio>
+                                                </h:panelGrid>
 
-                                                <label class="radio-inline">
-                                                    <input type="radio"
-                                                           jsf:id="sexoFeminino"
-                                                           a:name="sexo"
-                                                           jsf:value="#{produtoMB.sexo[1]}"/> Feminino
-                                                </label>
 
                                             </div></div>
                                     </div>
