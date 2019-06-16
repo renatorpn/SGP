@@ -131,36 +131,40 @@ public class Balanco implements Serializable {
     return true;
   }
   
-    public void balancoRecente(Balanco b){
-      int mes = 0;
-      int ano = 0;
-        if(this.periodo.contains("Janeiro"))
-            mes = 1;
-        else if (b.periodo.contains("Fevereiro"))
-            mes = 2;
-        else if (b.periodo.contains("Março"))
-           mes = 3;
-        else if (b.periodo.contains("Abril"))
-            mes = 4;
-        else if (b.periodo.contains("Maio"))
-            mes = 5;
-        else if (b.periodo.contains("Junho"))
-            mes = 6;
-        else if (b.periodo.contains("Julho"))
-            mes = 7;
-        else if (b.periodo.contains("Agosto"))
-            mes = 8;
-        else if (b.periodo.contains("Setembro"))
-            mes = 9;
-        else if (b.periodo.contains("Outubro"))
-            mes = 10;
-        else if (b.periodo.contains("Novembro"))
-            mes = 11;
-        else if (b.periodo.contains("Dezembro"))
-            mes = 12;
+    public String dataBalanco(){
+        String dia = "01/";
+        String mes = "01/";
+        String ano;
         
-        ano = Integer.parseInt(periodo.substring(periodo.length() - 3));
-
+        if(this.periodo.contains("Janeiro"))
+            mes = "01/";
+        else if (this.periodo.contains("Fevereiro"))
+            mes = "02/";
+        else if (this.periodo.contains("Março"))
+           mes = "03/";
+        else if (this.periodo.contains("Abril"))
+            mes = "04/";
+        else if (this.periodo.contains("Maio"))
+            mes = "05/";
+        else if (this.periodo.contains("Junho"))
+            mes = "06/";
+        else if (this.periodo.contains("Julho"))
+            mes = "07/";
+        else if (this.periodo.contains("Agosto"))
+            mes = "08/";
+        else if (this.periodo.contains("Setembro"))
+            mes = "09/";
+        else if (this.periodo.contains("Outubro"))
+            mes = "10/";
+        else if (this.periodo.contains("Novembro"))
+            mes = "11/";
+        else if (this.periodo.contains("Dezembro"))
+            mes = "12/";
+        
+        ano = periodo.substring(periodo.length() - 4);
+        
+        String data = dia.concat(mes).concat(ano);
+        return data;
   }
 
     @Override

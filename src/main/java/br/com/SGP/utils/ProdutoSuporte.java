@@ -7,6 +7,7 @@ package br.com.SGP.utils;
 
 import br.com.SGP.entities.Produto;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.GeneratedValue;
@@ -30,23 +31,58 @@ public class ProdutoSuporte implements Serializable{
    private double mediaCobertura;
    private int ocorrencias;
    private String statusItem;
+   private Integer estoqueAtual;
+   private Date dataEstoqueAtual;
+   private double sugetao;
 
+    public Integer getEstoqueAtual() {
+        return estoqueAtual;
+    }
+
+    public void setEstoqueAtual(Integer estoqueAtual) {
+        this.estoqueAtual = estoqueAtual;
+    }
+
+    public Date getDataEstoqueAtual() {
+        return dataEstoqueAtual;
+    }
+
+    public void setDataEstoqueAtual(Date dataEstoqueAtual) {
+        this.dataEstoqueAtual = dataEstoqueAtual;
+    }
+
+    public double getSugetao() {
+        if (estoqueAtual < (mediaVendas*3) ){
+            sugetao = (mediaVendas*3) - estoqueAtual;
+        } else{
+            sugetao = 0;
+        }
+        return sugetao;
+    }
+
+    public void setSugetao(double sugetao) {
+        this.sugetao = sugetao;
+    }
+   
     public ProdutoSuporte() {
     }
     
     public String getStatusItem(){
-         if(mediaGiro >= 0.25 && mediaCobertura < 2.5){
+        double status = estoqueAtual/mediaVendas;
+        
+         if(status < 3){
              this.statusItem = "Ruptura";
-         }else if(mediaGiro >= 0.25 && mediaCobertura >= 2.5){
+         }else if(status >= 3 && status <= 3.5){
              this.statusItem = "Abastecido";
-         }else if(mediaGiro < 0.25 && mediaCobertura >= 2.5){
+         }else if(status >= 3.5){
              this.statusItem = "Atenção";
          }else{
              this.statusItem = "Descontinuado";
          }
          return statusItem;
     }
-
+    
+    
 
     public Produto getProduto() {
         return produto;

@@ -26,6 +26,7 @@ import java.io.IOException;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -278,9 +279,14 @@ public class CadastroBean implements Serializable {
         return "/app/balanco/listarbalanco?faces-redirect=true";
     }
 
-    public String mediaVendas(Cadastro cadastro) {
+    public String propostaPedido(Cadastro cadastro) {
         limparList();
         return "/app/cliente/propostadepedido?faces-redirect=true";
+    }
+    
+    public String mediaVendas(Cadastro cadastro) {
+        limparList();
+        return "/app/balanco/mediaBalancos?faces-redirect=true";
     }
 
     public String somaVendas(Cadastro cadastro) {
@@ -418,7 +424,7 @@ public class CadastroBean implements Serializable {
     private List<ProdutoSuporte> produtosSuporte = new ArrayList<>();
     private ProdutoSuporte produtoSuporte = new ProdutoSuporte();
 
-    public List<ProdutoSuporte> getProdutosSuporte() {
+    public List<ProdutoSuporte> getProdutosSuporte() throws ParseException {
         produtosSuporte = mediaVendaProduto(cadastro);
         return produtosSuporte;
     }
@@ -434,8 +440,17 @@ public class CadastroBean implements Serializable {
     public void setProdutoSuporte(ProdutoSuporte produtoSuporte) {
         this.produtoSuporte = produtoSuporte;
     }
+    
+    private Date converteData(String dataString) throws ParseException {
+    Date data = null;
+    
+        DateFormat dtOutput = new SimpleDateFormat("dd/MM/yyyy");
+        data = dtOutput.parse(dataString);
+   
+    return data;
+} 
 
-    public List<ProdutoSuporte> mediaVendaProduto(Cadastro cliente) {
+    public List<ProdutoSuporte> mediaVendaProduto(Cadastro cliente) throws ParseException {
         List<ProdutoSuporte> produtos = new ArrayList<>();
         List<Balanco> listaBalanco = balancoDAO.findAllByCliente(cliente);
 
@@ -449,6 +464,8 @@ public class CadastroBean implements Serializable {
                 if (!produtos.contains(pscheck)) {
                     pscheck.setSomaVendas(0);
                     pscheck.setSomaEstoques(0);
+                    pscheck.setDataEstoqueAtual(converteData(listaBalanco.get(a).dataBalanco()));
+                    pscheck.setEstoqueAtual(listaItemBalanco.get(i).getQtdEstoque());
                     produtos.add(pscheck);
                 }
 
@@ -460,6 +477,12 @@ public class CadastroBean implements Serializable {
                         int valestoque = listaItemBalanco.get(i).getQtdEstoque() + ps.getSomaEstoques();
                         ps.setSomaEstoques(valestoque);
                         ps.setOcorrencias(ps.getOcorrencias() + 1);
+                        if(ps.getDataEstoqueAtual().before(converteData(listaItemBalanco.get(i).getIdBalanco().dataBalanco()))){
+                            ps.setDataEstoqueAtual(converteData(listaBalanco.get(a).dataBalanco()));
+                            ps.setEstoqueAtual(listaItemBalanco.get(i).getQtdEstoque());
+                        }
+                        
+                        
                     }
                 }
             }
@@ -467,7 +490,7 @@ public class CadastroBean implements Serializable {
         return produtos;
     }
 
-    public Integer getSomaGeral() {
+    public Integer getSomaGeral() throws ParseException {
         Integer somaGeral = new Integer(0);
 
         for (ProdutoSuporte ps : getProdutosSuporte()) {
