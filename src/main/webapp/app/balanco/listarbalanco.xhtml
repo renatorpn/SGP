@@ -96,8 +96,12 @@
                                />
                         <input type="submit"
                                    class="btn btn-primary"
+                                   jsf:action="#{cadastroBean.propostaPedido(cadastroBean.cadastro)}"
+                                   value="Proposta de Pedido"/>
+                        <input type="submit"
+                                   class="btn btn-primary"
                                    jsf:action="#{cadastroBean.mediaVendas(cadastroBean.cadastro)}"
-                                   value="Media dos Balanços"/>
+                                   value="Média dos Balanços"/>
                         <input type="submit"
                                    class="btn btn-primary"
                                    jsf:action="#{cadastroBean.somaVendas(cadastroBean.cadastro)}"
