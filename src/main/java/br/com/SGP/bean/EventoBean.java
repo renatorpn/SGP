@@ -257,7 +257,10 @@ public class EventoBean implements Serializable {
     }
     
     public void cadastrarTipoEvento() {
+            FacesContext context = FacesContext.getCurrentInstance();
             tipoEventoDAO.save(tipoEvento);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", ""));
+            context.getExternalContext().getFlash().setKeepMessages(true);
             tipoEvento = new TipoEvento();
             
         //return "/app/sucesso?faces-redirect=true";

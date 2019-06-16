@@ -9,6 +9,7 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:p="http://primefaces.org/ui">
     <head jsf:id="head">
+        <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/img/favicon.ico"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -59,7 +60,7 @@
                                 </p:column>
 
                                 <f:facet name="footer">
-                                    Total de tipos cadastradao: #{produtoMB.categorias.size()}.
+                                    Total de tipos cadastrados: #{EventoMB.listaTipoEvento.size()}.
                                     <p:commandButton value="Novo Tipo" type="button" actionListener="#{EventoMB.limparTipoEvento()}" onclick="PF('dlg1').show();" icon="ui-icon-plus" />
                                 </f:facet>
 
@@ -71,7 +72,7 @@
         </div>
 
         <p:dialog header="Adicionar Novo Tipo de Evento" widgetVar="dlg1" height="300" width="300" class="form-group" >
-            <p:growl id="msgsdialog" showDetail="true" sticky="true"/>
+            <p:growl id="msgsdialog" showDetail="true" sticky="false" life="1500"/>
             <h:form id="formdialog" enctype="multipart/form-data" >
 
                 <div class="row">

@@ -9,6 +9,7 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:p="http://primefaces.org/ui">
     <head jsf:id="head">
+        <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/img/favicon.ico"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -58,19 +59,12 @@
 
                             <div class="row">
                                 <div class="col-lg-4 col-md-4">
-                                    <div class="form-group #{!codigo.valid ? 'has-error' : ''}">
+                                    <div class="form-group">
                                         <label jsf:for="codigo">Código</label>
-                                        <p:inputText type="text"
+                                        <h:outputText
                                                id="codigo"
-                                               binding="#{codigo}"
                                                class="form-control"
-                                               placeholder="000000"
-                                               maxlength="6"
-                                               value="#{produtoMB.produto.codigo}"
-                                               required="true"
-                                               requiredMessage="Código do Produto não informado.">
-                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
-                                        </p:inputText>
+                                               value="#{produtoMB.produto.codigo}"/>
 
                                         <h:message for="codigo" styleClass="text-danger"/>
                                     </div>

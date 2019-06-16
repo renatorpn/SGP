@@ -9,6 +9,7 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:p="http://primefaces.org/ui">
     <head jsf:id="head">
+        <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/img/favicon.ico"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -30,8 +31,7 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
                     <form jsf:id="form" enctype="multipart/form-data" >
-                        <p:growl id="growl" showDetail="false" sticky="false" life="3000"  />
-                        <p:messages id="msgs" />
+                        <p:growl id="growl" showDetail="false" sticky="false" life="1500"  />
                         <fieldset>
 
                             <legend>Usuarios Cadastros</legend>
@@ -65,7 +65,7 @@
         </div>
 
         <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="600" class="form-group" >
-            <p:growl id="msgsdialog" showDetail="true" sticky="true"/>
+            <p:growl id="msgsdialog" showDetail="false" sticky="false" life="1500"/>
             <h:form id="formdialog" enctype="multipart/form-data" >
 
                 <legend>Dados do Cadastro</legend>
@@ -80,7 +80,8 @@
                                    class="form-control"
                                    placeholder="Usuário"
                                    jsf:value="#{Usuario.usuarioCadastro.nomeUsuario}"
-                                   required="required"/>
+                                   required="true"
+                                   requiredMessage="Campo Nome Usuário é obrigatório!"/>
 
                             <h:message for="nomeUsuario" styleClass="text-danger"/>
                         </div>
@@ -94,7 +95,8 @@
                                 redisplay="true"
                                 maxlength="8"
                                 value="#{Usuario.usuarioCadastro.senha}"
-                                required="required"/>
+                                required="true"
+                                requiredMessage="Campo Senha é Obrigatório!"/>
 
                             <h:message for="senha" styleClass="text-danger"/>
                         </div>
@@ -111,7 +113,8 @@
                                    class="form-control"
                                    placeholder="exemplo@exemplo.com.br"
                                    jsf:value="#{Usuario.usuarioCadastro.email}"
-                                   required="required"/>
+                                   required="true"
+                                   requiredMessage="Campo Email é obrigatório!"/>
 
                             <h:message for="email" styleClass="text-danger"/>
                         </div>
@@ -125,7 +128,8 @@
                                    class="form-control"
                                    placeholder="Nome Completo"
                                    jsf:value="#{Usuario.usuarioCadastro.nome}"
-                                   required="required"/>
+                                   required="true"
+                                   requiredMessage="Campo Nome Completo é obrigatório!"/>
 
                             <h:message for="nome" styleClass="text-danger"/>
                         </div>
@@ -133,7 +137,10 @@
                     <div class="col-lg-3 col-md-3">
                         <div class="form-group">
                             <label jsf:for="cargo">Cargo</label>
-                            <h:selectOneMenu id="cargo" class="form-control" value="#{Usuario.usuarioCadastro.cargo}" required="true">
+                            <h:selectOneMenu id="cargo" class="form-control" 
+                                             value="#{Usuario.usuarioCadastro.cargo}" 
+                                             required="true"
+                                             requiredMessage="Campo Cargo é obrigatório!">
                                 <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
                                 <f:selectItems value="#{Usuario.cargo}" var ="cargo"
                                                itemValue="#{cargo}" 
