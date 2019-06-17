@@ -42,12 +42,7 @@
             },
             beforeShow : function(input, inst) {
                 var datestr;
-                if ((datestr = $(this).val()).length > 0) {
-                    year = datestr.substring(datestr.length-4, datestr.length);
-                    month = jQuery.inArray(datestr.substring(0, datestr.length-5), $(this).datepicker('option', 'monthNamesShort'));
-                    $(this).datepicker('option', 'defaultDate', new Date(year, month, 1));
-                    $(this).datepicker('setDate', new Date(year, month, 1));
-                }
+                
             }
         });
     });
@@ -94,7 +89,12 @@
                             <div class="col-lg-8 col-md-8">
                             <div class="form-group">
                                 <label for="startDate">Selecione o Período :</label>
-                                <p:inputText  id="startDate" class="date-picker" value="#{cadastroBean.balanco.periodo}"/>
+                                <p:inputText  id="startDate" 
+                                              class="date-picker" 
+                                              value="#{cadastroBean.balanco.periodo}"
+                                              required="true"
+                                              requiredMessage="Período é obrigatório"
+                                              />
                                 <h:message for="periodo" styleClass="text-danger"/>
                                 
                                 

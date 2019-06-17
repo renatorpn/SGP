@@ -42,7 +42,7 @@ and open the template in the editor.
                 <div class="col-lg-12 col-md-12 ">
                     <h:form id="form" enctype="multipart/form-data" prependId="false">
                         <fieldset>
-                            <legend>Relatório: Vendas</legend>
+                            <legend>Relatório: Soma das vendas</legend>
 
                             <p:dataTable emptyMessage="Nenhum item Resgitrado." 
                                          var="produtosSuporte" 
@@ -57,33 +57,36 @@ and open the template in the editor.
 
                                          >
                                 <f:facet name="header">
-
-                                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify" />
+                                    Relação de Produtos
+                                    <div style="float:right;padding-top: 5px;">
+                                        <p:commandButton id="toggler" type="button" value="Campos do relatório"  icon="ui-icon-circle-triangle-s" class="btn-warning" />
                                     <p:columnToggler datasource="tabelaitens" trigger="toggler">
                                         <p:ajax event="toggle" listener="#{cadastroBean.onToggle}" />
                                     </p:columnToggler>
-
-                                    <h:commandLink>Relatório
-
-                                        <p:dataExporter type="pdf" target="tabelaitens" fileName="Relatório" />
-
-
+                                    
+                                    <h:commandLink > Salvar Relatório
+                                        
+                                   <p:dataExporter type="pdf" target="tabelaitens" fileName="Relatório" />
+                                   
+                                                                     
                                     </h:commandLink>
+                                                  
+                                    </div>
 
 
                                 </f:facet>
 
 
-                                <p:column style="width: 10%" headerText="Produto" exportable="#{cadastroBean.list[0]}" >
+                                <p:column style="width: 10%" headerText="Produto" exportable="#{cadastroBean.list[0]}" sortBy="#{produtosSuporte.produto.nome}}" filterBy="#{produtosSuporte.produto.nome}" filterMatchMode="contains" >
                                     <h:outputText value="#{produtosSuporte.produto.nome}" />
                                 </p:column>
-                                <p:column style="width: 10%" headerText="Cor" exportable="#{cadastroBean.list[1]}">
+                                <p:column style="width: 10%" headerText="Cor" exportable="#{cadastroBean.list[1]}" sortBy="#{produtosSuporte.produto.cor.descricao}}" filterBy="#{produtosSuporte.produto.cor.descricao}" filterMatchMode="contains">
                                     <h:outputText value="#{produtosSuporte.produto.cor.descricao}" />
                                 </p:column>
-                                <p:column style="width: 6%" headerText="Total de Vendas" exportable="#{cadastroBean.list[2]}">
+                                <p:column style="width: 6%" headerText="Total de Vendas" exportable="#{cadastroBean.list[2]}" sortBy="#{produtosSuporte.somaVendas}}" filterBy="#{produtosSuporte.somaVendas}" filterMatchMode="contains">
                                     <h:outputText value="#{produtosSuporte.somaVendas}" />
                                 </p:column>
-                                <p:column style="width: 6%" headerText="Total de Balanços(Produto)" exportable="#{cadastroBean.list[3]}">
+                                <p:column style="width: 6%" headerText="Total de Balanços(Produto)" exportable="#{cadastroBean.list[3]}" sortBy="#{produtosSuporte.ocorrencias}}" filterBy="#{produtosSuporte.ocorrencias}" filterMatchMode="contains">
                                     <h:outputText value="#{produtosSuporte.ocorrencias}" />
                                 </p:column>
                                 <p:columnGroup type="footer" >
@@ -97,7 +100,7 @@ and open the template in the editor.
 
                         </fieldset>
 
-
+                        <a class="btn btn-primary"  href="/WEBSGP/app/balanco/listarbalanco.xhtml">Voltar</a>
 
                     </h:form>
 

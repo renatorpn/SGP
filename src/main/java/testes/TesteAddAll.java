@@ -56,7 +56,7 @@ public class TesteAddAll {
         CadastroDao cadastroDAO = new CadastroDao();
         cadastro.setRepresentante(user);
         cadastro.setRazaoSocial("Lojas Testes LTDA");
-        cadastro.setCnpj("60009457000199");
+        cadastro.setCnpj("60.009.457/0001-99");
         cadastro.setNome("Testes Calçados");
         cadastro.setQuantidadelojas(1);
         cadastro.setEstado(Estado.RJ);

@@ -41,16 +41,16 @@ and open the template in the editor.
                 <div class="col-lg-12 col-md-12 ">
                     <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
                         <fieldset>
-                            <legend>Balanços do Cliente</legend>
+                            <legend>Itens do Balanço</legend>
                             <div class="col-lg-4 col-md-4">
                                 <div class="form-group">
-                                    <label jsf:for="nome">Nome</label>
+                                    <label jsf:for="nome">Cliente</label>
                                     <h:outputText
                                         id="nome"
                                         binding="#{nome}"
                                         class="form-control"
 
-                                        value="#{cadastroBean.cadastro.id}, #{cadastroBean.cadastro.nome} - CPNJ: #{cadastroBean.cadastro.cnpj} "
+                                        value="#{cadastroBean.cadastro.nome} - CPNJ: #{cadastroBean.cadastro.cnpj} "
                                         />
 
                                     <h:message for="nome" styleClass="text-danger"/>
@@ -58,7 +58,7 @@ and open the template in the editor.
                             </div>
                             <div class="col-lg-2 col-md-2">
                                 <div class="form-group">
-                                    <label jsf:for="nome">Balanço</label>
+                                    <label jsf:for="nome">Balanço de</label>
                                     <h:outputText
                                         id="balanco"
                                         binding="#{balanco}"
@@ -71,7 +71,7 @@ and open the template in the editor.
 
                         </fieldset>
                         <fieldset >
-                            <legend>Itens do Balanço</legend>
+                            <legend></legend>
                             <style type="text/css">
                                 .vermelho {
                                     background-color: #ff8066 !important;
@@ -104,20 +104,22 @@ and open the template in the editor.
                                                           itemBalanco.statusItem == 'Baixa Demanda de Compra' ? 'vermelho' :
                                                           null}"
                                          >
-                                <f:facet name="header" >Itens do Balanço
+                                <f:facet name="header" >
+                                    Itens do Balanço
+                                    <div style="float:right;padding-top: 5px;">
+                                        <p:commandButton id="toggler" type="button" value="Campos do relatório"  icon="ui-icon-circle-triangle-s" class="btn-warning" />
+                                        <p:columnToggler datasource="tabelaitens" trigger="toggler">
+                                            <p:ajax event="toggle" listener="#{cadastroBean.onToggle}" />
+                                        </p:columnToggler>
 
-                                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify" />
-                                    <p:columnToggler datasource="tabelaitens" trigger="toggler">
-                                        <p:ajax event="toggle" listener="#{cadastroBean.onToggle}" />
-                                    </p:columnToggler>
+                                        <h:commandLink > Salvar Relatório
+
+                                            <p:dataExporter type="pdf" target="tabelaitens" fileName="Relatório" />
 
 
-                                    <h:commandLink>Relatório
-                                        <p:dataExporter type="pdf" target="tabelaitens" fileName="Relatório" />
-                                    </h:commandLink>
+                                        </h:commandLink>
 
-                                    
-
+                                    </div>
                                 </f:facet>
 
 
@@ -167,7 +169,7 @@ and open the template in the editor.
 
                     </form>
 
-
+                    <a class="btn btn-primary"  href="/WEBSGP/app/balanco/listarbalanco.xhtml">Voltar</a>
 
                 </div>
             </div>

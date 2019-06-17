@@ -41,7 +41,7 @@ public class Balanco implements Serializable {
     @GeneratedValue(strategy=GenerationType.SEQUENCE,generator="idbalanco")
     private Long idbalanco;
 
-    
+    @NotNull
     @Column(name = "periodo")
     private String periodo;
     

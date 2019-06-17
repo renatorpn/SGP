@@ -74,27 +74,27 @@ and open the template in the editor.
                                 </f:facet>
 
 
-                                <p:column style="width: 10%" headerText="Produto" exportable="#{cadastroBean.list[0]}" >
+                                <p:column style="width: 10%" headerText="Produto" exportable="#{cadastroBean.list[0]}" sortBy="#{produtosSuporte.produto.nome}}" filterBy="#{produtosSuporte.produto.nome}" filterMatchMode="contains" >
                                     <h:outputText value="#{produtosSuporte.produto.nome}" />
                                 </p:column>
-                                <p:column style="width: 10%" headerText="Cor" exportable="#{cadastroBean.list[1]}">
+                                <p:column style="width: 10%" headerText="Cor" exportable="#{cadastroBean.list[1]}" sortBy="#{produtosSuporte.produto.cor.descricao}}" filterBy="#{produtosSuporte.produto.cor.descricao}" filterMatchMode="contains">
                                     <h:outputText value="#{produtosSuporte.produto.cor.descricao}" />
                                 </p:column>
-                                <p:column style="width: 6%" headerText="Média Venda" exportable="#{cadastroBean.list[2]}">
+                                <p:column style="width: 7%" headerText="Média Venda" exportable="#{cadastroBean.list[2]}" sortBy="#{produtosSuporte.mediaVendas}}" filterBy="#{produtosSuporte.mediaVendas}" filterMatchMode="contains">
                                     <h:outputText value="#{produtosSuporte.mediaVendas}" />
                                 </p:column>
-                                <p:column style="width: 6%" headerText="Média Estoque" exportable="#{cadastroBean.list[3]}">
+                                <p:column style="width: 6%" headerText="Média Estoque" exportable="#{cadastroBean.list[3]}" sortBy="#{produtosSuporte.mediaEstoques}}" filterBy="#{produtosSuporte.mediaEstoques}" filterMatchMode="contains">
                                     <h:outputText value="#{produtosSuporte.mediaEstoques}" />
                                 </p:column>
-                                <p:column style="width: 5%" headerText="Média Giro" exportable="#{cadastroBean.list[4]}">
+                                <p:column style="width: 6%" headerText="Média Giro" exportable="#{cadastroBean.list[4]}" sortBy="#{produtosSuporte.mediaGiro}}" filterBy="#{produtosSuporte.mediaGiro}" filterMatchMode="contains">
                                     <h:outputText value="#{produtosSuporte.mediaGiro}">
                                         <f:convertNumber type="percent" />
                                     </h:outputText>
                                 </p:column>
-                               <p:column style="width: 8%" headerText="Estoque Atual" exportable="#{cadastroBean.list[6]}">
+                                <p:column style="width: 8%" headerText="Estoque Atual" exportable="#{cadastroBean.list[6]}" sortBy="#{produtosSuporte.estoqueAtual}}" filterBy="#{produtosSuporte.estoqueAtual}" filterMatchMode="contains">
                                     <h:outputText value="#{produtosSuporte.estoqueAtual}" />
                                 </p:column>
-                                <p:column style="width: 8%" headerText="Status" exportable="#{cadastroBean.list[7]}">
+                                <p:column style="width: 8%" headerText="Status" exportable="#{cadastroBean.list[7]}" sortBy="#{produtosSuporte.statusItem}}" filterBy="#{produtosSuporte.statusItem}" filterMatchMode="contains">
                                     <h:outputText value="#{produtosSuporte.statusItem}" />
                                 </p:column>
 
@@ -103,7 +103,7 @@ and open the template in the editor.
 
                         </fieldset>
 
-
+                        <a class="btn btn-primary"  href="/WEBSGP/app/balanco/listarbalanco.xhtml">Voltar</a>
 
                     </h:form>
 
