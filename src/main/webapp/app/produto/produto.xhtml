@@ -31,44 +31,43 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
                     <h:form id="form" enctype="multipart/form-data" prependId="false">
-                        <p:growl id="growl" showDetail="true" sticky="true" />
-                        <p:messages id="msgs" />
+                        <p:growl id="growl" showDetail="true" sticky="false" life="1500" />
                         <fieldset>
                             <legend>Dados Gerais</legend>
                             <div class="row">
 
                                 <div class="col-lg-12 col-md-12">
-                                    <div class="form-group #{!nome.valid ? 'has-error' : ''}">
+                                    <div class="form-group">
                                         <label jsf:for="nome">Nome</label>
-                                        <input type="text"
-                                               jsf:id="nome"
-                                               jsf:binding="#{nome}"
+                                        <p:inputText
+                                               id="nome"
                                                class="form-control"
                                                placeholder="Meu Nome"
-                                               jsf:value="#{produtoMB.produto.nome}"
+                                               value="#{produtoMB.produto.nome}"
                                                required="true"
+                                               requiredMessage="Campo Nome obrigatório">
                                                <f:validateRegex  pattern="^.+?\w+\S+$*" />
-                                        </input>
+                                        </p:inputText>
 
-                                        <h:message for="nome" styleClass="text-danger"/>
+                                        <p:message for="nome" styleClass="text-danger"/>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-lg-4 col-md-4">
-                                    <div class="form-group #{!codigo.valid ? 'has-error' : ''}">
+                                    <div class="form-group">
                                         <label jsf:for="codigo">Código</label>
-                                        <input type="text"
-                                               jsf:id="codigo"
-                                               jsf:binding="#{codigo}"
+                                        <p:inputText
+                                               id="codigo"
                                                class="form-control"
                                                placeholder="000000"
                                                maxlength="6"
-                                               jsf:value="#{produtoMB.produto.codigo}"
-                                               required="required"/>
+                                               value="#{produtoMB.produto.codigo}"
+                                               required="true"
+                                               requiredMessage="Campo Código obrigatório"/>
 
-                                        <h:message for="codigo" styleClass="text-danger"/>
+                                        <p:message for="codigo" styleClass="text-danger"/>
                                     </div>
                                 </div>
 
@@ -81,7 +80,11 @@
                                         <div>
                                         <div class="row">
                                             <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                                                    <p:selectOneRadio id="sexo" value="#{produtoMB.produto.genero}" unselectable="true">
+                                                    <p:selectOneRadio id="sexo" 
+                                                                      value="#{produtoMB.produto.genero}" 
+                                                                      unselectable="true"
+                                                                      required="true"
+                                                                      requiredMessage="Campo Sexo obrigatório!">
                                                         <f:selectItem itemLabel="Masculino" itemValue="#{produtoMB.sexo[0]}" />
                                                         <f:selectItem itemLabel="Feminino" itemValue="#{produtoMB.sexo[1]}" />
                                                     </p:selectOneRadio>
@@ -96,7 +99,11 @@
                                 <div class="col-lg-6 col-md-6">
                                     <div class="form-group">
                                         <label jsf:for="fxClassificacao">Faixa de Classificação</label>
-                                        <h:selectOneMenu id="fxClassificacao" class="form-control" value="#{produtoMB.produto.fxclassificacao}" required="true">
+                                        <h:selectOneMenu id="fxClassificacao" 
+                                                         class="form-control" 
+                                                         value="#{produtoMB.produto.fxclassificacao}" 
+                                                         required="true"
+                                                         requiredMessage="Campo Faixa é obrigatório">
                                             <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
                                             <f:selectItems value="#{produtoMB.fxClassificacao}" var ="fxClassificacao"
                                                            itemValue="#{fxClassificacao.descricao}" 
@@ -106,7 +113,12 @@
                                     </div>
                                     <div class="form-group">
                                         <h:outputLabel value="Categoria " for="categoria"/>
-                                        <h:selectOneMenu id="categoria" class="form-control" value="#{produtoMB.produto.categoriaProduto}" required="true" converter="categoriaConverter">
+                                        <h:selectOneMenu id="categoria" 
+                                                         class="form-control" 
+                                                         value="#{produtoMB.produto.categoriaProduto}" 
+                                                         required="true" 
+                                                         requiredMessage="Campo Categoria é obrigatório"
+                                                         converter="categoriaConverter">
                                             <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
                                             <f:selectItems value="#{produtoMB.categorias}" var ="categoria"
                                                            itemValue="#{categoria}" 
@@ -120,31 +132,35 @@
                                 <div class="col-lg-6 col-md-6">
                                     <div class="form-group #{!precovenda.valid ? 'has-error' : ''}">
                                         <label jsf:for="precovenda">Preço Venda</label>
-                                        <input type="text"
+                                        <p:inputText
                                                class="form-control"
-                                               jsf:id="precovenda"
-                                               jsf:binding="#{precovenda}"
-                                               jsf:value="#{produtoMB.produto.precovenda}"
+                                               id="precovenda"
+                                               value="#{produtoMB.produto.precovenda}"
                                                placeholder="0,00"
-                                               required="required">
+                                               required="true"
+                                               requiredMessage="Campo Preço Venda é obrigatório">
                                             <f:convertNumber pattern="#,##0.00"/>
                                             <p:ajax update="precovenda" />
-                                        </input>
+                                        </p:inputText>
 
-                                        <h:message for="precovenda" styleClass="text-danger"/>
+                                        <p:message for="precovenda" styleClass="text-danger"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                 <div class="form-group">
                                         <label jsf:for="cor">Cor Produto</label>
-                                        <h:selectOneMenu id="cor" class="form-control" value="#{produtoMB.produto.cor}" required="true" >
+                                        <h:selectOneMenu id="cor" 
+                                                         class="form-control" 
+                                                         value="#{produtoMB.produto.cor}" 
+                                                         required="true" 
+                                                         requiredMessage="Campo Cor é obrigatório">
                                             <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
                                             <f:selectItems value="#{produtoMB.corProduto}" var ="cor"
                                                            itemValue="#{cor}" 
                                                            itemLabel="#{cor.descricao}"/>
 
                                         </h:selectOneMenu>
-                                        <p:message for="cor" />
+                                        <p:message for="cor" styleClass="text-danger"/>
                                 </div></div>
                                 
                                 

@@ -29,7 +29,7 @@
         <ui:include src="/app/header.xhtml"/>
 
         <h:form>
-            <p:growl id="growl" showDetail="false" sticky="false" life="3000"  />
+            <p:growl id="growl" showDetail="false" sticky="false" life="1500"  />
         </h:form>
 
         <div class="container">
@@ -72,7 +72,7 @@
                         }
                     </style>
                     <h:form>
-                        <p:growl id="messages" showDetail="true" />
+                        <p:growl id="messages" showDetail="true" life="1500" />
 
                         <h:panelGrid columnClasses="value">
                             <h3 style="margin-top: 0">Eventos</h3>
@@ -90,23 +90,38 @@
                                 <h:panelGrid columns="2" >
 
                                     <p:outputLabel value="Título"/>
-                                    <p:inputText value="#{EventoMB.event.nomeevento}"/>
+                                    <p:inputText value="#{EventoMB.event.nomeevento}"
+                                                 required="true"
+                                                 requiredMessage="Nome do Evento é necessário"/>
 
 
-                                    <p:outputLabel value="Início"/>
+                                    <p:outputLabel value="Data Início"/>
                                     <p:calendar value="#{EventoMB.event.dataInicio}"  pattern="dd/MM/yyyy"/>
 
 
 
-                                    <p:outputLabel value="Fim"/>
+                                    <p:outputLabel value="Data Fim"/>
                                     <p:calendar value="#{EventoMB.event.dataFim}"  pattern="dd/MM/yyyy"/>
+                                    
+                                    <p:outputLabel value="Hora Inicio" />
+                                    <p:calendar id="horaI" value="#{EventoMB.event.horaInicio}" pattern="HH:mm" timeOnly="true"  />
 
-
+                                    <p:outputLabel value="Hora Fim" />
+                                    <p:calendar id="horaF" value="#{EventoMB.event.horaFim}" pattern="HH:mm" timeOnly="true" />
+                                    
+                                    
+                                    
+                                    
                                     <p:outputLabel value="Descrição"/>
                                     <p:inputText value="#{EventoMB.event.descricao}"/>
 
                                     <p:outputLabel value="Tipo Evento"/>
-                                    <h:selectOneMenu id="tipoevento" class="form-control" value="#{EventoMB.event.tipoevento}" required="true" converter="tipoEventoConverter">
+                                    <h:selectOneMenu id="tipoevento" 
+                                                     class="form-control" 
+                                                     value="#{EventoMB.event.tipoevento}" 
+                                                     required="true" 
+                                                     requiredMessage="Tipo Evento não pode ser Nulo!"
+                                                     converter="tipoEventoConverter">
                                         <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
                                         <f:selectItems value="#{EventoMB.listaTipoEvento}" var ="tipoevento"
                                                        itemValue="#{tipoevento}"
@@ -116,15 +131,23 @@
 
 
                                     <p:outputLabel value="Investimento"/>
-                                    <p:inputText value="#{EventoMB.event.investimento}"/>
+                                   <input type="text"
+                                               class="form-control"
+                                               jsf:id="investimento"
+                                               jsf:value="#{EventoMB.event.investimento}"
+                                               placeholder="0,00"
+                                               required="required">
+                                            <f:convertNumber pattern="#,##0.00"/>
+                                            <p:ajax update="investimento" />
+                                        </input>
 
 
-                                    <label jsf:for="vendaRealizada">Venda Realizada</label>
+                                    <label jsf:for="vendaRealizada">Possibilidade de Venda</label>
                                     <select jsf:id="vendaRealizada"
                                             size="1"
                                             class="form-control"
                                             jsf:value="#{EventoMB.event.vendarealizada}"
-                                            required="required">
+                                            required="true">
                                         <ui:repeat value="#{EventoMB.vendaRealizada}"
                                                    var="vendarealizada"
                                                    itemLabel="#{vendarealizada.descricao}"
@@ -133,16 +156,14 @@
                                         </ui:repeat>
                                     </select>
 
-                                    <p:outputLabel value="Hora Inicio:" />
-                                    <p:calendar id="horaI" value="#{EventoMB.event.horaInicio}" pattern="HH:mm" timeOnly="true"  />
-
-                                    <p:outputLabel value="Hora Fim:" />
-                                    <p:calendar id="horaF" value="#{EventoMB.event.horaFim}" pattern="HH:mm" timeOnly="true" />
-                                    
-                                    
-                                    
+                                   
                                     <p:outputLabel value="Representante"/>
-                                    <h:selectOneMenu id="representante" class="form-control" value="#{EventoMB.event.representante}" required="true" converter="usuarioConverter">
+                                    <h:selectOneMenu id="representante" 
+                                                     class="form-control" 
+                                                     value="#{EventoMB.event.representante}" 
+                                                     required="true" 
+                                                     requiredMessage="Campo Representante necessário"
+                                                     converter="usuarioConverter">
                                         <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
                                         <f:selectItems value="#{LoginMB.usuarios}" var ="usuario"
                                                        itemValue="#{usuario}"
@@ -151,7 +172,12 @@
                                     </h:selectOneMenu>
 
                                     <p:outputLabel value="Cliente"/>
-                                    <h:selectOneMenu id="cliente" class="form-control" value="#{EventoMB.event.cliente}" required="true" converter="clienteConverter">
+                                    <h:selectOneMenu id="cliente" 
+                                                     class="form-control" 
+                                                     value="#{EventoMB.event.cliente}" 
+                                                     required="true" 
+                                                     requiredMessage="Campo Cliente necessário"
+                                                     converter="clienteConverter">
                                         <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
                                         <f:selectItems value="#{cadastroBean.cadastros}" var ="cadastro"
                                                        itemValue="#{cadastro}"

@@ -61,8 +61,6 @@ public class Evento implements Serializable{
 
     private Double investimento;
 
-    @Size(min = 2, max = 100)
-    @Column(nullable = false)
     private String descricao;
 
     @NotNull

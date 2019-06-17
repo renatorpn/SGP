@@ -74,14 +74,15 @@
                     <div class="col-lg-4 col-md-4">
                         <div class="form-group ">
                             <label jsf:for="nomeUsuario">Nome de Usuário</label>
-                            <input type="text"
-                                   jsf:id="nomeUsuario"
-                                   jsf:binding="#{nomeUsuario}"
+                            <p:inputText
+                                   id="nomeUsuario"
                                    class="form-control"
                                    placeholder="Usuário"
-                                   jsf:value="#{Usuario.usuarioCadastro.nomeUsuario}"
+                                   value="#{Usuario.usuarioCadastro.nomeUsuario}"
                                    required="true"
-                                   requiredMessage="Campo Nome Usuário é obrigatório!"/>
+                                   requiredMessage="Campo Nome Usuário é obrigatório!">
+                                   <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                            </p:inputText>
 
                             <h:message for="nomeUsuario" styleClass="text-danger"/>
                         </div>
@@ -97,7 +98,6 @@
                                 value="#{Usuario.usuarioCadastro.senha}"
                                 required="true"
                                 requiredMessage="Campo Senha é Obrigatório!"/>
-
                             <h:message for="senha" styleClass="text-danger"/>
                         </div>
                     </div>
@@ -107,14 +107,15 @@
                     <div class="col-lg-4 col-md-4">
                         <div class="form-group ">
                             <label jsf:for="email">E-mail do Usuário</label>
-                            <input type="email"
-                                   jsf:id="email"
-                                   jsf:binding="#{email}"
+                            <p:inputText
+                                   id="email"
                                    class="form-control"
                                    placeholder="exemplo@exemplo.com.br"
-                                   jsf:value="#{Usuario.usuarioCadastro.email}"
+                                   value="#{Usuario.usuarioCadastro.email}"
                                    required="true"
-                                   requiredMessage="Campo Email é obrigatório!"/>
+                                   requiredMessage="Campo Email é obrigatório!">
+                                   <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                            </p:inputText>
 
                             <h:message for="email" styleClass="text-danger"/>
                         </div>
@@ -122,14 +123,15 @@
                     <div class="col-lg-4 col-md-4">
                         <div class="form-group ">
                             <label jsf:for="nome">Nome Completo</label>
-                            <input type="text"
-                                   jsf:id="nome"
-                                   jsf:binding="#{nome}"
+                            <p:inputText
+                                   id="nome"
                                    class="form-control"
                                    placeholder="Nome Completo"
-                                   jsf:value="#{Usuario.usuarioCadastro.nome}"
+                                   value="#{Usuario.usuarioCadastro.nome}"
                                    required="true"
-                                   requiredMessage="Campo Nome Completo é obrigatório!"/>
+                                   requiredMessage="Campo Nome Completo é obrigatório!">
+                                   <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                            </p:inputText>
 
                             <h:message for="nome" styleClass="text-danger"/>
                         </div>
@@ -192,7 +194,7 @@
                                 redisplay="true"
                                 maxlength="8"
                                 value="#{Usuario.usuarioCadastro.senha}"
-                                required="required"/>
+                                required="true"/>
 
                             <h:message for="senha" styleClass="text-danger"/>
                         </div>
@@ -218,7 +220,10 @@
                                 id="nome"
                                 class="form-control"
                                 value="#{Usuario.usuarioCadastro.nome}"
-                                required="required"/>
+                                required="true"
+                                   requiredMessage="Campo Nome Completo é obrigatório!">
+                                   <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                            </p:inputText>
 
                             <h:message for="nome" styleClass="text-danger"/>
                         </div>
