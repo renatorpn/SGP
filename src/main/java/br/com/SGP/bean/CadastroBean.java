@@ -300,6 +300,12 @@ public class CadastroBean implements Serializable {
         this.balanco = balanco;
         return "/app/balanco/itens?faces-redirect=true";
     }
+    
+    public String excluirBalanco(Balanco balanco) {
+        balancoDAO.remove(balanco.getId());
+        this.balanco = balanco;
+        return "/app/balanco/listarbalanco?faces-redirect=true";
+    }
 
     public String cadastrarBalanco(Produto produto) {
         balanco.setCliente(cadastro);

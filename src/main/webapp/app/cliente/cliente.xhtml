@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
                     <form jsf:id="form" enctype="multipart/form-data" jsf:prependId="false">
-                        <p:growl id="growl" showDetail="true" sticky="true" />
+                        <p:growl id="growl" showDetail="true" sticky="fasle" life="1500" />
 
                         <fieldset>
                             <legend>Dados do Cliente</legend>
@@ -236,7 +236,7 @@
                                             value="#{cadastroBean.cadastro.complemento}"
                                             required="false"
                                             >
-                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                        
                                         </p:inputText>
 
                                         <p:message for="complemento" styleClass="text-danger"/>

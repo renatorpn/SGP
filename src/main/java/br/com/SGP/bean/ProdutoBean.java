@@ -166,7 +166,7 @@ public class ProdutoBean {
             produto.setImagem(pathImg);
         }
         produtoDAO.save(produto);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado com Sucesso.", "Produto: " + produto.getNome()));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Salvo com Sucesso.", "Produto: " + produto.getNome()));
         context.getExternalContext().getFlash().setKeepMessages(true);
         produto = new Produto();
         return "/app/produto/listarproduto?faces-redirect=true";
