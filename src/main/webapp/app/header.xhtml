@@ -7,7 +7,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:p="http://primefaces.org/ui">
-    
+
     <head>
         <title>SGP WEB</title>
         <link rel="icon" type="image/x-icon" href="img/favicon.ico"/>
@@ -16,80 +16,185 @@
         <h:outputStylesheet name="css/stylesheet.css"/>
     </head>
     <body><ui:composition>
-       <header>
-               <nav class="navbar navbar-inverse">
-                   <div class="container-fluid">
-                       <div class="navbar-header">
-                           <button type="button" class="navbar-toggle collapsed"
-                                   data-toggle="collapse" data-target="#drop"
-                                   aria-expanded="false">
-                               <span class="sr-only"> Toggle navigation</span>
-                               <span class="icon-bar"></span>
-                               <span class="icon-bar"></span>
-                               <span class="icon-bar"></span>
+            <header>
+                <nav class="navbar navbar-inverse">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed"
+                                    data-toggle="collapse" data-target="#drop"
+                                    aria-expanded="false">
+                                <span class="sr-only"> Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
 
-                           </button>
-                           <a class="navbar-brand" href="/WEBSGP/app/index.xhtml">SGP</a>
-                       </div>
+                            </button>
+                            <a class="navbar-brand" href="/WEBSGP/app/index.xhtml">SGP</a>
+                        </div>
 
-           <div class="collapse navbar-collapse" id="drop">
-                    <ul class="nav navbar-nav">
+                        <div class="collapse navbar-collapse" id="drop">
+                            <ul class="nav navbar-nav">
 
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cliente
-                                <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><p:commandLink action="#{cadastroBean.cadastroView}">Cadastrar</p:commandLink></li>
-    
-                                <li><a href="/WEBSGP/app/cliente/listacliente.xhtml">Listar</a></li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cliente
+                                        <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><p:commandLink action="#{cadastroBean.cadastroView}">Cadastrar</p:commandLink></li>
+
+                                        <li><a href="/WEBSGP/app/cliente/listacliente.xhtml">Listar</a></li>
+                                    </ul>
+                                </li>
+
+
+
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Produto
+                                        <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><p:commandLink action="#{produtoMB.cadastroProduto}">Cadastrar Produto</p:commandLink></li>
+                                        <li><a href="/WEBSGP/app/produto/categoriaproduto.xhtml">Categorias de Produto</a></li>
+                                        <li><a href="/WEBSGP/app/produto/listarproduto.xhtml">Listar Produto</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Evento
+                                        <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/WEBSGP/app/evento/evento.xhtml">Calendário</a></li>
+                                        <li><a href="/WEBSGP/app/evento/tipoevento.xhtml">Tipo Evento</a></li>
+                                    </ul>
+                                </li>
+                                <!--
+                                                        <li class="dropdown">
+                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Quadro SWOT
+                                                                <span class="caret"></span></a>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="/WEBSGP/app/swot/quadroswot.xhtml">Cadastrar</a></li>
+                                                                <li><a href="/WEBSGP/app/swot/alterarquadro.xhtml">Alterar</a></li>
+                                                                </ul>
+                                                        </li>
+                                -->                    
                             </ul>
-                        </li>
 
+                            <ul class="nav navbar-nav navbar-right"  >
+                                <h:form  >
+                                    <p:menuButton value="#{LoginMB.usuario.nome}" class="btn" iconPos="rigth">
+                                        <p:menuitem value=" Perfil"  update=":dlgeditar" immediate="true" action="#{Usuario.editar(usuario)}" oncomplete="PF('dlg1').show();" icon="ui-icon-person"/>
 
+                                        <p:menuitem value=" Logout" action="#{LoginMB.sair}" ajax="false" icon="ui-icon-power"/>
+                                        <p:separator />
+                                        <p:menuitem value=" Gerenciar Usuários" rendered="#{LoginMB.renderMenuUsuario(LoginMB.usuario)}" action="#{LoginMB.gerenciarUsuarios()}" icon="ui-icon-gear"/>
 
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Produto
-                                <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><p:commandLink action="#{produtoMB.cadastroProduto}">Cadastrar Produto</p:commandLink></li>
-                                <li><a href="/WEBSGP/app/produto/categoriaproduto.xhtml">Categorias de Produto</a></li>
-                                <li><a href="/WEBSGP/app/produto/listarproduto.xhtml">Listar Produto</a></li>
+                                    </p:menuButton>
+                                </h:form>
                             </ul>
-                        </li>
-
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Evento
-                                <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/WEBSGP/app/evento/evento.xhtml">Calendário</a></li>
-                                <li><a href="/WEBSGP/app/evento/tipoevento.xhtml">Tipo Evento</a></li>
-                            </ul>
-                        </li>
-<!--
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Quadro SWOT
-                                <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/WEBSGP/app/swot/quadroswot.xhtml">Cadastrar</a></li>
-                                <li><a href="/WEBSGP/app/swot/alterarquadro.xhtml">Alterar</a></li>
-                                </ul>
-                        </li>
--->                    
-                    </ul>
-
-                <ul class="nav navbar-nav navbar-right" >
-                        <h:form class="navbar-brand" >
-                            <a class="navbar-brand" >Usuário: #{LoginMB.usuario.nomeUsuario}</a>
-                            <h:commandButton id="btnsair" value="Logout" class="btn btn-danger btn-space" action="#{LoginMB.sair}" />
-                        </h:form>
-                    </ul>
-           </div>
-                   </div>
-               </nav>
+                        </div>
+                    </div>
+                </nav>
 
 
+                <p:dialog id="dlgeditar" header="Edição de Usuário" widgetVar="dlg1" height="500" width="600" class="form-group"  >
+                    <h:form id="formdialogeditar" enctype="multipart/form-data" >
+                        <legend>Editar Usuario</legend>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group ">
+                                    <label jsf:for="nomeUsuario">Nome de Usuário</label>
+                                    <p:inputText
+                                        id="nomeUsuario"
+                                        class="form-control"
+                                        placeholder="Usuário"
+                                        value="#{Usuario.usuarioCadastro.nomeUsuario}"
+                                        required="true"
+                                        requiredMessage="Campo Nome Usuário é obrigatório!"
+                                        disabled="true"
+                                        readonly="true"
+                                        >
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                    </p:inputText>
+                                    <h:message for="nomeUsuario" styleClass="text-danger"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group">
+                                    <label jsf:for="senha">Senha</label>
+                                    <p:password
+                                        id="senha"
+                                        class="form-control"
+                                        redisplay="true"
+                                        maxlength="8"
+                                        value="#{Usuario.usuarioCadastro.senha}"
+                                        required="true"/>
 
-        </header>
-            </ui:composition>
+                                    <h:message for="senha" styleClass="text-danger"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group ">
+                                    <label jsf:for="email">E-mail do Usuário</label>
+                                    <p:inputText id="email" value="#{Usuario.usuarioCadastro.email}" required="true" label="Email" >
+                                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                                    </p:inputText>
+                                    <h:message for="email" styleClass="text-danger"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group ">
+                                    <label jsf:for="nome">Nome Completo</label>
+                                    <p:inputText
+                                        id="nome"
+                                        class="form-control"
+                                        value="#{Usuario.usuarioCadastro.nome}"
+                                        required="true"
+                                        requiredMessage="Campo Nome Completo é obrigatório!">
+                                        <f:validateRegex  pattern="^.+?\w+\S+$*" />
+                                    </p:inputText>
+
+                                    <h:message for="nome" styleClass="text-danger"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label jsf:for="cargo">Cargo</label>
+                                    <h:selectOneMenu id="cargo" class="form-control" value="#{Usuario.usuarioCadastro.cargo}" disabled="true" readonly="true" required="true">
+                                        <f:selectItem itemLabel="Selecione..."  noSelectionOption="true"/>
+                                        <f:selectItems value="#{Usuario.cargo}" var ="cargo"
+                                                       itemValue="#{cargo}" 
+                                                       itemLabel="#{cargo.descricao}" />
+                                    </h:selectOneMenu>
+                                    <p:message for="cargo" />
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                        <input type="submit"
+                               class="btn btn-primary"
+                               jsf:action="#{Usuario.alterarPerfil()}"
+                               value="Salvar"
+                               update=":form"
+
+                               />
+                    </h:form>
+                </p:dialog>
+
+
+            </header>
+        </ui:composition>
+
+
     </body>
 </html>
