@@ -80,7 +80,7 @@
                             <ul class="nav navbar-nav navbar-right"  >
                                 <h:form  >
                                     <p:menuButton value="#{LoginMB.usuario.nome}" class="btn" iconPos="rigth">
-                                        <p:menuitem value=" Perfil"  update=":dlgeditar" immediate="true" action="#{Usuario.editar(usuario)}" oncomplete="PF('dlg1').show();" icon="ui-icon-person"/>
+                                        <p:menuitem value=" Perfil"  update=":dlgedit" immediate="true" action="#{Usuario.editar(usuario)}" oncomplete="PF('dlgedit').show();" icon="ui-icon-person"/>
 
                                         <p:menuitem value=" Logout" action="#{LoginMB.sair}" ajax="false" icon="ui-icon-power"/>
                                         <p:separator />
@@ -94,8 +94,8 @@
                 </nav>
 
 
-                <p:dialog id="dlgeditar" header="Edição de Usuário" widgetVar="dlg1" height="500" width="600" class="form-group"  >
-                    <h:form id="formdialogeditar" enctype="multipart/form-data" >
+                <p:dialog id="dlgedit" header="Edição de Usuário" widgetVar="dlgedit" height="500" width="600" class="form-group"  >
+                    <h:form id="formdialogedit" enctype="multipart/form-data" >
                         <legend>Editar Usuario</legend>
                         <div class="row">
                             <div class="col-lg-4 col-md-4">
