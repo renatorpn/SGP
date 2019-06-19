@@ -32,7 +32,7 @@ and open the template in the editor.
     </head>
 
     <body jsf:id="body">
-        <p:growl sticky="true" showDetail="true" autoUpdate="true"/>
+        <p:growl sticky="false" showDetail="false" life="1500"/>
 
         <ui:include  src="/app/header.xhtml"/>
 
@@ -177,19 +177,24 @@ and open the template in the editor.
         </div>
 
         <p:dialog header="Adicionar Novo Contato" widgetVar="dlg1" height="300" width="300" class="form-group" >
-            <p:growl id="msgsdialog" showDetail="true" sticky="true"/>
+            <p:growl id="msgsdialog" showDetail="true" sticky="false" life="1500"/>
             <h:form id="formdialog" enctype="multipart/form-data" >
 
                 <div class="row">
                     <div class="col-lg-9 col-md-9">
                         <div class="form-group">
                             <h:outputLabel value="Produto: "/>
-                            <h:selectOneMenu class="form-control" value="#{cadastroBean.itemBalanco.produto}" converter="produtoConverter">
+                            <h:selectOneMenu id="produt" class="form-control" 
+                                             value="#{cadastroBean.itemBalanco.produto}" 
+                                             required="true" 
+                                             requiredMessage="Produto é obrigatório" 
+                                             converter="produtoConverter">
                                 <f:selectItem itemLabel="Selecionar"  noSelectionOption="true"/>
                                 <f:selectItems value="#{produtoMB.produtos}" var ="produto"
                                                itemValue="#{cadastroBean.itemBalanco.produto}" 
                                                itemLabel="#{produto.nome} - #{produto.cor}"/>
                             </h:selectOneMenu>
+                            <p:message for="produt" />
                         </div>
                     </div>
                 </div>
@@ -197,7 +202,13 @@ and open the template in the editor.
                     <div class="col-lg-9 col-md-9">
                         <div class="form-group">
                             <p:outputLabel value="Quantidade Vendida:" for="qtdvenda" />
-                            <p:inputText id="qtdvenda" class="form-control" value="#{cadastroBean.itemBalanco.qtdVenda}" required="required" />
+                            <p:inputText id="qtdvenda" 
+                                         class="form-control" 
+                                         value="#{cadastroBean.itemBalanco.qtdVenda}" 
+                                         required="true"
+                                         requiredMessage="Venda é obrigatório"
+                                         />
+                            <p:message for="qtdvenda"/>
                         </div>
                     </div>
                 </div>
@@ -205,7 +216,13 @@ and open the template in the editor.
                     <div class="col-lg-9 col-md-9">
                         <div class="form-group">
                             <p:outputLabel value="Quantidade em Estoque:" for="qtdestoque" />
-                            <p:inputText id="qtdestoque" class="form-control" value="#{cadastroBean.itemBalanco.qtdEstoque}" required="required" />
+                            <p:inputText id="qtdestoque" 
+                                         class="form-control" 
+                                         value="#{cadastroBean.itemBalanco.qtdEstoque}" 
+                                         required="true"
+                                         requiredMessage="Estoque é obrigatório"
+                                         />
+                            <p:messages for="qtdestoque" />
                         </div>
                     </div>
                 </div>
