@@ -108,6 +108,11 @@ public class UsuarioCadastro {
         limparUsuario();
         usuarios = usuarioDAO.findAll();
     }
+    
+    public void alterarPerfil() {
+        usuarioDAO.inserirUsuario(usuarioCadastro);
+        usuarios = usuarioDAO.findAll();
+    }
 
     public void editar(Usuario usuario) {
         this.usuarioCadastro = usuario;

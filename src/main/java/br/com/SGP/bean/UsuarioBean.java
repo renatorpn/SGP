@@ -79,5 +79,17 @@ public class UsuarioBean {
         return Cargo.values();
     }
     
+    public boolean renderMenuUsuario(Usuario u){
+        boolean permissao = false;
+        if(u.getCargo().equals(Cargo.ADM)){
+            permissao = true;
+        } 
+        return permissao;
+    }
+    
+    public String gerenciarUsuarios(){
+        
+        return "/app/usuario/usuario?faces-redirect=true";
+    }
     
 }
