@@ -12,7 +12,7 @@
 
         <properties>
         <jsf.version>2.2.13</jsf.version>
-        <hibernate.version>5.2.7.Final</hibernate.version>
+        <hibernate.version>5.4.24.Final</hibernate.version>
         <bean.validation.version>1.1.0.Final</bean.validation.version>
         <hibernate.validator.version>5.4.1.Final</hibernate.validator.version>
         <mysql.connector.java.version>5.0.8</mysql.connector.java.version>
